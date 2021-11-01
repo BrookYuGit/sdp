@@ -1,0 +1,18 @@
+server:
+  port: 9999
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;MODE=MYSQL;DATABASE_TO_LOWER=TRUE
+    username: ${MYSQL_USERNAME:sa}
+    password: ${MYSQL_PASSWORD:}
+  h2:
+    console:
+      enabled: true
+      path: /db
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,0 +1,20 @@
+# .gitignore
+.DS_Store
+node_modules
+dist
+.env.local
+.env.*.local
+npm-debug.log*
+yarn.lock
+yarn-debug.log*
+yarn-error.log*
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.zip
+*.7z
+*.iml
+package-lock.json

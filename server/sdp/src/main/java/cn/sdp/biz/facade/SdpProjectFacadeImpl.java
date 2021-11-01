@@ -1,0 +1,76 @@
+package cn.sdp.biz.facade;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import cn.sdp.biz.dto.request.*;
+import cn.sdp.biz.dto.response.*;
+import cn.sdp.biz.domain.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+/**
+ * @ClassName: SdpProjectFacadeImpl
+ * @Description: FacadeImpl
+ * @Author: SDP
+ * @Date: 2021-10-30
+ * @Version: 1.0
+ * Table: sdp_project
+ * Comment:
+ * 
+ */
+@Service
+public class SdpProjectFacadeImpl extends SdpProjectFacadeCustomImpl implements SdpProjectFacade {
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int addSdpProject(SdpProjectAddRequest request) throws Exception {
+        return super.addSdpProject(request);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int updateSdpProject(SdpProjectUpdateRequest request) throws Exception {
+        return super.updateSdpProject(request);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteSdpProject(SdpProjectDeleteRequest request) throws Exception {
+        return super.deleteSdpProject(request);
+    }
+
+    @Override
+    public SdpProjectQueryResponse querySdpProject(SdpProjectQueryRequest request) throws Exception {
+        super.checkNonNull(request.getId(), "id");
+        SdpProjectQueryResponse result = super.querySdpProject(request);
+        if (result == null) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public List<SdpProjectQueryResponse> listSdpProject(SdpProjectQueryRequest request) throws Exception {
+        return super.listSdpProject(request);
+    }
+
+    @Override
+    public List<SdpProjectQueryResponse> listSdpProjectWithBLOBs(SdpProjectQueryRequest request) throws Exception {
+        return super.listSdpProjectWithBLOBs(request);
+    }
+
+    @Override
+    public Integer clone(BaseNameIdRequest request) throws Exception {
+        return super.clone(request);
+    }
+
+    @Override
+    public Integer execute(BaseNameRequest request) throws Exception {
+        return super.execute(request);
+    }
+
+}

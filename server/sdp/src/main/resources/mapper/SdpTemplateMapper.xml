@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sdp.biz.repository.SdpTemplateMapper">
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id,
+    workspace_name,
+    project_name,
+    `name`,
+    file_type,
+    project,
+    package_name,
+    no_overwrite,
+    remark
+  </sql>
+  <sql id="Blob_Column_List">
+    file_template,
+    extra_info
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="cn.sdp.biz.domain.SdpTemplateExample" resultType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    select
+    <if test="topClause != null">
+      top ${topClause}
+    </if>
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    t.*
+    from sdp_template t
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitClause != null">
+      limit ${limitClause}
+    </if>
+    <if test="limitClause != null and countClause != null">
+      , ${countClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="cn.sdp.biz.domain.SdpTemplateExample" resultType="cn.sdp.biz.domain.SdpTemplate">
+    select
+    <if test="topClause != null">
+      top ${topClause}
+    </if>
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from sdp_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitClause != null">
+      limit ${limitClause}
+    </if>
+    <if test="limitClause != null and countClause != null">
+      , ${countClause}
+    </if>
+  </select>
+  <select id="countByExample" parameterType="cn.sdp.biz.domain.SdpTemplateExample" resultType="Integer">
+    select
+    count(*)
+    from sdp_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="listWithoutBLOBs" parameterType="cn.sdp.biz.domain.SdpTemplate" resultType="cn.sdp.biz.domain.SdpTemplate">
+    select
+    <include refid="Base_Column_List" />
+    from sdp_template
+    where 88=88
+    <if test="id != null">
+    and id = #{id}
+    </if>
+    <if test="workspaceName != null">
+    and workspace_name = #{workspaceName}
+    </if>
+    <if test="projectName != null">
+    and project_name = #{projectName}
+    </if>
+    <if test="name != null">
+    and name = #{name}
+    </if>
+    <if test="fileType != null">
+    and file_type = #{fileType}
+    </if>
+    <if test="project != null">
+    and project = #{project}
+    </if>
+    <if test="packageName != null">
+    and package_name = #{packageName}
+    </if>
+    <if test="noOverwrite != null">
+    and no_overwrite = #{noOverwrite}
+    </if>
+    <if test="remark != null">
+    and remark = #{remark}
+    </if>
+  </select>
+  <select id="listWithBLOBs" parameterType="cn.sdp.biz.domain.SdpTemplateWithBLOBs" resultType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    select
+    t.*
+    from sdp_template t
+    where 88=88
+    <if test="fileTemplate != null">
+    and file_template = #{fileTemplate}
+    </if>
+    <if test="extraInfo != null">
+    and extra_info = #{extraInfo}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.sdp.biz.domain.SdpTemplate">
+    select
+    <include refid="Base_Column_List" />
+    from sdp_template
+    where id = #{id}
+  </select>
+  <select id="selectByPrimaryKeyWithBLOBs" parameterType="java.lang.Integer" resultType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    select
+    *
+    from sdp_template
+    where id = #{id}
+  </select>
+  <select id="selectByWorkspaceNameProjectNameNameFileTypeProjectPackageName" parameterType="map" resultType="cn.sdp.biz.domain.SdpTemplate">
+    select
+    <include refid="Base_Column_List" />
+    from sdp_template
+    where workspace_name = #{workspaceName}
+    and project_name = #{projectName}
+    and `name` = #{name}
+    and file_type = #{fileType}
+    and project = #{project}
+    and package_name = #{packageName}
+  </select>
+  <select id="selectByWorkspaceNameProjectNameNameFileTypeProjectPackageNameWithBLOBs" parameterType="map" resultType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    select
+    *
+    from sdp_template
+    where workspace_name = #{workspaceName}
+    and project_name = #{projectName}
+    and `name` = #{name}
+    and file_type = #{fileType}
+    and project = #{project}
+    and package_name = #{packageName}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sdp_template
+    where id = #{id}
+  </delete>
+  <delete id="deleteByWorkspaceNameProjectNameNameFileTypeProjectPackageName" parameterType="map">
+    delete from sdp_template
+    where workspace_name = #{workspaceName}
+    and project_name = #{projectName}
+    and `name` = #{name}
+    and file_type = #{fileType}
+    and project = #{project}
+    and package_name = #{packageName}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.sdp.biz.domain.SdpTemplateExample">
+    delete from sdp_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.sdp.biz.domain.SdpTemplate">
+    insert into sdp_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    id,
+    workspace_name,
+    project_name,
+    `name`,
+    file_type,
+    project,
+    package_name,
+    no_overwrite,
+    remark,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    #{id},
+    #{workspaceName},
+    #{projectName},
+    #{name},
+    #{fileType},
+    #{project},
+    #{packageName},
+    #{noOverwrite},
+    #{remark},
+    </trim>
+  </insert>
+  <insert id="insertWithBLOBs" parameterType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    insert into sdp_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    id,
+    workspace_name,
+    project_name,
+    `name`,
+    file_type,
+    project,
+    package_name,
+    no_overwrite,
+    remark,
+    file_template,
+    extra_info,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    #{id},
+    #{workspaceName},
+    #{projectName},
+    #{name},
+    #{fileType},
+    #{project},
+    #{packageName},
+    #{noOverwrite},
+    #{remark},
+    #{fileTemplate},
+    #{extraInfo},
+    </trim>
+  </insert>
+  <insert id="insertSelective" keyProperty="id" parameterType="cn.sdp.biz.domain.SdpTemplateWithBLOBs" useGeneratedKeys="true">
+    insert into sdp_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="workspaceName != null">
+        workspace_name,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="project != null">
+        project,
+      </if>
+      <if test="packageName != null">
+        package_name,
+      </if>
+      <if test="noOverwrite != null">
+        no_overwrite,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="fileTemplate != null">
+        file_template,
+      </if>
+      <if test="extraInfo != null">
+        extra_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="workspaceName != null">
+        #{workspaceName},
+      </if>
+      <if test="projectName != null">
+        #{projectName},
+      </if>
+      <if test="name != null">
+        #{name},
+      </if>
+      <if test="fileType != null">
+        #{fileType},
+      </if>
+      <if test="project != null">
+        #{project},
+      </if>
+      <if test="packageName != null">
+        #{packageName},
+      </if>
+      <if test="noOverwrite != null">
+        #{noOverwrite},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="fileTemplate != null">
+        #{fileTemplate},
+      </if>
+      <if test="extraInfo != null">
+        #{extraInfo},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sdp_template
+    <set>
+      <if test="record.id != null">
+        id = #{record.id},
+      </if>
+      <if test="record.workspaceName != null">
+        workspace_name = #{record.workspaceName},
+      </if>
+      <if test="record.projectName != null">
+        project_name = #{record.projectName},
+      </if>
+      <if test="record.name != null">
+        `name` = #{record.name},
+      </if>
+      <if test="record.fileType != null">
+        file_type = #{record.fileType},
+      </if>
+      <if test="record.project != null">
+        project = #{record.project},
+      </if>
+      <if test="record.packageName != null">
+        package_name = #{record.packageName},
+      </if>
+      <if test="record.noOverwrite != null">
+        no_overwrite = #{record.noOverwrite},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update sdp_template
+    <set>
+      id = #{record.id},
+      workspace_name = #{record.workspaceName},
+      project_name = #{record.projectName},
+      `name` = #{record.name},
+      file_type = #{record.fileType},
+      project = #{record.project},
+      package_name = #{record.packageName},
+      no_overwrite = #{record.noOverwrite},
+      remark = #{record.remark},
+      file_template = #{record.fileTemplate},
+      extra_info = #{record.extraInfo},
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sdp_template
+    <set>
+      id = #{record.id},
+      workspace_name = #{record.workspaceName},
+      project_name = #{record.projectName},
+      `name` = #{record.name},
+      file_type = #{record.fileType},
+      project = #{record.project},
+      package_name = #{record.packageName},
+      no_overwrite = #{record.noOverwrite},
+      remark = #{record.remark},
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    update sdp_template
+    <set>
+        <if test="workspaceName != null">
+          workspace_name = #{workspaceName},
+        </if>
+        <if test="projectName != null">
+          project_name = #{projectName},
+        </if>
+        <if test="name != null">
+          `name` = #{name},
+        </if>
+        <if test="fileType != null">
+          file_type = #{fileType},
+        </if>
+        <if test="project != null">
+          project = #{project},
+        </if>
+        <if test="packageName != null">
+          package_name = #{packageName},
+        </if>
+        <if test="noOverwrite != null">
+          no_overwrite = #{noOverwrite},
+        </if>
+        <if test="remark != null">
+          remark = #{remark},
+        </if>
+        <if test="fileTemplate != null">
+          file_template = #{fileTemplate},
+        </if>
+        <if test="extraInfo != null">
+          extra_info = #{extraInfo},
+        </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateByWorkspaceNameProjectNameNameFileTypeProjectPackageNameSelective" parameterType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    update sdp_template
+    <set>
+        <if test="id != null">
+          id = #{id},
+        </if>
+        <if test="workspaceName != null">
+          workspace_name = #{workspaceName},
+        </if>
+        <if test="projectName != null">
+          project_name = #{projectName},
+        </if>
+        <if test="name != null">
+          `name` = #{name},
+        </if>
+        <if test="fileType != null">
+          file_type = #{fileType},
+        </if>
+        <if test="project != null">
+          project = #{project},
+        </if>
+        <if test="packageName != null">
+          package_name = #{packageName},
+        </if>
+        <if test="noOverwrite != null">
+          no_overwrite = #{noOverwrite},
+        </if>
+        <if test="remark != null">
+          remark = #{remark},
+        </if>
+        <if test="fileTemplate != null">
+          file_template = #{fileTemplate},
+        </if>
+        <if test="extraInfo != null">
+          extra_info = #{extraInfo},
+        </if>
+    </set>
+    where workspace_name = #{workspaceName}
+    and project_name = #{projectName}
+    and `name` = #{name}
+    and file_type = #{fileType}
+    and project = #{project}
+    and package_name = #{packageName}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sdp.biz.domain.SdpTemplateWithBLOBs">
+    update sdp_template
+    <set>
+	    workspace_name = #{workspaceName},
+	    project_name = #{projectName},
+	    `name` = #{name},
+	    file_type = #{fileType},
+	    project = #{project},
+	    package_name = #{packageName},
+	    no_overwrite = #{noOverwrite},
+	    remark = #{remark},
+	    file_template = #{fileTemplate},
+	    extra_info = #{extraInfo},
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sdp.biz.domain.SdpTemplate">
+    update sdp_template
+    <set>
+		workspace_name = #{workspaceName},
+		project_name = #{projectName},
+		`name` = #{name},
+		file_type = #{fileType},
+		project = #{project},
+		package_name = #{packageName},
+		no_overwrite = #{noOverwrite},
+		remark = #{remark},
+    </set>
+    where id = #{id}
+  </update>
+</mapper>
