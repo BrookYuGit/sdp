@@ -2,3 +2,4 @@
 *.pid
 .idea
 target
+*.zip
