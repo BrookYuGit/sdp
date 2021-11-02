@@ -810,8 +810,23 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
+            this.form.file_template = this.$refs.cm.cminstance.getValue()
             let form = getForm(this.form, this.form_ori)
             if (!form) {
+              if (this.form.file_template) {
+                console.log(
+                  'this.form.file_template',
+                  this.form.file_template.length,
+                  this.form.file_template.substring(0, 100)
+                )
+              }
+              if (this.form_ori.file_template) {
+                console.log(
+                  'this.form_ori.file_template',
+                  this.form_ori.file_template.length,
+                  this.form_ori.file_template.substring(0, 100)
+                )
+              }
               this.$baseMessage('无改动', 'error')
               return
             }
