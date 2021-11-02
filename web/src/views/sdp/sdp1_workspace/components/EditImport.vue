@@ -137,7 +137,7 @@
           var reader = new FileReader()
           reader.readAsText(file.raw)
           reader.onload = function () {
-            self.progress = '正在导入:' + file.name
+            self.progress = '正在分析:' + file.name
             self.loading = true
             self.count = 0
 

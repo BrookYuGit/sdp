@@ -3,3 +3,6 @@
 .idea
 target
 *.zip
+*.jar
+*.lock.db
+*.log

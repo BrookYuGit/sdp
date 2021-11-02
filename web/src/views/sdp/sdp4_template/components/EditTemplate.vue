@@ -12,19 +12,15 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="300px">
         <el-row>
-          <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
-            <div style="width: 100%; color: red">【表名规则】</div>
+          <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
             <div style="width: 100%; color: red">
-              规则1：必须为小写下划线规则
-            </div>
-            <div style="width: 100%; color: red">
-              规则2：如果表名不包含下划线，可能会导致{alias_table_name&is_ajax=1}和{alias_table_name&is_first_lower=1}混淆
+              【表名规则】必须为小写下划线，如果表名不包含下划线，可能会导致{alias_table_name&is_ajax=1}和{alias_table_name&is_first_lower=1}混淆
             </div>
             <div style="width: 100%; color: red">
               【字段名或sql方法名规则】：可以为小写下划线或驼峰
             </div>
           </el-col>
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <el-row>
               <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                 <el-form-item label="" label-width="0px" prop="table_name">
@@ -58,11 +54,7 @@
           </el-col>
         </el-row>
         <el-divider content-position="center" />
-        <codemirror
-          ref="cm"
-          v-model="form.file_template"
-          :options="cmOptions"
-        ></codemirror>
+        <codemirror ref="cm" :options="cmOptions"></codemirror>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -352,6 +344,8 @@
         getProjectList: createRequest('sdp_project', 'list'),
         getWorkspaceConfigList: createRequest('sdp_workspace_config', 'list'),
         form: {},
+        lastContent: '',
+        lastHTML: '',
         form_ori: {},
         rules: {},
         cmdEditor: undefined,
@@ -370,6 +364,7 @@
           tabSize: 4,
           extraKeys: { Ctrl: 'autocomplete' },
           hintOptions: { hint: this.handleShowHint, completeSingle: true },
+          autofocus: true,
           // fixedGutter: true,
           // readOnly: false,
           // showCursorWhenSelecting: true,
@@ -607,7 +602,7 @@
         return obj
       },
       handleShowHint() {
-        const codeMirrorInstance = this.$refs.cm.cminstance
+        const codeMirrorInstance = this.$refs['cm'].cminstance
         const cur = codeMirrorInstance.getCursor()
         const curLine = codeMirrorInstance.getLine(cur.line)
         const end = cur.ch
@@ -761,6 +756,35 @@
         }
         return item.label + '(' + item.prop + ')'
       },
+      fixCm() {
+        if (this.$refs && this.$refs.cm && this.$refs.cm.codemirror) {
+          this.$refs.cm.codemirror.setValue(this.form.file_template)
+          let that = this
+          this.$nextTick(() => {
+            that.$refs.cm.codemirror.refresh()
+            setTimeout(this.fixCm2, 1000)
+          })
+          return
+        }
+        setTimeout(this.fixCm, 100)
+      },
+      fixCm2() {
+        let vueCodemirrow = document.getElementsByClassName('CodeMirror-code')
+        if (!vueCodemirrow || vueCodemirrow.length == 0) {
+          setTimeout(this.fixCm, 1000)
+          return
+        }
+        if (
+          vueCodemirrow[0].innerText + '' == this.lastHTML &&
+          this.form.file_template != this.lastContent
+        ) {
+          setTimeout(() => {
+            this.$refs.cm.codemirror.refresh()
+            setTimeout(this.fixCm2, 1000)
+          }, 100)
+          return
+        }
+      },
       showEdit(row) {
         if (!row) {
           this.title = '添加'
@@ -770,6 +794,7 @@
           this.title = '编辑'
           this.form = Object.assign({}, row)
           this.form_ori = Object.assign({}, row)
+          setTimeout(this.fixCm, 100)
         }
         this.onWorkspaceChange(null, () => {
           this.dialogFormVisible = true
@@ -778,6 +803,9 @@
       close() {
         this.$refs['form'].resetFields()
         this.dialogFormVisible = false
+        this.lastHTML =
+          document.getElementsByClassName('CodeMirror-code')[0].innerText + ''
+        this.lastContent = this.form.file_template
       },
       save() {
         this.$refs['form'].validate(async (valid) => {
