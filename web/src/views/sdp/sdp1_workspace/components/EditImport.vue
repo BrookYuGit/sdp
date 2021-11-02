@@ -8,16 +8,6 @@
     @close="handleClose"
   >
     <el-form ref="form" :model="form" label-width="180px">
-      <el-form-item
-        label="工程名(允许换名)"
-        prop="workspace_name"
-        :required="true"
-      >
-        <el-input
-          v-model.trim="form.workspace_name"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
       <el-form-item label="文件" prop="fileList">
         <el-upload
           ref="uploadfile"
@@ -35,6 +25,16 @@
             <em>点击上传</em>
           </div>
         </el-upload>
+      </el-form-item>
+      <el-form-item
+        label="工程名(允许换名)"
+        prop="workspace_name"
+        :required="true"
+      >
+        <el-input
+          v-model.trim="form.workspace_name"
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
       <el-form-item label="进度" prop="progress">
         <el-input
