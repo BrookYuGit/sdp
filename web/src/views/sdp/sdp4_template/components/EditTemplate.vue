@@ -12,49 +12,76 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="300px">
         <el-row>
-          <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
-            <div style="width: 100%; color: red">
-              【表名规则】必须为小写下划线，如果表名不包含下划线，可能会导致{alias_table_name&is_ajax=1}和{alias_table_name&is_first_lower=1}混淆
-            </div>
-            <div style="width: 100%; color: red">
-              【字段名或sql方法名规则】：可以为小写下划线或驼峰
-            </div>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <span style="color: red">
+              【扩展功能：转换源代码到模板注意事项】表名或字段名必须为小写字母及至少一个下划线（否则会导致&is_ajax=1和is_first_lower=1混淆）
+            </span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+            <el-form-item label="表名" label-width="80px" prop="table_name">
+              <el-input
+                v-model.trim="form.table_name"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+            <el-form-item
+              label="表注释"
+              label-width="80px"
+              prop="table_comment"
+            >
+              <el-input
+                v-model.trim="form.table_comment"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-row>
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                <el-form-item label="" label-width="0px" prop="table_name">
-                  <el-input
-                    v-model.trim="form.table_name"
-                    autocomplete="off"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                <el-button type="primary" @click="translate">
-                  根据表名自动转换源代码为模板
-                </el-button>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                <el-form-item label="" label-width="0px" prop="sql_method_name">
-                  <el-input
-                    v-model.trim="form.column_name"
-                    autocomplete="off"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                <el-button type="primary" @click="translateColumnName">
-                  根据字段名或sql方法名自动转换模板
-                </el-button>
-              </el-col>
-            </el-row>
+            <el-button type="primary" @click="translate">
+              根据表名自动转换源代码到模板
+            </el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+            <el-form-item
+              label="字段名"
+              label-width="80px"
+              prop="sql_method_name"
+            >
+              <el-input
+                v-model.trim="form.column_name"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+            <el-form-item
+              label="字段注释"
+              label-width="80px"
+              prop="column_comment"
+            >
+              <el-input
+                v-model.trim="form.column_comment"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+            <el-button type="primary" @click="translateColumnName">
+              根据字段名自动转换源代码到模板
+            </el-button>
           </el-col>
         </el-row>
         <el-divider content-position="center" />
-        <codemirror ref="cm" :options="cmOptions"></codemirror>
+        <codemirror
+          ref="cm"
+          v-model="form.file_template"
+          :options="cmOptions"
+        ></codemirror>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -374,6 +401,7 @@
         text_id: 0,
         projectList: [],
         packageNameList: [],
+        workspaceConfigList: [],
         title: '',
         dialogFormVisible: false,
       }
@@ -421,6 +449,10 @@
           this.$baseMessage('表名必须为小写下划线规则', 'error')
           return
         }
+        if (tableName.indexOf('_') < 0) {
+          this.$baseMessage('表名必须包含下划线', 'error')
+          return
+        }
         if (!tableName) {
           this.$baseMessage('必须输入表名', 'error')
           return
@@ -429,23 +461,40 @@
           this.$baseMessage('表名至少为3个字符', 'error')
           return
         }
+        let tableComment = this.form.table_comment.trim()
         let firstUpperName = this.uName(tableName, true)
         let firstLowerName = this.uName(tableName, false)
-        let tokens = {}
-        tokens[firstLowerName] = '{alias_table_name&is_first_lower=1}'
-        tokens[tableName] = '{alias_table_name&is_ajax=1}'
-        tokens[firstUpperName] = '{alias_table_name}'
-        for (let p in this.packageNameList) {
-          p = this.packageNameList[p]
-          tokens[p.value] = '{config&name=' + p.label + '}'
+        let tokens = []
+        tokens.push({
+          name: firstLowerName,
+          value: '{alias_table_name&is_first_lower=1}',
+        })
+        tokens.push({ name: tableName, value: '{alias_table_name&is_ajax=1}' })
+        if (tableComment) {
+          tokens.push({
+            name: tableComment,
+            value: '{table_comment&is_first_line=1}',
+          })
         }
+        tokens.push({ name: firstUpperName, value: '{alias_table_name}' })
+        for (let p in this.workspaceConfigList) {
+          p = this.workspaceConfigList[p]
+          tokens.push({ name: p.value, value: '{config&name=' + p.label + '}' })
+        }
+        tokens = tokens.sort(function compareFunction(p1, p2) {
+          return p2.name.length - p1.name.length
+        })
         console.log('tokens', tokens)
         for (let token in tokens) {
+          token = tokens[token]
           let loop = 0
-          while (loop++ < 1000 && this.form.file_template.indexOf(token) >= 0) {
+          while (
+            loop++ < 1000 &&
+            this.form.file_template.indexOf(token.name) >= 0
+          ) {
             this.form.file_template = this.form.file_template.replace(
-              token,
-              tokens[token]
+              token.name,
+              token.value
             )
           }
         }
@@ -536,37 +585,61 @@
         console.log('=======================')
         console.log('doneSet', doneSet, this.packageNameList)
         this.form.file_template = lines
+        this.fixCm()
       },
       translateColumnName() {
         let tableName = this.form.column_name.trim()
+        let tableComment = this.form.column_comment.trim()
         tableName = this.ajaxName(tableName)
         if (tableName != tableName.toLowerCase()) {
           this.$baseMessage('字段名必须为小写下划线规则', 'error')
           return
         }
+        if (tableName.indexOf('_') < 0) {
+          this.$baseMessage('字段名必须包含下划线', 'error')
+          return
+        }
         if (!tableName) {
-          this.$baseMessage('必须输入字段', 'error')
+          this.$baseMessage('必须输入字段名', 'error')
           return
         }
         if (tableName.length < 3) {
-          this.$baseMessage('字段至少为3个字符', 'error')
+          this.$baseMessage('字段名至少为3个字符', 'error')
           return
         }
         let firstUpperName = this.uName(tableName, true)
         let firstLowerName = this.uName(tableName, false)
-        let tokens = {}
-        tokens[firstLowerName] = '{column_name&is_first_lower=1}'
-        tokens[tableName] = '{column_name&is_ajax=1}'
-        tokens[firstUpperName] = '{column_name}'
+        let tokens = []
+        tokens.push({
+          name: firstLowerName,
+          value: '{column_name&is_first_lower=1}',
+        })
+        tokens.push({ name: tableName, value: '{column_name&is_ajax=1}' })
+        if (tableComment) {
+          tokens.push({
+            name: tableComment,
+            value: '{column_comment&is_first_line=1}',
+          })
+        }
+        tokens.push({ name: firstUpperName, value: '{column_name}' })
+        tokens = tokens.sort(function compareFunction(p1, p2) {
+          return p2.name.length - p1.name.length
+        })
+        console.log('tokens', tokens)
         for (let token in tokens) {
+          token = tokens[token]
           let loop = 0
-          while (loop++ < 1000 && this.form.file_template.indexOf(token) >= 0) {
+          while (
+            loop++ < 1000 &&
+            this.form.file_template.indexOf(token.name) >= 0
+          ) {
             this.form.file_template = this.form.file_template.replace(
-              token,
-              tokens[token]
+              token.name,
+              token.value
             )
           }
         }
+        this.fixCm()
       },
       isChar(c) {
         if (c >= 'a' && c <= 'z') {
@@ -718,6 +791,7 @@
                 workspace_name: this.form.workspace_name,
               }).then(({ data }) => {
                 this.packageNameList = []
+                this.workspaceConfigList = []
                 data.map((ele) => {
                   if (ele.name.indexOf('package_') == 0) {
                     this.packageNameList.push({
@@ -725,6 +799,10 @@
                       value: ele.value,
                     })
                   }
+                  this.workspaceConfigList.push({
+                    label: ele.name,
+                    value: ele.value,
+                  })
                 })
                 this.packageNameList = this.packageNameList.sort(
                   function compareFunction(p1, p2) {

@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Main-Class: cn.sdp.Application
+Class-Path: validation-api-1.1.0.Final.jar log4j-over-slf4j-1.7.25.jar s
+ pring-boot-starter-1.5.13.RELEASE.jar spring-context-4.3.17.RELEASE.jar
+  tomcat-jdbc-8.5.31.jar spring-web-4.3.17.RELEASE.jar jackson-core-2.8.
+ 11.jar tomcat-annotations-api-8.5.31.jar hibernate-validator-5.3.6.Fina
+ l.jar protobuf-java-2.6.0.jar spring-core-4.3.17.RELEASE.jar tomcat-emb
+ ed-websocket-8.5.31.jar tomcat-juli-8.5.31.jar spring-beans-4.3.17.RELE
+ ASE.jar aspectjweaver-1.8.13.jar jcl-over-slf4j-1.7.25.jar mybatis-spri
+ ng-boot-starter-1.3.2.jar mybatis-spring-boot-autoconfigure-1.3.2.jar s
+ pring-boot-starter-tomcat-1.5.13.RELEASE.jar jackson-databind-2.8.11.1.
+ jar mybatis-3.4.6.jar logback-classic-1.1.11.jar spring-webmvc-4.3.17.R
+ ELEASE.jar jboss-logging-3.3.2.Final.jar h2-1.4.200.jar spring-jdbc-4.3
+ .17.RELEASE.jar spring-boot-starter-aop-1.5.13.RELEASE.jar spring-boot-
+ starter-jdbc-1.5.13.RELEASE.jar jul-to-slf4j-1.7.25.jar spring-expressi
+ on-4.3.17.RELEASE.jar spring-tx-4.3.17.RELEASE.jar tomcat-embed-core-8.
+ 5.31.jar fastjson-1.2.47.jar spring-boot-1.5.13.RELEASE.jar jackson-ann
+ otations-2.8.0.jar tomcat-embed-el-8.5.31.jar classmate-1.3.4.jar sprin
+ g-boot-autoconfigure-1.5.13.RELEASE.jar spring-aop-4.3.17.RELEASE.jar s
+ pring-boot-starter-logging-1.5.13.RELEASE.jar spring-boot-starter-web-1
+ .5.13.RELEASE.jar mybatis-spring-1.3.2.jar slf4j-api-1.7.25.jar mysql-c
+ onnector-java-8.0.11.jar snakeyaml-1.17.jar logback-core-1.1.11.jar lom
+ bok-1.18.6.jar
+
