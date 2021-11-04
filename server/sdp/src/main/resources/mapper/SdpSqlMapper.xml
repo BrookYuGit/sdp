@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.sdp.biz.repository.SdpSqlMapper">
+<mapper namespace="cn.mysdp.biz.repository.SdpSqlMapper">
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -92,7 +92,7 @@
     java_body,
     extra_info
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="cn.sdp.biz.domain.SdpSqlExample" resultType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpSqlExample" resultType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     select
     <if test="topClause != null">
       top ${topClause}
@@ -116,7 +116,7 @@
       , ${countClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="cn.sdp.biz.domain.SdpSqlExample" resultType="cn.sdp.biz.domain.SdpSql">
+  <select id="selectByExample" parameterType="cn.mysdp.biz.domain.SdpSqlExample" resultType="cn.mysdp.biz.domain.SdpSql">
     select
     <if test="topClause != null">
       top ${topClause}
@@ -140,7 +140,7 @@
       , ${countClause}
     </if>
   </select>
-  <select id="countByExample" parameterType="cn.sdp.biz.domain.SdpSqlExample" resultType="Integer">
+  <select id="countByExample" parameterType="cn.mysdp.biz.domain.SdpSqlExample" resultType="Integer">
     select
     count(*)
     from sdp_sql
@@ -148,7 +148,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <select id="listWithoutBLOBs" parameterType="cn.sdp.biz.domain.SdpSql" resultType="cn.sdp.biz.domain.SdpSql">
+  <select id="listWithoutBLOBs" parameterType="cn.mysdp.biz.domain.SdpSql" resultType="cn.mysdp.biz.domain.SdpSql">
     select
     <include refid="Base_Column_List" />
     from sdp_sql
@@ -232,7 +232,7 @@
     and is_interface = #{isInterface}
     </if>
   </select>
-  <select id="listWithBLOBs" parameterType="cn.sdp.biz.domain.SdpSqlWithBLOBs" resultType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <select id="listWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpSqlWithBLOBs" resultType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     select
     t.*
     from sdp_sql t
@@ -247,19 +247,19 @@
     and extra_info = #{extraInfo}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.sdp.biz.domain.SdpSql">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpSql">
     select
     <include refid="Base_Column_List" />
     from sdp_sql
     where id = #{id}
   </select>
-  <select id="selectByPrimaryKeyWithBLOBs" parameterType="java.lang.Integer" resultType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <select id="selectByPrimaryKeyWithBLOBs" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     select
     *
     from sdp_sql
     where id = #{id}
   </select>
-  <select id="selectByWorkspaceNameTableNameParameterCatalogParameterCatalogTypeName" parameterType="map" resultType="cn.sdp.biz.domain.SdpSql">
+  <select id="selectByWorkspaceNameTableNameParameterCatalogParameterCatalogTypeName" parameterType="map" resultType="cn.mysdp.biz.domain.SdpSql">
     select
     <include refid="Base_Column_List" />
     from sdp_sql
@@ -269,7 +269,7 @@
     and parameter_catalog_type = #{parameterCatalogType}
     and `name` = #{name}
   </select>
-  <select id="selectByWorkspaceNameTableNameParameterCatalogParameterCatalogTypeNameWithBLOBs" parameterType="map" resultType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <select id="selectByWorkspaceNameTableNameParameterCatalogParameterCatalogTypeNameWithBLOBs" parameterType="map" resultType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     select
     *
     from sdp_sql
@@ -291,13 +291,13 @@
     and parameter_catalog_type = #{parameterCatalogType}
     and `name` = #{name}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.sdp.biz.domain.SdpSqlExample">
+  <delete id="deleteByExample" parameterType="cn.mysdp.biz.domain.SdpSqlExample">
     delete from sdp_sql
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.sdp.biz.domain.SdpSql">
+  <insert id="insert" parameterType="cn.mysdp.biz.domain.SdpSql">
     insert into sdp_sql
     <trim prefix="(" suffix=")" suffixOverrides=",">
     id,
@@ -357,7 +357,7 @@
     #{isInterface},
     </trim>
   </insert>
-  <insert id="insertWithBLOBs" parameterType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <insert id="insertWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     insert into sdp_sql
     <trim prefix="(" suffix=")" suffixOverrides=",">
     id,
@@ -423,7 +423,7 @@
     #{extraInfo},
     </trim>
   </insert>
-  <insert id="insertSelective" keyProperty="id" parameterType="cn.sdp.biz.domain.SdpSqlWithBLOBs" useGeneratedKeys="true">
+  <insert id="insertSelective" keyProperty="id" parameterType="cn.mysdp.biz.domain.SdpSqlWithBLOBs" useGeneratedKeys="true">
     insert into sdp_sql
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -761,7 +761,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     update sdp_sql
     <set>
         <if test="isDisable != null">
@@ -851,7 +851,7 @@
     </set>
     where id = #{id}
   </update>
-  <update id="updateByWorkspaceNameTableNameParameterCatalogParameterCatalogTypeNameSelective" parameterType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <update id="updateByWorkspaceNameTableNameParameterCatalogParameterCatalogTypeNameSelective" parameterType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     update sdp_sql
     <set>
         <if test="id != null">
@@ -948,7 +948,7 @@
     and parameter_catalog_type = #{parameterCatalogType}
     and `name` = #{name}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sdp.biz.domain.SdpSqlWithBLOBs">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpSqlWithBLOBs">
     update sdp_sql
     <set>
 	    is_disable = #{isDisable},
@@ -982,7 +982,7 @@
     </set>
     where id = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.sdp.biz.domain.SdpSql">
+  <update id="updateByPrimaryKey" parameterType="cn.mysdp.biz.domain.SdpSql">
     update sdp_sql
     <set>
 		is_disable = #{isDisable},
