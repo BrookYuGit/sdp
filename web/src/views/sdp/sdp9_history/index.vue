@@ -205,11 +205,11 @@
     computed: {},
     created() {
       this.columns = [
-        {
-          prop: 'id',
-          label: '编号',
-          width: 100,
-        },
+        // {
+        //   prop: 'id',
+        //   label: '编号',
+        //   width: 100,
+        // },
         {
           prop: 'workspace_name',
           label: '工作区名称',

@@ -266,11 +266,11 @@
     computed: {},
     created() {
       this.columns = [
-        {
-          prop: 'id',
-          label: '编号',
-          width: 80,
-        },
+        // {
+        //   prop: 'id',
+        //   label: '编号',
+        //   width: 80,
+        // },
         {
           prop: 'workspace_name',
           label: '工作区名称',

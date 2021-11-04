@@ -278,11 +278,11 @@
     computed: {},
     created() {
       this.columns = [
-        {
-          prop: 'id',
-          label: '编号',
-          width: 100,
-        },
+        // {
+        //   prop: 'id',
+        //   label: '编号',
+        //   width: 100,
+        // },
         {
           prop: 'workspace_name',
           label: '工作区名称',
@@ -345,7 +345,7 @@
         },
         {
           prop: 'parameter_sql_value_ignore',
-          label: '字段是否在SQL中查找表达式值',
+          label: '是否不在SQL中查找表达式值',
         },
         {
           prop: 'parameter_sql_issimple',

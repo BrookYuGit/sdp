@@ -10,13 +10,13 @@
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="300px">
-      <el-form-item :label="getLabel('id')" prop="id">
+      <!-- <el-form-item :label="getLabel('id')" prop="id">
         <el-input
           v-model.trim="form.id"
           autocomplete="off"
           :disabled="true"
         ></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item :label="getLabel('name')" prop="name" :required="true">
         <el-input v-model.trim="form.name" autocomplete="off"></el-input>
       </el-form-item>
