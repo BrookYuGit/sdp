@@ -6,3 +6,4 @@ target
 *.jar
 *.lock.db
 *.log
+.DS_Store
