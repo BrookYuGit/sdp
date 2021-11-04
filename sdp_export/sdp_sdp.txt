@@ -39,55 +39,55 @@
       {
         "id": null,
         "name": "java_import_extends_request",
-        "value": "import cn.sdp.biz.dto.request.BaseRequest;",
+        "value": "import cn.mysdp.biz.dto.request.BaseRequest;",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_controller",
-        "value": "cn.sdp.biz.controller",
+        "value": "cn.mysdp.biz.controller",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_convert",
-        "value": "cn.sdp.biz.convert",
+        "value": "cn.mysdp.biz.convert",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_dao",
-        "value": "cn.sdp.biz.domain",
+        "value": "cn.mysdp.biz.domain",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_facade",
-        "value": "cn.sdp.biz.facade",
+        "value": "cn.mysdp.biz.facade",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_facade_impl",
-        "value": "cn.sdp.biz.facade",
+        "value": "cn.mysdp.biz.facade",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_mapper",
-        "value": "cn.sdp.biz.repository",
+        "value": "cn.mysdp.biz.repository",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_request",
-        "value": "cn.sdp.biz.dto.request",
+        "value": "cn.mysdp.biz.dto.request",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "package_response",
-        "value": "cn.sdp.biz.dto.response",
+        "value": "cn.mysdp.biz.dto.response",
         "workspace_name": "sdp"
       },
       {
