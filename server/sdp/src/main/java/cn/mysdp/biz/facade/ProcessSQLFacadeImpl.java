@@ -3,7 +3,6 @@ package cn.mysdp.biz.facade;
 import cn.mysdp.biz.domain.*;
 import cn.mysdp.biz.dto.request.BaseNameRequest;
 import cn.mysdp.biz.dto.request.SdpWorkspaceAddRequest;
-import cn.mysdp.biz.dto.request.SdpWorkspaceQueryRequest;
 import cn.mysdp.biz.dto.request.SdpWorkspaceUpdateRequest;
 import cn.mysdp.biz.dto.response.SdpProjectQueryResponse;
 import cn.mysdp.biz.dto.response.SdpTemplateQueryResponse;
@@ -51,7 +50,6 @@ import java.sql.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static cn.mysdp.utils.ByteWithPos.appendDestBytes;
 import static org.mybatis.generator.internal.util.StringUtility.escapeStringForJava;
 
 /**
@@ -84,9 +82,6 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
     SdpWorkspaceMapper sdpWorkspaceMapper;
 
     @Autowired
-    SdpWorkspaceFacade sdpWorkspaceFacade;
-
-    @Autowired
     SdpSqlMapper sdpSqlMapper;
 
     private static final String DB_PASSWORD_SEED = "567382";
@@ -111,6 +106,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         String dbHost = record.getDbHost();
         String dbUsername = record.getDbUsername();
         String dbPassword = record.getDbPassword();
+        if (StringUtils.isEmpty(dbPassword)) {
+            return dbPassword;
+        }
 
         String data = dbPassword;
 
@@ -277,13 +275,16 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
         Map<String, SdpWorkspaceQueryResponse> sdpWorkspaceMap = new HashMap<>();
         {
-            SdpWorkspaceQueryRequest example = new SdpWorkspaceQueryRequest();
-            if (jsonObject.containsKey("workspace_name")) {
-                example.setName(jsonObject.getString("workspace_name"));
+            SdpWorkspaceExample example = new SdpWorkspaceExample();
+            if (jsonObject.containsKey("workspace_name") && !StringUtils.isEmpty(jsonObject.getString("workspace_name"))) {
+                example.createCriteria().andNameEqualTo(jsonObject.getString("workspace_name"));
             }
-            List<SdpWorkspaceQueryResponse> list = sdpWorkspaceFacade.listSdpWorkspaceByExampleWithBLOBs(example);
-            for(SdpWorkspaceQueryResponse item: list) {
-                sdpWorkspaceMap.put(item.getName(), item);
+            //这里不能调用facade的list方法，因为facade中的list已经将密码隐藏了
+            List<SdpWorkspaceWithBLOBs> list = sdpWorkspaceMapper.selectByExampleWithBLOBs(example);
+            for(SdpWorkspaceWithBLOBs item: list) {
+                SdpWorkspaceQueryResponse newItem = new SdpWorkspaceQueryResponse();
+                BeanUtils.copyProperties(item, newItem);
+                sdpWorkspaceMap.put(item.getName(), newItem);
 
                 if ("org.h2.Driver".equals(item.getDbClassname()) && getH2Workspace() != null) {
                     if (StringUtils.isEmpty(item.getDbDatabase())) {
@@ -456,11 +457,14 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 ex.printStackTrace();
                 if (ex instanceof SQLNonTransientConnectionException) {
                     Throwable ex1 = ((SQLNonTransientConnectionException)ex).getCause();
+                    if (ex1 == null) {
+                        throw new Exception("无法连接到数据库："+workspaceName+",数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex.getMessage()+")");
+                    }
                     if (ex1.getMessage().indexOf("Access denied for user") >= 0) {
-                        throw new Exception("数据库无权限或密码错误："+workspaceName+",数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex1.getMessage()+")");
+                        throw new Exception("数据库无权限或密码错误："+workspaceName+",数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex1.getMessage()+")"+","+ex.getMessage());
                     }
 
-                    throw new Exception("无法连接到数据库："+workspaceName+",数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+":"+workspace.getDbPassword()+"("+ex1.getMessage()+")");
+                    throw new Exception("无法连接到数据库："+workspaceName+",数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex1.getMessage()+")"+","+ex.getMessage());
 
                 }
                 throw new Exception("无法连接到数据库："+workspaceName+",数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+":"+workspace.getDbPassword()+"("+ex.getMessage()+")");

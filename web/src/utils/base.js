@@ -226,61 +226,66 @@ export default {
       }
       workspaceName = self.selectRows[0].workspace_name
     }
-    self.$baseConfirm('你确定要执行吗', null, () => {
-      self.executeLoading = true
-      let db_password = getStorageValue('db_password_' + workspaceName)
-      if (!db_password) {
-        db_password = ''
-      }
-      self.execute_tsp = new Date()
-      self
-        .doExecute({
-          name: JSON.stringify({
-            workspace_name: workspaceName,
-            db_password,
-          }),
-        })
-        .then(({ data: count }) => {
-          self.executeLoading = false
-          if (count <= 0) {
+    self.$baseConfirm(
+      '你确定要生成“' + workspaceName + '”工程的所有文件吗',
+      null,
+      () => {
+        self.executeLoading = true
+        let db_password = getStorageValue('db_password_' + workspaceName)
+        if (!db_password) {
+          db_password = ''
+        }
+        self.execute_tsp = new Date()
+        self
+          .doExecute({
+            name: JSON.stringify({
+              workspace_name: workspaceName,
+              db_password,
+            }),
+          })
+          .then(({ data: count }) => {
+            self.executeLoading = false
+            if (count <= 0) {
+              self.$baseNotify(
+                '操作失败,用时' +
+                  self.$baseDiffTsp(new Date(), self.execute_tsp),
+                '执行',
+                'error',
+                undefined,
+                24 * 60 * 60 * 1000
+              )
+              return
+            }
             self.$baseNotify(
-              '操作失败,用时' + self.$baseDiffTsp(new Date(), self.execute_tsp),
+              '操作成功,用时' + self.$baseDiffTsp(new Date(), self.execute_tsp),
+              '执行',
+              'success',
+              undefined,
+              24 * 60 * 60 * 1000
+            )
+          })
+          .catch((err) => {
+            console.log('err', err)
+            if ((err + '').indexOf('vue-admin-beautiful请求异常拦截:') >= 0) {
+              err = JSON.parse(
+                err.substring('vue-admin-beautiful请求异常拦截:'.length)
+              )
+              err.message = err.msg
+            }
+            self.$baseNotify(
+              '操作失败,用时' +
+                self.$baseDiffTsp(new Date(), self.execute_tsp) +
+                ',错误：' +
+                err.message,
               '执行',
               'error',
               undefined,
               24 * 60 * 60 * 1000
             )
-            return
-          }
-          self.$baseNotify(
-            '操作成功,用时' + self.$baseDiffTsp(new Date(), self.execute_tsp),
-            '执行',
-            'success',
-            undefined,
-            24 * 60 * 60 * 1000
-          )
-        })
-        .catch((err) => {
-          console.log('err', err)
-          if ((err + '').indexOf('vue-admin-beautiful请求异常拦截:') >= 0) {
-            err = JSON.parse(
-              err.substring('vue-admin-beautiful请求异常拦截:'.length)
-            )
-            err.message = err.msg
-          }
-          self.$baseNotify(
-            '操作失败,用时' +
-              self.$baseDiffTsp(new Date(), self.execute_tsp) +
-              ',错误：' +
-              err.message,
-            '执行',
-            'error',
-            undefined,
-            24 * 60 * 60 * 1000
-          )
-          self.executeLoading = false
-        })
-    })
+            self.executeLoading = false
+          })
+      }
+    )
   },
   onRowClick(self, a) {
     if (self.selectRows.length > 1) {

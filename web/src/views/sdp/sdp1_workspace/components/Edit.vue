@@ -145,7 +145,7 @@
               this.$baseMessage('无改动', 'error')
               return
             }
-            if (this.form_ori.db_port && !form.db_port) {
+            if (this.form_ori.db_port && !this.form.db_port) {
               form.db_port = 0
             }
             this.loading = true

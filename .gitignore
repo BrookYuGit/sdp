@@ -7,3 +7,4 @@ target
 *.lock.db
 *.log
 .DS_Store
+*.trace.db
