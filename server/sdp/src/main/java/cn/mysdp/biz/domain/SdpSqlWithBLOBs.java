@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpSqlWithBLOBs extends SdpSql implements Serializable {
-    private static final long serialVersionUID = 20529531462889727L;
+    private static final long serialVersionUID = 90001741462889727L;
 
     private String parameterSql;
 

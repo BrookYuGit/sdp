@@ -1,9 +1,11 @@
 package cn.mysdp.biz.dto.request;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Map;
 
 
 import lombok.Getter;
@@ -22,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpWorkspaceGetTableListRequest extends BaseRequest {
-    private static final long serialVersionUID = 8716173763906109L;
+    private static final long serialVersionUID = 21474270763906109L;
 
     public SdpWorkspaceGetTableListRequest() {
     }

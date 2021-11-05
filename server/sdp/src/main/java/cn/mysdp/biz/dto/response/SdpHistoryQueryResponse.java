@@ -1,9 +1,12 @@
 package cn.mysdp.biz.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import java.util.Date;
 
@@ -23,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpHistoryQueryResponse implements Serializable {
-    private static final long serialVersionUID = 130326931838426188L;
+    private static final long serialVersionUID = 209630341838426188L;
 
     @JsonProperty("id")
     @JSONField(name = "id")

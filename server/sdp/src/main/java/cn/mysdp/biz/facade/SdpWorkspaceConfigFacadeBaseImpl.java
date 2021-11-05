@@ -8,6 +8,7 @@ import cn.mysdp.biz.dto.response.*;
 import cn.mysdp.biz.repository.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class SdpWorkspaceConfigFacadeBaseImpl extends BaseFacadeImpl implements 
 
     public static Map initUniqueFieldMap() {
         HashMap map = new HashMap<>();
-        map.put("unique_workspace_config_index_a", "workspace_name-name");
+        map.put("unique_workspace_config_index_3", "workspace_name-name");
         return map;
     }
 

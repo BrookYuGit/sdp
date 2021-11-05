@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpHistoryWithBLOBs extends SdpHistory implements Serializable {
-    private static final long serialVersionUID = 20529531582510971L;
+    private static final long serialVersionUID = 90001741582510971L;
 
     private String content;
 

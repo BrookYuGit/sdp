@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpProjectWithBLOBs extends SdpProject implements Serializable {
-    private static final long serialVersionUID = 2052953281193834L;
+    private static final long serialVersionUID = 9000174281193834L;
 
     private String tables;
 

@@ -1,9 +1,14 @@
 package cn.mysdp.biz.dto.request;
 
+import cn.mysdp.biz.dto.request.BaseRequest;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Map;
+
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpHistoryBatchUpdateRequest extends BaseRequest {
-    private static final long serialVersionUID = 8716173111950655L;
+    private static final long serialVersionUID = 21474270111950655L;
 
     @JsonProperty("id")
     @JSONField(name = "id")

@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpWorkspaceForGetTableList implements Serializable {
-    private static final long serialVersionUID = 2052953482762793L;
+    private static final long serialVersionUID = 9000174482762793L;
 
     private String workspaceName;
 

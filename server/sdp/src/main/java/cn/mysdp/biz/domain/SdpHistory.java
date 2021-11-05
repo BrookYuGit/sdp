@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpHistory implements Serializable {
-    private static final long serialVersionUID = 2052953730277749L;
+    private static final long serialVersionUID = 9000174730277749L;
 
     private Integer id;
 

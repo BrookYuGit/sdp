@@ -8,6 +8,7 @@ import cn.mysdp.biz.dto.response.*;
 import cn.mysdp.biz.repository.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class SdpSqlFacadeBaseImpl extends BaseFacadeImpl implements SdpSqlFacade
 
     public static Map initUniqueFieldMap() {
         HashMap map = new HashMap<>();
-        map.put("unique_sql_index_9", "workspace_name-table_name-parameter_catalog-parameter_catalog_type-name");
+        map.put("unique_sql_index_7", "workspace_name-table_name-parameter_catalog-parameter_catalog_type-name");
         return map;
     }
 

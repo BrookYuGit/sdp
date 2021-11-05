@@ -33,6 +33,8 @@ public class Context extends PropertyHolder {
 
     private String id;
 
+    private Connection connection;
+
     private JDBCConnectionConfiguration jdbcConnectionConfiguration;
 
     private ConnectionFactoryConfiguration connectionFactoryConfiguration;
@@ -311,7 +313,15 @@ public class Context extends PropertyHolder {
         return steps;
     }
 
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     private Connection getConnection() throws SQLException {
+        if (connection != null) {
+            return this.connection;
+        }
+
         ConnectionFactory connectionFactory;
         if (jdbcConnectionConfiguration != null) {
             connectionFactory = new JDBCConnectionFactory(jdbcConnectionConfiguration);
@@ -323,6 +333,9 @@ public class Context extends PropertyHolder {
     }
 
     private void closeConnection(Connection connection) {
+        if (this.connection != null) {
+            return;
+        }
         if (connection != null) {
             try {
                 connection.close();

@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpTemplateWithBLOBs extends SdpTemplate implements Serializable {
-    private static final long serialVersionUID = 2052953133579191L;
+    private static final long serialVersionUID = 9000174133579191L;
 
     private String fileTemplate;
 

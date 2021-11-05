@@ -1,9 +1,13 @@
 package cn.mysdp.biz.dto.request;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Map;
+
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpHistoryDeleteRequest extends BaseRequest {
-    private static final long serialVersionUID = 87161731889987823L;
+    private static final long serialVersionUID = 214742701889987823L;
 
     @JsonProperty("id")
     @JSONField(name = "id")

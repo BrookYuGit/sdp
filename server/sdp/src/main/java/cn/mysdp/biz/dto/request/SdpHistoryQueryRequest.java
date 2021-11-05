@@ -4,6 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+import java.util.Map;
+
 import java.util.Date;
 
 import lombok.Getter;
@@ -22,7 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpHistoryQueryRequest extends BaseRequest {
-    private static final long serialVersionUID = 87161731307937604L;
+    private static final long serialVersionUID = 214742701307937604L;
 
     @JsonProperty("id")
     @JSONField(name = "id")

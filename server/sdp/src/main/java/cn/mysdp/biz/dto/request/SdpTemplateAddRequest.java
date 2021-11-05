@@ -1,7 +1,11 @@
 package cn.mysdp.biz.dto.request;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+import java.util.Map;
 
 
 import lombok.Getter;
@@ -20,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpTemplateAddRequest extends BaseRequest {
-    private static final long serialVersionUID = 87161731193605447L;
+    private static final long serialVersionUID = 214742701193605447L;
 
     @JsonProperty("workspace_name")
     @JSONField(name = "workspace_name")

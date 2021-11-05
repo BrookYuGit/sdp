@@ -238,22 +238,6 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
     }
 
-    private SdpWorkspaceWithBLOBs getH2Workspace() throws Exception {
-        SdpWorkspaceWithBLOBs h2Workspace = null;
-        {
-            Connection connection = dataSource.getConnection();
-            if (connection != null) {
-                String url = connection.getMetaData().getURL();
-                if (url.indexOf("jdbc:h2:") == 0) {
-                    h2Workspace = new SdpWorkspaceWithBLOBs();
-                    h2Workspace.setDbUsername(connection.getMetaData().getUserName());
-                    h2Workspace.setDbDatabase(url.split(";")[0].substring("jdbc:h2:".length()));
-                }
-            }
-        }
-        return h2Workspace;
-    }
-
     @Override
     public Integer execute(BaseNameRequest request, Object _processInstance, Method _processBodyToken, Method _processToken) throws Exception {
         FileUtil.clear();
@@ -285,16 +269,6 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 SdpWorkspaceQueryResponse newItem = new SdpWorkspaceQueryResponse();
                 BeanUtils.copyProperties(item, newItem);
                 sdpWorkspaceMap.put(item.getName(), newItem);
-
-                if ("org.h2.Driver".equals(item.getDbClassname()) && getH2Workspace() != null) {
-                    if (StringUtils.isEmpty(item.getDbDatabase())) {
-                        item.setDbDatabase(getH2Workspace().getDbDatabase());
-                        if (StringUtils.isEmpty(item.getDbUsername())) {
-                            item.setDbUsername(getH2Workspace().getDbUsername());
-                        }
-                    }
-                }
-
             }
         }
 
@@ -446,13 +420,18 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
             javaTypeResolverMap.put(workspaceName, javaTypeResolver);
 
-            ConnectionFactory connectionFactory;
-            connectionFactory = new JDBCConnectionFactory(jdbcConnectionConfiguration);
-
             Connection connection = null;
 
             try {
-                connection = connectionFactory.getConnection();
+                if ("org.h2.Driver".equals(workspace.getDbClassname()) && StringUtils.isEmpty(workspace.getDbDatabase())) {
+                    connection = dataSource.getConnection();
+                    context.setConnection(connection);
+                } else {
+                    ConnectionFactory connectionFactory;
+                    connectionFactory = new JDBCConnectionFactory(jdbcConnectionConfiguration);
+
+                    connection = connectionFactory.getConnection();
+                }
             }catch(Exception ex) {
                 ex.printStackTrace();
                 if (ex instanceof SQLNonTransientConnectionException) {

@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SdpWorkspaceConfig implements Serializable {
-    private static final long serialVersionUID = 20529531210493464L;
+    private static final long serialVersionUID = 90001741210493464L;
 
     private Integer id;
 
