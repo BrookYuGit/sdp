@@ -12,7 +12,7 @@ The tempalate is very simple: without IF, without for. Only support two style:bl
 The block is just like {*xxx}, and the element just like {yyy}.
 Block is asa 'FOR' in other source code generate tool.
 
-# A sample for automatic convert real select to Mybatis
+# A sample for automatic convert real SQL to Mybatis
 ```sql
 select t.* from sdp_workspace t
 where 88=88
