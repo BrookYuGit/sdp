@@ -76,4 +76,8 @@ public class SdpWorkspaceWebBaseController extends BaseController {
         return facade.cloneWorkspace(request);
     }
 
+    public String testConnect(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, SdpWorkspaceUpdateRequest request) throws Exception {
+        return facade.testConnect(request);
+    }
+
 }

@@ -80,6 +80,7 @@
         <el-input
           v-model.trim="form.parameter_catalog_type"
           autocomplete="off"
+          @change="nameChanged"
         ></el-input>
       </el-form-item>
       <el-form-item
@@ -340,6 +341,7 @@
         form: {},
         form_ori: {},
         rules: {},
+        name_changed: undefined,
         dataChangeCount: 1,
         tableLoading: false,
         tableList: [],
@@ -355,6 +357,23 @@
     },
     created() {},
     methods: {
+      nameChanged(v) {
+        let self = this
+        if (
+          v &&
+          this.title == '编辑' &&
+          v != this.form_ori.parameter_catalog_type
+        ) {
+          self.$baseConfirm(
+            '您修改了名称，是否需要转为为添加，而不是直接编辑？',
+            null,
+            () => {
+              self.name_changed = false
+              self.asNew()
+            }
+          )
+        }
+      },
       asNew() {
         delete this.form.id
         this.form_ori = Object.assign({}, {})
@@ -464,6 +483,7 @@
           this.title = '编辑'
           this.form = Object.assign({}, row)
           this.form_ori = Object.assign({}, row)
+          this.name_changed = undefined
         }
         this.onProjectChange(null, () => {
           this.dialogFormVisible = true
@@ -473,7 +493,24 @@
         this.$refs['form'].resetFields()
         this.dialogFormVisible = false
       },
+      doSave(func, form) {
+        this.loading = true
+        func(form)
+          .catch((err) => {
+            this.loading = false
+            this.$emit('fetch-data')
+          })
+          .then(({ msg }) => {
+            this.loading = false
+            this.$baseMessage(msg, 'success')
+            this.$emit('fetch-data')
+            if (this.title != '添加') {
+              this.close()
+            }
+          })
+      },
       save() {
+        let self = this
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             let form = getForm(this.form, this.form_ori)
@@ -481,24 +518,29 @@
               this.$baseMessage('无改动', 'error')
               return
             }
-            this.loading = true
             let func = this.doEdit
             if (this.title == '添加') {
               func = this.doAdd
+            } else {
+              if (
+                form.parameter_catalog_type &&
+                this.name_changed === undefined
+              ) {
+                self.$baseConfirm(
+                  '您修改了名称，是否需要转为为添加，而不是直接编辑？',
+                  null,
+                  () => {
+                    self.name_changed = false
+                    self.asNew()
+                  },
+                  () => {
+                    self.doSave(func, form)
+                  }
+                )
+                return false
+              }
             }
-            func(form)
-              .catch((err) => {
-                this.loading = false
-                this.$emit('fetch-data')
-              })
-              .then(({ msg }) => {
-                this.loading = false
-                this.$baseMessage(msg, 'success')
-                this.$emit('fetch-data')
-                if (this.title != '添加') {
-                  this.close()
-                }
-              })
+            self.doSave(func, form)
           } else {
             return false
           }

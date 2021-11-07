@@ -369,4 +369,9 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
         throw createFailException("not implement");
     }
 
+    @Override
+    public String testConnect(SdpWorkspaceUpdateRequest request) throws Exception {
+        throw createFailException("not implement");
+    }
+
 }

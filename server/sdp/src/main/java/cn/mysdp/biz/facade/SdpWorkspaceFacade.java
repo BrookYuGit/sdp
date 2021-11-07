@@ -55,4 +55,6 @@ public interface SdpWorkspaceFacade {
 
     Integer cloneWorkspace(BaseNameIdRequest request) throws Exception;
 
+    String testConnect(SdpWorkspaceUpdateRequest request) throws Exception;
+
 }

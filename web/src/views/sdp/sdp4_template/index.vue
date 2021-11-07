@@ -249,7 +249,7 @@
         selectRows: '',
         queryForm: {
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 100,
           workspace_name: null,
           project_name_like: null,
           name_like: null,
