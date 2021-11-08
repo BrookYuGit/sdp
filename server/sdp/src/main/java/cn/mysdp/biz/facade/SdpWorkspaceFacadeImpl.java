@@ -113,4 +113,9 @@ public class SdpWorkspaceFacadeImpl extends SdpWorkspaceFacadeCustomImpl impleme
         return super.cloneWorkspace(request);
     }
 
+    @Override
+    public String testConnect(SdpWorkspaceUpdateRequest request) throws Exception {
+        return super.testConnect(request);
+    }
+
 }

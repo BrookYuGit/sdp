@@ -193,7 +193,7 @@
         selectRows: [],
         queryForm: {
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 100,
         },
 
         // height: 0,

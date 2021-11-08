@@ -61,6 +61,7 @@
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
+      <el-button type="primary" @click="test">测试连接</el-button>
       <el-button v-if="title == '编辑'" type="primary" @click="asNew">
         转换为添加
       </el-button>
@@ -95,6 +96,7 @@
       return {
         doAdd: createRequest(this.module, 'add'),
         doEdit: createRequest(this.module, 'update'),
+        doTest: createRequest(this.module, 'test_connect'),
         form: {},
         form_ori: {},
         dbClassnameList: [
@@ -165,6 +167,39 @@
                 if (this.title != '添加') {
                   this.close()
                 }
+              })
+          } else {
+            return false
+          }
+        })
+      },
+      test() {
+        this.$refs['form'].validate(async (valid) => {
+          if (valid) {
+            let form = getForm(this.form, this.form_ori)
+            if (!form) {
+              form = {}
+            }
+
+            if (this.form_ori.db_port && !this.form.db_port) {
+              form.db_port = 0
+            }
+            this.loading = true
+            let func = this.doTest
+            form.name = 'edit'
+            if (this.title == '添加') {
+              form.name = 'add'
+              form.id = 0
+            } else {
+              form.id = this.form_ori.id
+            }
+            func(form)
+              .catch((err) => {
+                this.loading = false
+              })
+              .then(({ msg }) => {
+                this.loading = false
+                this.$baseMessage(msg, 'success')
               })
           } else {
             return false

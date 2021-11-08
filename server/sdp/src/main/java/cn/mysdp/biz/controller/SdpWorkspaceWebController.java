@@ -101,4 +101,11 @@ public class SdpWorkspaceWebController extends SdpWorkspaceWebCustomController {
         return super.cloneWorkspace(httpServletRequest, httpServletResponse, request);
     }
 
+    @ResponseBody
+    @PostMapping("/test_connect")
+    public String testConnect(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody SdpWorkspaceUpdateRequest request) throws Exception {
+        fixRequest(request);
+        return super.testConnect(httpServletRequest, httpServletResponse, request);
+    }
+
 }

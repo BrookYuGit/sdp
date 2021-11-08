@@ -66,7 +66,6 @@ import static org.mybatis.generator.internal.util.StringUtility.escapeStringForJ
 public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFacade {
 
     @Autowired
-
     DataSource dataSource;
 
     @Autowired
@@ -243,11 +242,11 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         FileUtil.clear();
 
         try {
-            String lineSeparator = System.lineSeparator();
-            lineSeparator = "\r\n";
-            Field lineSeparatorField = System.class.getDeclaredField("lineSeparator");
-            lineSeparatorField.setAccessible(true);
-            lineSeparatorField.set(System.class, lineSeparator);
+//            String lineSeparator = System.lineSeparator();
+//            lineSeparator = "\r\n";
+//            Field lineSeparatorField = System.class.getDeclaredField("lineSeparator");
+//            lineSeparatorField.setAccessible(true);
+//            lineSeparatorField.set(System.class, lineSeparator);
 
         }catch (Exception ex) {
             ex.printStackTrace();

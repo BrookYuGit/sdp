@@ -44,7 +44,6 @@ import static org.springframework.jdbc.support.JdbcUtils.closeResultSet;
 public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
 
     @Autowired
-
     DataSource dataSource;
 
     @Autowired
@@ -516,5 +515,98 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
 
 
         return responseList;
+    }
+
+    @Override
+    public String testConnect(SdpWorkspaceUpdateRequest request) throws Exception {
+        SdpWorkspaceQueryResponse workspace = new SdpWorkspaceQueryResponse();
+        if (request.getId() != null && !Integer.valueOf(0).equals(request.getId())) {
+            SdpWorkspaceWithBLOBs oriWorkspace = sdpWorkspaceMapper.selectByPrimaryKeyWithBLOBs(request.getId());
+            if (oriWorkspace == null) {
+                throw new Exception("Not found workspace:"+request.getId());
+            }
+            BeanUtils.copyProperties(oriWorkspace, workspace);
+            if (!StringUtils.isEmpty(oriWorkspace.getDbPassword())) {
+                workspace.setDbPassword(processSQLFacade.decryptDbPassword(workspace));
+            }
+            if (request.getDbClassname() != null) {
+                workspace.setDbClassname(request.getDbClassname());
+            }
+            if (request.getDbHost() != null) {
+                workspace.setDbHost(request.getDbHost());
+            }
+            if (request.getDbPort() != null) {
+                workspace.setDbPort(request.getDbPort());
+            }
+            if (request.getDbDatabase() != null) {
+                workspace.setDbDatabase(request.getDbDatabase());
+            }
+            if (request.getDbUsername() != null) {
+                workspace.setDbUsername(request.getDbUsername());
+            }
+            if (request.getDbPassword() != null) {
+                workspace.setDbPassword(request.getDbPassword());
+            }
+        } else {
+            BeanUtils.copyProperties(request, workspace);
+        }
+        if (Integer.valueOf(0).equals(request.getDbPort())) {
+            workspace.setDbPort(null);
+        }
+
+        String url;
+        if ("com.mysql.jdbc.Driver".equals(workspace.getDbClassname()) || "com.mysql.cj.jdbc.Driver".equals(workspace.getDbClassname())) {
+            url = "jdbc:mysql://"+workspace.getDbHost()+":"+workspace.getDbPort()+"/"+workspace.getDbDatabase()+"?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&tcpKeepAlive=true&autoReconnect=true&useSSL=false";
+        } else if ("org.h2.Driver".equals(workspace.getDbClassname())) {
+            url = "jdbc:h2:"+workspace.getDbDatabase()+";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
+        } else {
+            throw new Exception("不支持的数据库驱动类："+workspace.getDbClassname()+","+JSON.toJSONString(workspace));
+        }
+        JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
+        jdbcConnectionConfiguration.setDriverClass(workspace.getDbClassname());
+        jdbcConnectionConfiguration.setConnectionURL(url);
+        jdbcConnectionConfiguration.setUserId(workspace.getDbUsername());
+        String dbPassword = workspace.getDbPassword();
+        jdbcConnectionConfiguration.setPassword(dbPassword);
+
+        Context context = new Context(null);
+        context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
+        context.addProperty(PropertyRegistry.CONTEXT_BEGINNING_DELIMITER, "`");
+        context.addProperty(PropertyRegistry.CONTEXT_ENDING_DELIMITER, "`");
+        context.addProperty(PropertyRegistry.CONTEXT_AUTO_DELIMIT_KEYWORDS, "true");
+
+        JavaTypeResolver javaTypeResolver = ObjectFactory
+                .createJavaTypeResolver(context, new ArrayList<>());
+
+        Connection connection = null;
+
+        try {
+            if ("org.h2.Driver".equals(workspace.getDbClassname()) && StringUtils.isEmpty(workspace.getDbDatabase())) {
+                connection = dataSource.getConnection();
+                context.setConnection(connection);
+            } else {
+                ConnectionFactory connectionFactory;
+                connectionFactory = new JDBCConnectionFactory(jdbcConnectionConfiguration);
+
+                connection = connectionFactory.getConnection();
+                connection.close();
+            }
+        }catch(Exception ex) {
+            ex.printStackTrace();
+            if (ex instanceof SQLNonTransientConnectionException) {
+                Throwable ex1 = ((SQLNonTransientConnectionException)ex).getCause();
+                if (ex1 == null) {
+                    throw new Exception("无法连接到数据库：数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex.getMessage()+")");
+                }
+                if (ex1.getMessage().indexOf("Access denied for user") >= 0) {
+                    throw new Exception("数据库无权限或密码错误：数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex1.getMessage()+")"+","+ex.getMessage());
+                }
+
+                throw new Exception("无法连接到数据库：数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+"("+ex1.getMessage()+")"+","+ex.getMessage());
+
+            }
+            throw new Exception("无法连接到数据库：数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+":"+workspace.getDbPassword()+"("+ex.getMessage()+")");
+        }
+        return "";
     }
 }
