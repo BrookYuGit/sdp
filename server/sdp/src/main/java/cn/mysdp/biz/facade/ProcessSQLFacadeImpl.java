@@ -835,6 +835,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     String firstOriginalTableName = "";
                     String firstStarTableName = "";
                     Map<String, String> starTableMap = new HashMap<>();
+                    List<String> starTableKeyList = new ArrayList<>();
 
                     String parameterSql = column.getParameterSql();
                     column.setParameterSimpleSql(new String(parameterSql));
@@ -946,6 +947,15 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 }
                             }
                         }
+                        for(String key: starTableMap.keySet()) {
+                            starTableKeyList.add(key);
+                        }
+                        Collections.sort(starTableKeyList,new Comparator<String>() {
+                            @Override
+                            public int compare(String o1, String o2) {
+                                return o2.length() - o1.length();
+                            }
+                        });
 
                         mysqlStatement.close();
                         sql = "";
@@ -958,7 +968,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                             //获取除xxx.*外其他的字段名称，用于处理可能存在的字段名重复问题
                             String discardStarTableSQL = column.getParameterSql();
                             int starTableIndex = 0;
-                            for (String startTableName : starTableMap.keySet()) {
+                            for (String startTableName : starTableKeyList) {
                                 discardStarTableSQL = discardStarTableSQL.replace(startTableName + ".*", "1 as discard_star_table_" + (++starTableIndex));
                                 discardStarTableSQL = discardStarTableSQL.replace("`"+startTableName + "`.*", "1 as discard_star_table_" + (++starTableIndex));
                             }
@@ -1031,7 +1041,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 }
                             }
 
-                            for (String startTableName : starTableMap.keySet()) {
+                            for (String startTableName : starTableKeyList) {
                                 boolean needAddPrefix = false;
                                 String originalTableName = starTableMap.get(startTableName);
                                 if (!firstStarTableName.equals(startTableName)) {
