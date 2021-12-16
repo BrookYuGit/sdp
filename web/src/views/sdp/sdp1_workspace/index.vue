@@ -557,7 +557,7 @@
           .then((data) => {
             datas['sdp_template'] = data.data.map((item) => {
               item = { ...item, id: null }
-              let itemNames = ['file_template', 'extra_info', 'remark']
+              let itemNames = ['file_template', 'remark']
               itemNames.forEach((itemName) => {
                 let lines = item[itemName]
                 let destLines = []
@@ -568,6 +568,15 @@
                     destLines.push(line)
                   }
                   item[itemName] = destLines
+                }
+              })
+              itemNames = ['extra_info']
+              itemNames.forEach((itemName) => {
+                let lines = item[itemName]
+                if (lines) {
+                  try {
+                    item[itemName] = JSON.parse(lines)
+                  } catch (ex) {}
                 }
               })
               return item
@@ -599,6 +608,15 @@
                     destLines.push(line)
                   }
                   item[itemName] = destLines
+                }
+              })
+              itemNames = ['extra_info']
+              itemNames.forEach((itemName) => {
+                let lines = item[itemName]
+                if (lines) {
+                  try {
+                    item[itemName] = JSON.parse(lines)
+                  } catch (ex) {}
                 }
               })
               return item

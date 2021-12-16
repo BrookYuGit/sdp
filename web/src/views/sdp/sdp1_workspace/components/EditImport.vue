@@ -180,7 +180,7 @@
                       }
                     }
                     let itemNamesObject = {
-                      addTemplate: ['file_template', 'extra_info', 'remark'],
+                      addTemplate: ['file_template', 'remark'],
                       addSql: ['parameter_sql', 'java_imports', 'remarks'],
                     }
                     if (method in itemNamesObject) {
@@ -194,6 +194,21 @@
                               destLines += line + '\n'
                             })
                             item[itemName] = destLines
+                          }
+                        } catch (ex) {}
+                      })
+                    }
+                    itemNamesObject = {
+                      addTemplate: ['extra_info'],
+                      addSql: ['extra_info'],
+                    }
+                    if (method in itemNamesObject) {
+                      let itemNames = itemNamesObject[method]
+                      itemNames.forEach((itemName) => {
+                        try {
+                          let lines = item[itemName]
+                          if (lines) {
+                            item[itemName] = JSON.stringify(lines, null, 2)
                           }
                         } catch (ex) {}
                       })

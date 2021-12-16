@@ -11,6 +11,7 @@ import cn.mysdp.biz.repository.*;
 import cn.mysdp.utils.ByteWithPos;
 import cn.mysdp.utils.DynProcessTokenResult;
 import cn.mysdp.utils.FileUtil;
+import cn.mysdp.utils.SplitUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mysql.cj.MysqlType;
@@ -86,12 +87,12 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
     private static final String DB_PASSWORD_SEED = "567382";
 
     public static List<String> splitLines(String str) {
-        String[] lines = str.split("\n\r");
+        String[] lines = SplitUtil.split(str, "\n\r");
         List<String> destLines = new ArrayList<>();
         for(String line: lines) {
-            String[] subLinesByLn = line.split("\n");
+            String[] subLinesByLn = SplitUtil.split(line,"\n");
             for(String subLineByLn: subLinesByLn) {
-                String[] subLinesByLr = subLineByLn.split("\r");
+                String[] subLinesByLr = SplitUtil.split(subLineByLn, "\r");
                 for(String subLineByLr: subLinesByLr) {
                     destLines.add(subLineByLr);
                 }
@@ -501,6 +502,8 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 String parameterMode = item.getParameterMode();
                 String parameterSql = item.getParameterSql();
                 String parameterSqlValue = item.getParameterSqlValue();
+                String parameterExtraInfo = item.getExtraInfo();
+
                 Integer parameterSqlValueIngore = 0;
                 if (Integer.valueOf(1).equals(item.getParameterSqlValueIgnore())) {
                     parameterSqlValueIngore = 1;
@@ -637,6 +640,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 introspectedColumn.setParameterName(parameterName);
                 introspectedColumn.setParameterSql(parameterSql);
                 introspectedColumn.setParameterSqlValue(parameterSqlValue);
+                introspectedColumn.setParameterExtraInfo(parameterExtraInfo);
                 introspectedColumn.setParameterJavaBody(parameterJavaBody);
 
                 introspectedColumn.setParameterSqlIsSimple(parameterSqlIsSimple);
@@ -999,9 +1003,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 String fieldName = (String) methodMap.get("getName").invoke(field);
                                 String columnName = fieldName;
                                 String columnComment = null;
-                                if (fieldName.split(";").length > 1) {
-                                    columnName = fieldName.split(";")[0];
-                                    columnComment = fieldName.split(";")[1];
+                                if (SplitUtil.split(fieldName, ";").length > 1) {
+                                    columnName = SplitUtil.split(fieldName, ";")[0];
+                                    columnComment = SplitUtil.split(fieldName, ";")[1];
                                 }
                                 if (JavaReservedWords.containsWord(columnName)) {
                                     extraErrorInfo = "非法字段名（Java保留字）:" + column.getParameterCatalog() + "." + column.getParameterCatalogType() + columnName;
@@ -1510,6 +1514,8 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         String content = getCompilationUnits(introspectedTable, item.getPackageName(), dynTemplate, "", null, _processInstance, _processBodyToken, _processToken);
                         content = content.replaceAll(System.lineSeparator(), "");
                         dynTemplate.setPackageName(content);
+                    } else {
+                        dynTemplate.setPackageName("");
                     }
 
                     dynTemplate.setExtraInfoMap(new HashMap<>());
@@ -1518,6 +1524,14 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         for(String jsonKey: extraInfo.keySet()) {
                             dynTemplate.getExtraInfoMap().put(jsonKey, extraInfo.get(jsonKey));
                         }
+                    }
+
+                    if (!StringUtils.isEmpty(item.getProject())) {
+                        String content = getCompilationUnits(introspectedTable, item.getProject(), dynTemplate, "", null, _processInstance, _processBodyToken, _processToken);
+                        content = content.replaceAll(System.lineSeparator(), "");
+                        dynTemplate.setProject(content);
+                    } else {
+                        item.setProject("");
                     }
 
                     if (dynTemplate.getExtraInfo() != null) {
@@ -1628,13 +1642,15 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
     }
 
-    public boolean isToken(String token, String v) {
-        token = token.trim();
+    public boolean isToken(String tokenIn, String v) {
+        String token = tokenIn.trim();
+        String[] tokens;
         if (!token.startsWith("{")) {
             return false;
         }
-        token = token.split("\\{")[1];
-        token = token.split("&")[0].split("}")[0];
+        token = SplitUtil.split(token, "\\{")[1];
+        token = SplitUtil.split(token, "&")[0];
+        token = SplitUtil.split(token, "}")[0];
         return token.equals(v);
     }
 
@@ -1644,7 +1660,8 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             return false;
         }
         token = token.substring(2);
-        token = token.split("&")[0].split("}")[0];
+        token = SplitUtil.split(token, "&")[0];
+        token = SplitUtil.split(token, "}")[0];
         return token.equals(v);
     }
 
@@ -2172,6 +2189,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
         List<IntrospectedColumn> introspectedColumns1 = new ArrayList<>();
 
+        Set<String> hasIsSet = new HashSet<>();
         for(IntrospectedColumn column: introspectedColumns) {
             if (doneSet.contains(column.getActualColumnName())) {
                 continue;
@@ -2190,7 +2208,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
             }
             if ("1".equals(properties.get("is_simple"))) {
-                if (!Integer.valueOf(1).equals(column.getParameterSqlIsSimple())) {
+                if (Integer.valueOf(1).equals(column.getParameterSqlIsSimple())) {
+                    hasIsSet.add("is_simple");
+                } else {
                     continue;
                 }
             }
@@ -2200,7 +2220,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
             }
             if ("1".equals(properties.get("is_interface"))) {
-                if (!Integer.valueOf(1).equals(column.getSqlIsInterface())) {
+                if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
+                    hasIsSet.add("is_interface");
+                } else {
                     continue;
                 }
             }
@@ -2211,7 +2233,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             }
 
             if ("1".equals(properties.get("sql_is_interface"))) {
-                if (!Integer.valueOf(1).equals(column.getSqlIsInterface())) {
+                if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
+                    hasIsSet.add("is_sql_interface");
+                } else {
                     continue;
                 }
             }
@@ -2222,34 +2246,81 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             }
 
             if ("1".equals(properties.get("is_string"))) {
-                if ("String".equals(column.getFullyQualifiedJavaType().getShortName())) {
-
-                } else if (column.isStringColumn()) {
-
+                if ("String".equals(column.getFullyQualifiedJavaType().getShortName())
+                        || column.isStringColumn()
+                ) {
+                    hasIsSet.add("is_string");
                 } else {
                     continue;
                 }
             }
-            if ("1".equals(properties.get("is_blob")) && !column.isBLOBColumn()) {
-                continue;
+            if ("1".equals(properties.get("is_date"))) {
+                if ("Date".equals(column.getFullyQualifiedJavaType().getShortName())
+                        || column.isJDBCDateColumn()
+                ) {
+                    hasIsSet.add("is_date");
+                } else {
+                    continue;
+                }
+            }
+            if (!StringUtils.isEmpty(column.getParameterExtraInfo())) {
+                try {
+                    JSONObject extraInfo = JSON.parseObject(column.getParameterExtraInfo());
+                    boolean needIgnore = false;
+                    for(String p : extraInfo.keySet()) {
+                        if ("1".equals(extraInfo.get(p) + "") && p.startsWith("is_")) {
+                            hasIsSet.add(p);
+                        }
+                        if (StringUtils.isEmpty(properties.get(p))) {
+                            continue;
+                        }
+                        if (!properties.get(p).equals(extraInfo.get(p) + "")) {
+                            needIgnore = true;
+                            break;
+                        }
+                    }
+                    if (needIgnore) {
+                        continue;
+                    }
+                }catch(Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("invalid extra info:"+column.getParameterExtraInfo());
+                }
+            }
+            if ("1".equals(properties.get("is_blob"))) {
+                if (column.isBLOBColumn()) {
+                    hasIsSet.add("is_blob");
+                } else {
+                    continue;
+                }
             }
             if ("0".equals(properties.get("is_blob")) && column.isBLOBColumn()) {
                 continue;
             }
-            if ("1".equals(properties.get("is_primary_key")) && !introspectedTable.isPrimaryKey(column.getActualColumnName())) {
-                continue;
+            if ("1".equals(properties.get("is_primary_key"))) {
+                if(introspectedTable.isPrimaryKey(column.getActualColumnName())) {
+                    hasIsSet.add("is_primary_key");
+                } else {
+                    continue;
+                }
             }
             if ("0".equals(properties.get("is_primary_key")) && introspectedTable.isPrimaryKey(column.getActualColumnName())) {
                 continue;
             }
-            if ("1".equals(properties.get("is_auto_increment")) && !column.isAutoIncrement()) {
-                continue;
+            if ("1".equals(properties.get("is_auto_increment"))) {
+                if(column.isAutoIncrement()){
+                    hasIsSet.add("is_auto_increment");
+                } else{
+                    continue;
+                }
             }
             if ("0".equals(properties.get("is_auto_increment")) && column.isAutoIncrement()) {
                 continue;
             }
             if ("1".equals(properties.get("is_import_excel"))) {
-                if (!Integer.valueOf(1).equals(column.getParameterIsImportExcel())) {
+                if (Integer.valueOf(1).equals(column.getParameterIsImportExcel())) {
+                    hasIsSet.add("is_import_excel");
+                } else {
                     continue;
                 }
             }
@@ -2258,6 +2329,55 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     continue;
                 }
             }
+
+            if ("0".equals(properties.get("param_is_nullable"))) {
+                if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
+                    continue;
+                }
+                IntrospectedColumn parameterColumn = sqlParamNameMap.get(column.getActualColumnName());
+                if (Integer.valueOf(1).equals(parameterColumn.getParameterNullable())) {
+                    continue;
+                }
+            }
+            if ("1".equals(properties.get("param_is_nullable"))) {
+                if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
+                    continue;
+                }
+                IntrospectedColumn parameterColumn = sqlParamNameMap.get(column.getActualColumnName());
+                if (!Integer.valueOf(1).equals(parameterColumn.getParameterNullable())) {
+                    continue;
+                }
+                hasIsSet.add("is_nullable_param");
+            }
+            if ("1".equals(properties.get("param_is_like"))) {
+                if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
+                    continue;
+                }
+                IntrospectedColumn parameterColumn = sqlParamNameMap.get(column.getActualColumnName());
+                if (!Integer.valueOf(1).equals(parameterColumn.getParameterIsLike())) {
+                    continue;
+                }
+                hasIsSet.add("is_like_param");
+            }
+
+            boolean needIgnore = false;
+            for(String p : properties.keySet()) {
+                if (p.startsWith("is_")) {
+                    if ("1".equals(properties.get(p))) {
+                        if (!hasIsSet.contains(p)) {
+                            needIgnore = true;
+                        }
+                    } else {
+                        if (hasIsSet.contains(p)) {
+                            needIgnore = true;
+                        }
+                    }
+                }
+            }
+            if (needIgnore) {
+                continue;
+            }
+
             if ("1".equals(properties.get("has_column_java_imports"))) {
                 if (!StringUtility.stringHasValue(column.getParameterImports())) {
                     continue;
@@ -2282,35 +2402,24 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
             }
 
-            if ("0".equals(properties.get("param_is_nullable"))) {
-                if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
-                    continue;
-                }
-                IntrospectedColumn parameterColumn = sqlParamNameMap.get(column.getActualColumnName());
-                if (Integer.valueOf(1).equals(parameterColumn.getParameterNullable())) {
-                    continue;
-                }
-            }
-            if ("1".equals(properties.get("param_is_nullable"))) {
-                if (sqlParamNameMap.containsKey(column.getActualColumnName())) {
-                    continue;
-                }
-                IntrospectedColumn parameterColumn = sqlParamNameMap.get(column.getActualColumnName());
-                if (!Integer.valueOf(1).equals(parameterColumn.getParameterNullable())) {
-                    continue;
-                }
-            }
-            if ("1".equals(properties.get("param_is_like"))) {
-                if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
-                    continue;
-                }
-                IntrospectedColumn parameterColumn = sqlParamNameMap.get(column.getActualColumnName());
-                if (!Integer.valueOf(1).equals(parameterColumn.getParameterIsLike())) {
-                    continue;
-                }
-            }
-
             introspectedColumns1.add(column);
+        }
+
+        for(String p : properties.keySet()) {
+            if (p.startsWith("has_is_")) {
+                String pp = p.substring("has_".length());
+                if ("1".equals(properties.get(p))) {
+                    if (!hasIsSet.contains(pp)) {
+                        introspectedColumns1 = new ArrayList<>();
+                        break;
+                    }
+                } else {
+                    if (hasIsSet.contains(pp)) {
+                        introspectedColumns1 = new ArrayList<>();
+                        break;
+                    }
+                }
+            }
         }
 
         if (introspectedColumns1.size() > 1) {
@@ -2531,6 +2640,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         introspectedColumns.addAll(oriColumns);
                     }
                     if ("1".equals(properties.get("is_only_param_columns"))) {
+                        properties.remove("is_only_param_columns");
                         introspectedColumns = new ArrayList<>();
                         List<IntrospectedColumn> extraColumns2 = introspectedTable.getParameterColumns().get("sql.param."+sqlMethodName);
                         if (extraColumns2 != null) {
@@ -2538,6 +2648,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                             extraColumns.addAll(extraColumns2);
                         }
                     } else if ("1".equals(properties.get("is_only_response_columns"))) {
+                        properties.remove("is_only_param_columns");
                         introspectedColumns = new ArrayList<>();
                         List<IntrospectedColumn> extraColumns2 = introspectedTable.getParameterColumns().get("sql.response." + sqlMethodName);
                         if (extraColumns2 != null) {
@@ -2572,8 +2683,10 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     }
                 } else {
                     if ("1".equals(properties.get("is_only_request_columns"))) {
+                        properties.remove("is_only_request_columns");
                         introspectedColumns = new ArrayList<>();
                     } else if ("1".equals(properties.get("is_only_response_columns"))) {
+                        properties.remove("is_only_param_columns");
                         introspectedColumns = new ArrayList<>();
                     } else {
                         introspectedColumns = introspectedTable.getAllColumns();

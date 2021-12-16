@@ -5,6 +5,7 @@ import cn.mysdp.biz.dto.request.*;
 import cn.mysdp.biz.dto.response.SdpWorkspaceGetTableListResponse;
 import cn.mysdp.biz.dto.response.SdpWorkspaceQueryResponse;
 import cn.mysdp.biz.repository.*;
+import cn.mysdp.utils.SplitUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.generator.api.ConnectionFactory;
@@ -430,9 +431,9 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
         Set<String> doneNameSet = new HashSet<>();
         for(SdpProjectWithBLOBs project: sdpProjectWithBLOBs) {
             if (!StringUtils.isEmpty(project.getTables())) {
-                String[] tables = project.getTables().split(",");
+                String[] tables = SplitUtil.split(project.getTables(), ",");
                 for(String table: tables) {
-                    table = table.split(" as ")[0].trim().toLowerCase();
+                    table = SplitUtil.split(table, " as ")[0].trim().toLowerCase();
                     if (!doneNameSet.contains(table)) {
                         SdpWorkspaceGetTableListResponse newItem = new SdpWorkspaceGetTableListResponse();
                         newItem.setName(table);

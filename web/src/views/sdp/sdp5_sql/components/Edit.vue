@@ -203,6 +203,19 @@
         ></el-switch>
       </el-form-item>
       <el-form-item
+        v-if="dataChangeCount > 0 && testDisabled(form, 'is_frontend_list')"
+        :label="getLabel('is_frontend_list')"
+        prop="is_frontend_list"
+      >
+        <el-switch
+          v-model="form.is_frontend_list"
+          :active-value="1"
+          :inactive-value="0"
+          active-color="#13ce66"
+          inactive-color="#e4e7ed"
+        ></el-switch>
+      </el-form-item>
+      <el-form-item
         v-if="dataChangeCount > 0 && testDisabled(form, 'parameter_nullable')"
         :label="getLabel('parameter_nullable')"
         prop="parameter_nullable"
@@ -411,9 +424,12 @@
       testDisabled(form, p) {
         if (form.parameter_catalog == 'sql') {
           if (
-            ['parameter_sql', 'is_interface', 'parameter_sql_issimple'].indexOf(
-              p
-            ) >= 0
+            [
+              'parameter_sql',
+              // 'is_interface',
+              'is_frontend_list',
+              // 'parameter_sql_issimple',
+            ].indexOf(p) >= 0
           ) {
             return true
           }
@@ -518,6 +534,17 @@
               this.$baseMessage('无改动', 'error')
               return
             }
+            let extra_info
+            if (this.form_ori.extra_info) {
+              extra_info = JSON.parse(this.form_ori.extra_info)
+            } else {
+              extra_info = {}
+            }
+            if ('is_frontend_list' in form) {
+              extra_info.is_frontend_list = form.is_frontend_list
+            }
+            form.extra_info = JSON.stringify(extra_info)
+            console.log('form', form)
             let func = this.doEdit
             if (this.title == '添加') {
               func = this.doAdd

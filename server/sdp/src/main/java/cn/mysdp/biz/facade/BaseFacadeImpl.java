@@ -5,6 +5,7 @@ import cn.mysdp.biz.dto.request.BaseRequest;
 import cn.mysdp.biz.repository.SdpHistoryMapper;
 import cn.mysdp.http.SDPHttpException;
 import cn.mysdp.http.SDPHttpResult;
+import cn.mysdp.utils.SplitUtil;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,7 @@ public abstract class BaseFacadeImpl {
 
     public SDPHttpException createDatabaseFailException(Exception ex) {
         ex.printStackTrace();
-        String msg = ex.getMessage().split(" error")[0];
+        String msg = SplitUtil.split(ex.getMessage(), " error")[0];
         if (msg.length() > 200) {
             msg = msg.substring(0, 200);
         }
@@ -102,7 +103,7 @@ public abstract class BaseFacadeImpl {
         Integer forKeyIndex = exMessage.indexOf("' for key ", dupIndex);
         if (dupIndex >= 0 && forKeyIndex >= 0) {
             String errInfo = exMessage.substring(dupIndex + "Duplicate entry '".length(), forKeyIndex);
-            String keyName = exMessage.substring(forKeyIndex + 1).split("'")[1];
+            String keyName = SplitUtil.split(exMessage.substring(forKeyIndex + 1), "'")[1];
             if (map.containsKey(keyName)) {
                 return new SDPHttpException(SDPHttpResult.FAIL, "已经存在：" + errInfo + "(" + map.get(keyName) + ")");
             }

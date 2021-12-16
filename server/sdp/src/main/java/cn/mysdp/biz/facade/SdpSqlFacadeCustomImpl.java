@@ -5,6 +5,7 @@ import cn.mysdp.biz.domain.SdpSqlExample;
 import cn.mysdp.biz.domain.SdpSqlWithBLOBs;
 import cn.mysdp.biz.dto.request.*;
 import cn.mysdp.biz.repository.SdpSqlMapper;
+import cn.mysdp.utils.SplitUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,7 +114,7 @@ public class SdpSqlFacadeCustomImpl extends SdpSqlFacadeBaseImpl {
                 for(String opInfo:ops) {
                     String op;
                     String opEnd = "";
-                    String[] opInfos = opInfo.split(",");
+                    String[] opInfos = SplitUtil.split(opInfo, ",");
                     try {
                         op = opInfos[0];
                         if (opInfos.length > 1) {
@@ -193,7 +194,7 @@ public class SdpSqlFacadeCustomImpl extends SdpSqlFacadeBaseImpl {
                     }
 
                     boolean done = false;
-                    if (right.startsWith("'") && right.endsWith("'")) {
+                    if (right.length() >= 2 && right.startsWith("'") && right.endsWith("'")) {
                         if (right.length() >= 10 && right.length() <= 12 && right.split("-").length == 3) {
                             paramItem.setJavaType("Date");
                         } else if (right.length() >= 19 && right.length() <= 21 && right.split("-").length == 3 && right.split(":").length == 3) {

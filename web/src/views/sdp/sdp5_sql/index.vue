@@ -347,10 +347,10 @@
           prop: 'parameter_sql_value_ignore',
           label: '是否不在SQL中查找表达式值',
         },
-        {
-          prop: 'parameter_sql_issimple',
-          label: '是否在XML中不生成Example',
-        },
+        // {
+        //   prop: 'parameter_sql_issimple',
+        //   label: '是否在XML中不生成Example',
+        // },
         {
           prop: 'java_imports',
           label: 'java引入类',
@@ -359,9 +359,13 @@
           prop: 'java_return_type',
           label: '字段java返回类型',
         },
+        // {
+        //   prop: 'is_interface',
+        //   label: '是否为接口',
+        // },
         {
-          prop: 'is_interface',
-          label: '是否为接口',
+          prop: 'is_frontend_list',
+          label: '是否为前端列表页',
         },
         {
           prop: 'sort_no',
@@ -568,6 +572,22 @@
                   (ele) => ele.value === item.parameter_catalog
                 ) || {}
               ).label
+              if (item.extra_info) {
+                try {
+                  const extra_info = JSON.parse(item.extra_info)
+                  for (const p in extra_info) {
+                    const column = this.columns.find((c) => c.prop == p)
+                    if (!column) {
+                      this.columns.push({ prop: p, label: p })
+                    }
+                    item[p] = extra_info[p]
+                  }
+                } catch (ex) {
+                  console.error('ex', ex)
+                  console.error('extra_info', item.extra_info)
+                  console.error('item', item)
+                }
+              }
             })
             this.finishFetchData(data)
           })

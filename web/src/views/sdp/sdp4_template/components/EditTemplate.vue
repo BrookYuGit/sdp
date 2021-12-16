@@ -325,9 +325,11 @@
     'column_name ' +
     'is_simple ' +
     'is_interface ' +
+    'is_frontend_list ' +
     'sql_is_interface ' +
     'is_string ' +
     'is_blob ' +
+    'is_date ' +
     'is_auto_increment ' +
     'is_import_excel ' +
     'has_column_java_imports ' +

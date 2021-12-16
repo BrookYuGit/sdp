@@ -21,6 +21,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 import java.util.*;
 
+import cn.mysdp.utils.SplitUtil;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.util.JavaBeansUtil;
@@ -767,8 +768,8 @@ public abstract class IntrospectedTable {
     public String getFirstRemarks() {
         String remarks = this.remarks;
         if (StringUtility.stringHasValue(remarks)) {
-            remarks = remarks.split(System.getProperty("line.separator"))[0];  //$NON-NLS-1$
-            remarks = remarks.split("\\n")[0];
+            remarks = SplitUtil.split(remarks, System.getProperty("line.separator"))[0];  //$NON-NLS-1$
+            remarks = SplitUtil.split(remarks, "\\n")[0];
         }
         return remarks.trim();
     }
@@ -776,8 +777,8 @@ public abstract class IntrospectedTable {
     public String getFirstRemarksOrTableName() {
         String remarks = this.remarks;
         if (StringUtility.stringHasValue(remarks)) {
-            remarks = remarks.split(System.getProperty("line.separator"))[0];  //$NON-NLS-1$
-            remarks = remarks.split("\\n")[0];
+            remarks = SplitUtil.split(remarks, System.getProperty("line.separator"))[0];  //$NON-NLS-1$
+            remarks = SplitUtil.split(remarks, "\\n")[0];
         }
         if (StringUtility.stringHasValue(remarks)) {
             return remarks;
