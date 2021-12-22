@@ -1507,6 +1507,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                     BeanUtils.copyProperties(item, dynTemplate);
 
+                    dynTemplate.setDynWorkspace(workspace);
                     dynTemplate.setDynProject(project);
                     dynTemplate.setAliasTableName(aliasName);
 
@@ -1550,7 +1551,11 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     String packageFileName = dynTemplate.getDynProject().getRootPath()+"/"+ dynTemplate.getProject()+"/";
                     File packageFile = new File(packageFileName);
                     if (!packageFile.exists()) {
-                        throw new Exception("目录不存在："+packageFileName);
+                        try {
+                            packageFile.mkdirs();
+                        }catch (Exception ex) {
+                            throw new Exception("目录不存在，且无法创建："+packageFileName);
+                        }
                     }
                     if (!packageFile.isDirectory()) {
                         throw new Exception("目标不是目录："+packageFileName);
@@ -1844,7 +1849,19 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             } else if (isToken(token, "config")) {
                 result.setProcessed(true);
                 String name = properties.get("name");
-                v = dynTemplate.getDynProject().getPropertyMap().get(name);
+                if ("workspace_db_host".equals(name)) {
+                    v = dynTemplate.getDynWorkspace().getDbHost();
+                } else if ("workspace_db_port".equals(name)) {
+                    v = dynTemplate.getDynWorkspace().getDbPort()+"";
+                } else if ("workspace_db_name".equals(name)) {
+                    v = dynTemplate.getDynWorkspace().getDbDatabase();
+                } else if ("workspace_db_username".equals(name)) {
+                    v = dynTemplate.getDynWorkspace().getDbUsername();
+                } else if ("workspace_db_password".equals(name)) {
+                    v = dynTemplate.getDynWorkspace().getDbPassword();
+                } else {
+                    v = dynTemplate.getDynProject().getPropertyMap().get(name);
+                }
                 if (v == null) {
                     v = "<miss config>"+token+"/"+name;
                     continue;
@@ -2122,9 +2139,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
     }
 
     public List<IntrospectedColumn> fixIntrospectedColumns(IntrospectedTable introspectedTable, List<IntrospectedColumn> introspectedColumns, Map<String, String> properties, Map<String, IntrospectedColumn> sqlParamNameMap) {
-        if (CollectionUtils.isEmpty(introspectedColumns)) {
-            return introspectedColumns;
-        }
+//        if (CollectionUtils.isEmpty(introspectedColumns)) {
+//            return introspectedColumns;
+//        }
 
 
         if (properties.get("has_columns_1") != null) {
@@ -2307,6 +2324,18 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("0".equals(properties.get("is_primary_key")) && introspectedTable.isPrimaryKey(column.getActualColumnName())) {
                 continue;
             }
+            if ("1".equals(properties.get("is_primary_key_multiple"))) {
+                if (!CollectionUtils.isEmpty(introspectedTable.getPrimaryKeyColumns()) && introspectedTable.getPrimaryKeyColumns().size() > 1) {
+                    hasIsSet.add("is_primary_key_multiple");
+                } else {
+                    continue;
+                }
+            }
+            if ("0".equals(properties.get("is_primary_key_multiple"))) {
+                if (!CollectionUtils.isEmpty(introspectedTable.getPrimaryKeyColumns()) && introspectedTable.getPrimaryKeyColumns().size() > 1) {
+                    continue;
+                }
+            }
             if ("1".equals(properties.get("is_auto_increment"))) {
                 if(column.isAutoIncrement()){
                     hasIsSet.add("is_auto_increment");
@@ -2418,6 +2447,13 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         introspectedColumns1 = new ArrayList<>();
                         break;
                     }
+                    if (CollectionUtils.isEmpty(introspectedColumns1)) {
+                        IntrospectedColumn newColumn = new IntrospectedColumn();
+                        introspectedColumns.add(newColumn);
+                        newColumn.setActualColumnName(introspectedTable.getTableConfiguration().getTableName());
+                        newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
+                        introspectedColumns1.add(newColumn);
+                    }
                 }
             }
         }
@@ -2500,6 +2536,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
 
         introspectedColumns = fixIntrospectedColumns(introspectedTable, introspectedColumns, properties, sqlParamNameMap);
+        if (CollectionUtils.isEmpty(introspectedColumns)) {
+            return;
+        }
 
         Set<String> doneSet = new HashSet<>();
 
@@ -2611,6 +2650,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             introspectedColumns.add(newColumn);
             newColumn.setActualColumnName(introspectedTable.getTableConfiguration().getTableName());
             newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
+            sqlMethodName = null;
         }else if (isBlockToken(vTrim,"sql")) {
             result.setProcessed(true);
             introspectedColumns = new ArrayList<>();
@@ -2735,9 +2775,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 sqlParamNameMap.put(column.getActualColumnName(), column);
             }
         }
-        if (CollectionUtils.isEmpty(introspectedColumns)) {
-            return result;
-        }
+//        if (CollectionUtils.isEmpty(introspectedColumns)) {
+//            return result;
+//        }
         processBodyTokenWithColumns(introspectedTable, dynTemplate, fileName, sqlMethodName, lineBytesList, lineStringList, lineTrimStringList, deepList, deep, destBytes, vTrim, properties, inColumns, introspectedColumns, extraColumns, _processInstance, _processBodyToken, _processToken);
         return result;
     }

@@ -303,6 +303,7 @@
   window.cmSdp.propKeywordsForBlock =
     'has_java_field_type_with_package ' +
     'is_primary_key ' +
+    'is_primary_key_multiple ' +
     'is_only_request_columns ' +
     'sql_is_interface ' +
     //仅限于正常的{*columns}

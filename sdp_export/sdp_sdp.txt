@@ -102,40 +102,38 @@
         "id": null,
         "name": "api",
         "remark": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "root_path": "/Volumes/disk1/git/sdp.github/server/sdp",
-        "tables": "sdp_workspace",
+        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "biz",
         "remark": "",
-        "root_path": "/Volumes/disk1/git/sdp.github/server/sdp",
-        "tables": "sdp_workspace",
+        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "dao",
         "remark": "",
-        "root_path": "/Volumes/disk1/git/sdp.github/server/sdp",
-        "tables": "sdp_workspace",
+        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": "sdp"
       },
       {
         "id": null,
         "name": "web",
         "remark": "",
-        "root_path": "/Volumes/disk1/git/sdp.github/server/sdp",
-        "tables": "sdp_workspace",
+        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": "sdp"
       }
     ],
     "sdp_template": [
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -192,9 +190,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -260,9 +256,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -320,9 +314,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -389,9 +381,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -445,9 +435,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -498,9 +486,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -557,9 +543,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -643,9 +627,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -696,9 +678,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -739,9 +719,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           " ",
@@ -1115,9 +1093,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -1145,9 +1121,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           " ",
@@ -1259,9 +1233,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -1302,9 +1274,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -1345,113 +1315,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
-        "file_template": [
-          "package {package_name};",
-          "",
-          "import java.util.List;",
-          "",
-          "public class Criterion {",
-          "    private String condition;",
-          "",
-          "    private Object value;",
-          "",
-          "    private Object secondValue;",
-          "",
-          "    private boolean noValue;",
-          "",
-          "    private boolean singleValue;",
-          "",
-          "    private boolean betweenValue;",
-          "",
-          "    private boolean listValue;",
-          "",
-          "    private String typeHandler;",
-          "",
-          "    public String getCondition() {",
-          "        return condition;",
-          "    }",
-          "",
-          "    public Object getValue() {",
-          "        return value;",
-          "    }",
-          "",
-          "    public Object getSecondValue() {",
-          "        return secondValue;",
-          "    }",
-          "",
-          "    public boolean isNoValue() {",
-          "        return noValue;",
-          "    }",
-          "",
-          "    public boolean isSingleValue() {",
-          "        return singleValue;",
-          "    }",
-          "",
-          "    public boolean isBetweenValue() {",
-          "        return betweenValue;",
-          "    }",
-          "",
-          "    public boolean isListValue() {",
-          "        return listValue;",
-          "    }",
-          "",
-          "    public String getTypeHandler() {",
-          "        return typeHandler;",
-          "    }",
-          "",
-          "    public Criterion(String condition) {",
-          "        super();",
-          "        this.condition = condition;",
-          "        this.typeHandler = null;",
-          "        this.noValue = true;",
-          "    }",
-          "",
-          "    public Criterion(String condition, Object value, String typeHandler) {",
-          "        super();",
-          "        this.condition = condition;",
-          "        this.value = value;",
-          "        this.typeHandler = typeHandler;",
-          "        if (value instanceof List<?>) {",
-          "            this.listValue = true;",
-          "        } else {",
-          "            this.singleValue = true;",
-          "        }",
-          "    }",
-          "",
-          "    public Criterion(String condition, Object value) {",
-          "        this(condition, value, null);",
-          "    }",
-          "",
-          "    public Criterion(String condition, Object value, Object secondValue, String typeHandler) {",
-          "        super();",
-          "        this.condition = condition;",
-          "        this.value = value;",
-          "        this.secondValue = secondValue;",
-          "        this.typeHandler = typeHandler;",
-          "        this.betweenValue = true;",
-          "    }",
-          "",
-          "    public Criterion(String condition, Object value, Object secondValue) {",
-          "        this(condition, value, secondValue, null);",
-          "    }",
-          "}"
-        ],
-        "file_type": "java",
-        "id": null,
-        "name": "Criterion",
-        "no_overwrite": 0,
-        "package_name": "{config&name=package_dao}",
-        "project": "src/main/java",
-        "project_name": "dao",
-        "workspace_name": "sdp"
-      },
-      {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -1492,9 +1356,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -2030,9 +1892,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -2578,9 +2438,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -2621,9 +2479,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -2722,9 +2578,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
           "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">",
@@ -3152,9 +3006,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -3195,9 +3047,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           " ",
@@ -3283,9 +3133,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -3390,9 +3238,7 @@
         "workspace_name": "sdp"
       },
       {
-        "extra_info": [
-          "{}"
-        ],
+        "extra_info": {},
         "file_template": [
           "package {package_name};",
           "",
@@ -3578,6 +3424,26 @@
         "workspace_name": "sdp"
       },
       {
+        "extra_info": {},
+        "id": null,
+        "is_disable": 0,
+        "java_imports": "",
+        "java_return_type": "",
+        "java_type": "SdpWorkspaceQueryResponse",
+        "name": "dyn_workspace",
+        "parameter_catalog": "api.response",
+        "parameter_catalog_type": "query",
+        "parameter_mode": "append",
+        "parameter_nullable": 0,
+        "parameter_sql_issimple": 0,
+        "parameter_sql_return_nolist": 0,
+        "parameter_sql_value": "",
+        "remarks": "",
+        "sort_no": 0,
+        "table_name": "sdp_template",
+        "workspace_name": "sdp"
+      },
+      {
         "id": null,
         "is_disable": 0,
         "java_imports": "",
@@ -3624,26 +3490,6 @@
         "name": "request",
         "parameter_catalog": "api.facade",
         "parameter_catalog_type": "clone_workspace",
-        "parameter_is_export_excel": 0,
-        "parameter_is_import_excel": 0,
-        "parameter_mode": "append",
-        "parameter_sql_issimple": 0,
-        "parameter_sql_return_nolist": 0,
-        "parameter_sql_value": "",
-        "remarks": "",
-        "sort_no": 0,
-        "table_name": "sdp_workspace",
-        "workspace_name": "sdp"
-      },
-      {
-        "id": null,
-        "is_disable": 0,
-        "java_imports": "",
-        "java_return_type": "String",
-        "java_type": "SdpWorkspaceUpdateRequest",
-        "name": "request",
-        "parameter_catalog": "api.facade",
-        "parameter_catalog_type": "test_connect",
         "parameter_is_export_excel": 0,
         "parameter_is_import_excel": 0,
         "parameter_mode": "append",

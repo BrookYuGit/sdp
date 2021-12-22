@@ -34,7 +34,7 @@
       <el-form-item :label="getLabel('name')" prop="name" :required="true">
         <el-input v-model.trim="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item :label="getLabel('value')" prop="value" :required="true">
+      <el-form-item :label="getLabel('value')" prop="value">
         <el-input v-model.trim="form.value" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item :label="getLabel('remark')" prop="remark">
