@@ -515,7 +515,9 @@
           return
         }
         let workspaceName = self.selectRows[0].name
-        let datas = { sdp_workspace: [{ ...self.selectRows[0], id: null }] }
+        let datas = {
+          sdp_workspace: [{ ...self.selectRows[0], id: null, name: null }],
+        }
         self.listLoading = true
         this.getWorkspaceConfigList({
           workspace_name: workspaceName,
@@ -527,6 +529,7 @@
             datas['sdp_workspace_config'] = data.data.map((item) => ({
               ...item,
               id: null,
+              workspace_name: null,
             }))
             return this.getProjectList({
               workspace_name: workspaceName,
@@ -539,6 +542,7 @@
             datas['sdp_project'] = data.data.map((item) => ({
               ...item,
               id: null,
+              workspace_name: null,
             }))
             return this.getTemplateList({
               workspace_name: workspaceName,
@@ -556,7 +560,11 @@
           })
           .then((data) => {
             datas['sdp_template'] = data.data.map((item) => {
-              item = { ...item, id: null }
+              item = {
+                ...item,
+                id: null,
+                workspace_name: null,
+              }
               let itemNames = ['file_template', 'remark']
               itemNames.forEach((itemName) => {
                 let lines = item[itemName]
@@ -596,7 +604,11 @@
           })
           .then((data) => {
             datas['sdp_sql'] = data.data.map((item) => {
-              item = { ...item, id: null }
+              item = {
+                ...item,
+                id: null,
+                workspace_name: null,
+              }
               let itemNames = ['parameter_sql', 'java_imports', 'remarks']
               itemNames.forEach((itemName) => {
                 let lines = item[itemName]

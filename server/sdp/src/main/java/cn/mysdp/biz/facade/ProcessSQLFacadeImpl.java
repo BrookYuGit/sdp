@@ -178,7 +178,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
 
         String dbPassword = request.getDbPassword();
-        String dbHost = request.getDbHost() == null ? "":request.getDbHost();
+        String dbHost = StringUtils.isEmpty(request.getDbHost()) ? "":request.getDbHost();
         String dbUsername = request.getDbUsername();
 
         return encryptDBPassword(dbHost, dbUsername, dbPassword);
@@ -825,7 +825,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
 
                 List<String> tableList = tableMapForList.get(workspaceName);
-                if (tableList == null) {
+                if (CollectionUtils.isEmpty(tableList)) {
                     continue;
                 }
                 for(String table: tableList) {
@@ -1417,7 +1417,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             }
 
             List<String> tableList = tableMapForList.get(workspaceName);
-            if (tableList == null) {
+            if (CollectionUtils.isEmpty(tableList)) {
                 pringNotFoundInfo(fountFoundInfoSet, "not found tableList for workspace:"+workspaceName);
                 continue;
             }
@@ -1535,7 +1535,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         item.setProject("");
                     }
 
-                    if (dynTemplate.getExtraInfo() != null) {
+                    if (dynTemplate.getExtraInfoMap() != null) {
                         if ("1".equals(dynTemplate.getExtraInfoMap().get("has_blobs")+"")) {
                             if (!introspectedTable.hasBLOBColumns()) {
                                 continue;
@@ -1548,8 +1548,13 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         }
                     }
 
+                    File packageFile = new File(dynTemplate.getDynProject().getRootPath());
+                    if (!packageFile.exists()) {
+                        throw new Exception("目录不存在，请先创建目录："+dynTemplate.getDynProject().getRootPath());
+                    }
+
                     String packageFileName = dynTemplate.getDynProject().getRootPath()+"/"+ dynTemplate.getProject()+"/";
-                    File packageFile = new File(packageFileName);
+                    packageFile = new File(packageFileName);
                     if (!packageFile.exists()) {
                         try {
                             packageFile.mkdirs();
@@ -1674,7 +1679,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         if (properties == null) {
             properties = new HashMap<>();
         }
-        if (name == null) {
+        if (StringUtils.isEmpty(name)) {
             throw new Exception("name is null");
         }
         String v;
@@ -1796,14 +1801,14 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 v = getName(token, introspectedTable.getTableConfiguration().getTableName(), properties, column);
             } else if (isToken(token, "sql_name")) {
                 result.setProcessed(true);
-                if (sqlMethodName == null) {
+                if (StringUtils.isEmpty(sqlMethodName)) {
                     v = token + "<miss sql name>"+token;
                     continue;
                 }
                 v = getName(token, sqlMethodName, properties, column);
             } else if (isToken(token, "sql_param_name")) {
                 result.setProcessed(true);
-                if (sqlMethodName == null) {
+                if (StringUtils.isEmpty(sqlMethodName)) {
                     v = token + "<miss sql name>"+token;
                     continue;
                 }
@@ -2592,7 +2597,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                     if (isBlockToken(vTrim, "sqls")) {
                         processBodyToken(introspectedTable, dynTemplate, fileName, column.getParameterCatalogType(), subLineBytesList, subLineStringList, subLineTrimStringList, subDeepList, subDeep, subDestBytes, subVTrim, subColumns, _processInstance, _processBodyToken, _processToken);
-                    } else if (sqlMethodName != null){
+                    } else if (!StringUtils.isEmpty(sqlMethodName)){
                         processBodyToken(introspectedTable, dynTemplate, fileName, sqlMethodName, subLineBytesList, subLineStringList, subLineTrimStringList, subDeepList, subDeep, subDestBytes, subVTrim, subColumns, _processInstance, _processBodyToken, _processToken);
                     } else {
                         processBodyToken(introspectedTable, dynTemplate, fileName, null, subLineBytesList, subLineStringList, subLineTrimStringList, subDeepList, subDeep, subDestBytes, subVTrim, subColumns, _processInstance, _processBodyToken, _processToken);
@@ -2654,7 +2659,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }else if (isBlockToken(vTrim,"sql")) {
             result.setProcessed(true);
             introspectedColumns = new ArrayList<>();
-            if (sqlMethodName != null) {
+            if (!StringUtils.isEmpty(sqlMethodName)) {
                 IntrospectedColumn newColumn = new IntrospectedColumn();
                 introspectedColumns.add(newColumn);
                 newColumn.setActualColumnName(sqlMethodName);
@@ -2669,9 +2674,12 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     introspectedColumns = columns;
                 }
             } else {
-                if (sqlMethodName != null) {
+                if (!StringUtils.isEmpty(sqlMethodName)) {
                     introspectedColumns = new ArrayList<>();
                     List<IntrospectedColumn> oriColumns = introspectedTable.getParameterColumns().get("api.request_for_sql."+sqlMethodName);
+                    if (oriColumns == null) {
+                        throw new Exception("逻辑错误："+fileName + ","+sqlMethodName);
+                    }
                     Map<String, IntrospectedColumn> oriColumnMap = new HashMap<>();
                     for(IntrospectedColumn column1: oriColumns) {
                         oriColumnMap.put(column1.getActualColumnName(), column1);
