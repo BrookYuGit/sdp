@@ -79,12 +79,12 @@ public class SdpTemplateQueryResponse implements Serializable {
     @JSONField(name = "dyn_project")
     private SdpProjectQueryResponse dynProject;
 
-    @JsonProperty("dyn_workspace")
-    @JSONField(name = "dyn_workspace")
-    private SdpWorkspaceQueryResponse dynWorkspace;
-
     @JsonProperty("extra_info_map")
     @JSONField(name = "extra_info_map")
     private Map<String, Object> extraInfoMap;
+
+    @JsonProperty("dyn_workspace")
+    @JSONField(name = "dyn_workspace")
+    private SdpWorkspaceQueryResponse dynWorkspace;
 
 }

@@ -8,7 +8,7 @@
         "db_password": "",
         "db_username": "",
         "id": null,
-        "name": "sdp"
+        "name": null
       }
     ],
     "sdp_workspace_config": [
@@ -16,85 +16,85 @@
         "id": null,
         "name": "author",
         "value": "SDP",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "exception",
         "value": "Exception",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "java_class_extends_request",
         "value": "extends BaseRequest",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "java_import_exception",
         "value": "import java.lang.Exception;",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "java_import_extends_request",
         "value": "import cn.mysdp.biz.dto.request.BaseRequest;",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_controller",
         "value": "cn.mysdp.biz.controller",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_convert",
         "value": "cn.mysdp.biz.convert",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_dao",
         "value": "cn.mysdp.biz.domain",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_facade",
         "value": "cn.mysdp.biz.facade",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_facade_impl",
         "value": "cn.mysdp.biz.facade",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_mapper",
         "value": "cn.mysdp.biz.repository",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_request",
         "value": "cn.mysdp.biz.dto.request",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "package_response",
         "value": "cn.mysdp.biz.dto.response",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "version",
         "value": "1.0",
-        "workspace_name": "sdp"
+        "workspace_name": null
       }
     ],
     "sdp_project": [
@@ -102,33 +102,33 @@
         "id": null,
         "name": "api",
         "remark": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "root_path": "D:\\git\\sdp\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "biz",
         "remark": "",
-        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "root_path": "D:\\git\\sdp\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "dao",
         "remark": "",
-        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "root_path": "D:\\git\\sdp\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
         "name": "web",
         "remark": "",
-        "root_path": "D:\\git\\sdp.github2\\server\\sdp",
+        "root_path": "D:\\git\\sdp\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "workspace_name": "sdp"
+        "workspace_name": null
       }
     ],
     "sdp_template": [
@@ -187,7 +187,7 @@
         "package_name": "{config&name=package_request}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -253,7 +253,7 @@
         "package_name": "{config&name=package_request}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -311,7 +311,7 @@
         "package_name": "{config&name=package_request}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -378,7 +378,7 @@
         "package_name": "{config&name=package_facade}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -432,7 +432,7 @@
         "package_name": "{config&name=package_request}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -483,7 +483,7 @@
         "package_name": "{config&name=package_response}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -540,7 +540,7 @@
         "package_name": "{config&name=package_request}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -624,7 +624,7 @@
         "package_name": "{config&name=package_request}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -675,7 +675,7 @@
         "package_name": "{config&name=package_response}",
         "project": "src/main/java",
         "project_name": "api",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -716,7 +716,7 @@
         "package_name": "{config&name=package_convert}",
         "project": "src/main/java",
         "project_name": "biz",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1090,7 +1090,7 @@
         "package_name": "{config&name=package_facade_impl}",
         "project": "src/main/java",
         "project_name": "biz",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1118,7 +1118,7 @@
         "package_name": "{config&name=package_facade_impl}",
         "project": "src/main/java",
         "project_name": "biz",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1230,7 +1230,7 @@
         "package_name": "{config&name=package_facade_impl}",
         "project": "src/main/java",
         "project_name": "biz",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1271,7 +1271,7 @@
         "package_name": "{config&name=package_convert}",
         "project": "src/main/java",
         "project_name": "biz",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1312,7 +1312,7 @@
         "package_name": "{config&name=package_convert}",
         "project": "src/main/java",
         "project_name": "biz",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1353,7 +1353,7 @@
         "package_name": "{config&name=package_dao}",
         "project": "src/main/java",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -1889,7 +1889,7 @@
         "package_name": "{config&name=package_dao}",
         "project": "src/main/java",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -2435,7 +2435,7 @@
         "package_name": "{config&name=package_dao}",
         "project": "src/main/java",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -2476,7 +2476,7 @@
         "package_name": "{config&name=package_dao}",
         "project": "src/main/java",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -2575,7 +2575,7 @@
         "package_name": "{config&name=package_mapper}",
         "project": "src/main/java",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -3003,7 +3003,7 @@
         "package_name": "mapper",
         "project": "src/main/resources",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -3044,7 +3044,7 @@
         "package_name": "{config&name=package_dao}",
         "project": "src/main/java",
         "project_name": "dao",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -3130,7 +3130,7 @@
         "package_name": "{config&name=package_controller}",
         "project": "src/main/java",
         "project_name": "web",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -3235,7 +3235,7 @@
         "package_name": "{config&name=package_controller}",
         "project": "src/main/java",
         "project_name": "web",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -3263,7 +3263,7 @@
         "package_name": "{config&name=package_controller}",
         "project": "src/main/java",
         "project_name": "web",
-        "workspace_name": "sdp"
+        "workspace_name": null
       }
     ],
     "sdp_sql": [
@@ -3285,7 +3285,7 @@
         "remarks": "",
         "sort_no": 1,
         "table_name": "sdp_history",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3305,7 +3305,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_project",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3325,7 +3325,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_project",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3343,7 +3343,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_project",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3363,7 +3363,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_sql",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3385,7 +3385,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_sql",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3403,7 +3403,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_template",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3421,7 +3421,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_template",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "extra_info": {},
@@ -3441,7 +3441,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_template",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3459,7 +3459,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_template",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3479,7 +3479,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3499,7 +3499,28 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace",
-        "workspace_name": "sdp"
+        "workspace_name": null
+      },
+      {
+        "extra_info": {},
+        "id": null,
+        "is_disable": 0,
+        "java_imports": "",
+        "java_return_type": "String",
+        "java_type": "SdpWorkspaceUpdateRequest",
+        "name": "request",
+        "parameter_catalog": "api.facade",
+        "parameter_catalog_type": "test_connect",
+        "parameter_is_export_excel": 0,
+        "parameter_is_import_excel": 0,
+        "parameter_mode": "append",
+        "parameter_sql_issimple": 0,
+        "parameter_sql_return_nolist": 0,
+        "parameter_sql_value": "",
+        "remarks": "",
+        "sort_no": 0,
+        "table_name": "sdp_workspace",
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3521,7 +3542,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3543,7 +3564,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3563,7 +3584,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace_config",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3583,7 +3604,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace_config",
-        "workspace_name": "sdp"
+        "workspace_name": null
       },
       {
         "id": null,
@@ -3604,7 +3625,7 @@
         "remarks": "",
         "sort_no": 0,
         "table_name": "sdp_workspace_config",
-        "workspace_name": "sdp"
+        "workspace_name": null
       }
     ]
   }

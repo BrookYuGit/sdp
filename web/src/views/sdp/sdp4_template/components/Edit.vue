@@ -50,7 +50,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item :label="getLabel('name')" prop="name" :required="true">
+      <el-form-item :label="getLabel('name')" prop="name" :required="false">
         <el-input v-model.trim="form.name" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item

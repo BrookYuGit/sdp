@@ -35,6 +35,7 @@ import org.mybatis.generator.internal.util.JavaBeansUtil;
 import org.mybatis.generator.internal.util.StringUtility;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -83,6 +84,15 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
     @Autowired
     SdpSqlMapper sdpSqlMapper;
+
+    @Value("${spring.datasource.url}")
+    private String springDatasourceUrl;
+
+    @Value("${spring.datasource.username}")
+    private String springDatasourceUsername;
+
+    @Value("${spring.datasource.password}")
+    private String springDatasourcePassword;
 
     private static final String DB_PASSWORD_SEED = "567382";
 
@@ -423,6 +433,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             Connection connection = null;
 
             try {
+                jdbcConnectionConfiguration.addProperty("springDatasourceUrl", springDatasourceUrl);
+                jdbcConnectionConfiguration.addProperty("springDatasourceUsername", springDatasourceUsername);
+                jdbcConnectionConfiguration.addProperty("springDatasourcePassword", springDatasourcePassword);
                 if ("org.h2.Driver".equals(workspace.getDbClassname()) && StringUtils.isEmpty(workspace.getDbDatabase())) {
                     connection = dataSource.getConnection();
                     context.setConnection(connection);
@@ -1110,6 +1123,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                     if (doneColumnNameMap.containsKey(columnName)) {
                                         doneColumnNameMap.put(columnName, doneColumnNameMap.get(columnName) + 1);
                                         columnName += doneColumnNameMap.get(columnName);
+                                        introspectedColumn.setDup(true);
                                     } else {
                                         doneColumnNameMap.put(columnName, 1);
                                     }
@@ -2143,7 +2157,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         return map;
     }
 
-    public List<IntrospectedColumn> fixIntrospectedColumns(IntrospectedTable introspectedTable, List<IntrospectedColumn> introspectedColumns, Map<String, String> properties, Map<String, IntrospectedColumn> sqlParamNameMap) {
+    public List<IntrospectedColumn> fixIntrospectedColumns(IntrospectedTable introspectedTable, SdpTemplateQueryResponse dynTemplate, List<IntrospectedColumn> introspectedColumns, Map<String, String> properties, Map<String, IntrospectedColumn> sqlParamNameMap) {
 //        if (CollectionUtils.isEmpty(introspectedColumns)) {
 //            return introspectedColumns;
 //        }
@@ -2212,6 +2226,11 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         List<IntrospectedColumn> introspectedColumns1 = new ArrayList<>();
 
         Set<String> hasIsSet = new HashSet<>();
+
+        if ("1".equals(properties.get("is_dup"))) {
+            hasIsSet.add("is_dup");
+        }
+
         for(IntrospectedColumn column: introspectedColumns) {
             if (doneSet.contains(column.getActualColumnName())) {
                 continue;
@@ -2364,6 +2383,12 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
             }
 
+            if (Boolean.valueOf(true).equals(column.getDup())) {
+                if ("1".equals(properties.get("is_dup"))) {
+                } else {
+                    continue;
+                }
+            }
             if ("0".equals(properties.get("param_is_nullable"))) {
                 if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
                     continue;
@@ -2540,7 +2565,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             }
         }
 
-        introspectedColumns = fixIntrospectedColumns(introspectedTable, introspectedColumns, properties, sqlParamNameMap);
+        introspectedColumns = fixIntrospectedColumns(introspectedTable, dynTemplate, introspectedColumns, properties, sqlParamNameMap);
         if (CollectionUtils.isEmpty(introspectedColumns)) {
             return;
         }
@@ -2655,6 +2680,29 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             introspectedColumns.add(newColumn);
             newColumn.setActualColumnName(introspectedTable.getTableConfiguration().getTableName());
             newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
+            sqlMethodName = null;
+        }else if (isBlockToken(vTrim,"tables")) {
+            introspectedColumns = new ArrayList<>();
+            String tablesStr = dynTemplate.getDynProject().getTables();
+            if (!StringUtils.isEmpty(tablesStr)) {
+                String[] tables = tablesStr.split(",");
+                for(String name: tables) {
+                    name = name.trim();
+                    if (StringUtils.isEmpty(name)) {
+                        continue;
+                    }
+                    String[] names = name.split(" as ");
+                    String alias = names[0].trim();
+                    if (names.length > 1) {
+                        name = names[0].trim();
+                        alias = names[1].trim();
+                    }
+                    IntrospectedColumn newColumn = new IntrospectedColumn();
+                    introspectedColumns.add(newColumn);
+                    newColumn.setActualColumnName(alias);
+                    newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
+                }
+            }
             sqlMethodName = null;
         }else if (isBlockToken(vTrim,"sql")) {
             result.setProcessed(true);

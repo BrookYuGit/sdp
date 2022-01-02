@@ -466,8 +466,10 @@
           order_by: [
             { workspace_name: 'asc' },
             { project_name: 'asc' },
+            { project: 'asc' },
             { package_name: 'asc' },
             { name: 'asc' },
+            { file_type: 'asc' },
           ],
           like: {},
         }

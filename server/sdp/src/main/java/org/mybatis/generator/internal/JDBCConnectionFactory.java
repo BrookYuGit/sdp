@@ -53,6 +53,11 @@ public class JDBCConnectionFactory implements ConnectionFactory {
         userId = config.getUserId();
         password = config.getPassword();
         connectionURL = config.getConnectionURL();
+        if (connectionURL.startsWith("jdbc:h2:;")) {
+            connectionURL = config.getProperty("springDatasourceUrl");
+            userId = config.getProperty("springDatasourceUsername");
+            password = config.getProperty("springDatasourcePassword");
+        }
         driverClass = config.getDriverClass();
         otherProperties = config.getProperties();
     }

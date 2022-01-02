@@ -325,6 +325,7 @@
     'has_columns ' +
     'column_name ' +
     'is_simple ' +
+    'is_dup ' +
     'is_interface ' +
     'is_frontend_list ' +
     'sql_is_interface ' +

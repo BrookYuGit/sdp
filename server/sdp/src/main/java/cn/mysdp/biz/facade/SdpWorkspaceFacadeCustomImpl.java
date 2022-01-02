@@ -19,6 +19,7 @@ import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.db.ActualTableName;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -43,6 +44,15 @@ import static org.springframework.jdbc.support.JdbcUtils.closeResultSet;
  */
 @Slf4j
 public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
+
+    @Value("${spring.datasource.url}")
+    private String springDatasourceUrl;
+
+    @Value("${spring.datasource.username}")
+    private String springDatasourceUsername;
+
+    @Value("${spring.datasource.password}")
+    private String springDatasourcePassword;
 
     @Autowired
     DataSource dataSource;
@@ -472,6 +482,11 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
                 .createJavaTypeResolver(context, new ArrayList<>());
 
         ConnectionFactory connectionFactory;
+
+        jdbcConnectionConfiguration.addProperty("springDatasourceUrl", springDatasourceUrl);
+        jdbcConnectionConfiguration.addProperty("springDatasourceUsername", springDatasourceUsername);
+        jdbcConnectionConfiguration.addProperty("springDatasourcePassword", springDatasourcePassword);
+
         connectionFactory = new JDBCConnectionFactory(jdbcConnectionConfiguration);
 
         Connection connection = null;
@@ -582,6 +597,10 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
         Connection connection = null;
 
         try {
+            jdbcConnectionConfiguration.addProperty("springDatasourceUrl", springDatasourceUrl);
+            jdbcConnectionConfiguration.addProperty("springDatasourceUsername", springDatasourceUsername);
+            jdbcConnectionConfiguration.addProperty("springDatasourcePassword", springDatasourcePassword);
+
             if ("org.h2.Driver".equals(workspace.getDbClassname()) && StringUtils.isEmpty(workspace.getDbDatabase())) {
                 connection = dataSource.getConnection();
                 context.setConnection(connection);

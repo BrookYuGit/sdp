@@ -106,6 +106,7 @@ public class IntrospectedColumn {
     private Integer parameterOverwriteDefaultSql = 0;
     private Integer parameterWithoutTest = 0;
     private Integer sqlIsInterface = 0;
+    private Boolean isDup = false;
 
     private String uniqueKeyparameterForRepository = null;
     private String uniqueKeynameForRepository = null;
@@ -662,13 +663,20 @@ public class IntrospectedColumn {
         this.parameterSimpleWithStarSql = parameterSimpleWithStarSql;
     }
 
-
     public String getParameterExtraInfo() {
         return parameterExtraInfo;
     }
 
     public void setParameterExtraInfo(String parameterExtraInfo) {
         this.parameterExtraInfo = parameterExtraInfo;
+    }
+
+    public Boolean getDup() {
+        return isDup;
+    }
+
+    public void setDup(Boolean dup) {
+        isDup = dup;
     }
 
 }
