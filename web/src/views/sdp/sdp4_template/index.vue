@@ -279,7 +279,7 @@
         {
           prop: 'project_name',
           label: '项目名称',
-          width: 120,
+          width: 150,
         },
         // {
         //   prop: 'package_type',
