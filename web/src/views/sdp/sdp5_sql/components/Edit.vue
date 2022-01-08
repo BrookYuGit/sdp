@@ -426,7 +426,7 @@
           if (
             [
               'parameter_sql',
-              // 'is_interface',
+              'is_interface',
               'is_frontend_list',
               // 'parameter_sql_issimple',
             ].indexOf(p) >= 0

@@ -359,10 +359,10 @@
           prop: 'java_return_type',
           label: '字段java返回类型',
         },
-        // {
-        //   prop: 'is_interface',
-        //   label: '是否为接口',
-        // },
+        {
+          prop: 'is_interface',
+          label: '是否为接口',
+        },
         {
           prop: 'is_frontend_list',
           label: '是否为前端列表页',
