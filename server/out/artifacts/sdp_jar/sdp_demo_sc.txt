@@ -939,7 +939,7 @@
           "    }",
           "    ",
           "    {*}",
-          "    {*sqls&is_inteface=1}",
+          "    {*sqls&is_interface=1}",
           "    public {alias_table_name}For{column_method_name}Response {column_method_name&is_first_lower=1}({alias_table_name}For{column_method_name}Request request) throws Exception {",
           "        return service.{column_method_name&is_first_lower=1}(request);",
           "    }",
