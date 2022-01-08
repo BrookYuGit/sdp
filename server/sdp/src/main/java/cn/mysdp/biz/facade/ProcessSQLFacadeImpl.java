@@ -8,10 +8,7 @@ import cn.mysdp.biz.dto.response.SdpProjectQueryResponse;
 import cn.mysdp.biz.dto.response.SdpTemplateQueryResponse;
 import cn.mysdp.biz.dto.response.SdpWorkspaceQueryResponse;
 import cn.mysdp.biz.repository.*;
-import cn.mysdp.utils.ByteWithPos;
-import cn.mysdp.utils.DynProcessTokenResult;
-import cn.mysdp.utils.FileUtil;
-import cn.mysdp.utils.SplitUtil;
+import cn.mysdp.utils.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mysql.cj.MysqlType;
@@ -396,14 +393,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 continue;
             }
 
-            String url;
-            if ("com.mysql.jdbc.Driver".equals(workspace.getDbClassname()) || "com.mysql.cj.jdbc.Driver".equals(workspace.getDbClassname())) {
-                url = "jdbc:mysql://"+workspace.getDbHost()+":"+workspace.getDbPort()+"/"+workspace.getDbDatabase()+"?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&tcpKeepAlive=true&autoReconnect=true&useSSL=false";
-            } else if ("org.h2.Driver".equals(workspace.getDbClassname())) {
-                url = "jdbc:h2:"+workspace.getDbDatabase()+";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
-            } else {
-                throw new Exception("不支持的数据库驱动类："+workspace.getDbClassname()+","+JSON.toJSONString(workspace));
-            }
+            String url = ConnectUtil.getUrl(workspace.getDbClassname(), workspace.getDbHost(), workspace.getDbPort(), workspace.getDbDatabase());
             JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
             jdbcConnectionConfiguration.setDriverClass(workspace.getDbClassname());
             jdbcConnectionConfiguration.setConnectionURL(url);

@@ -5,6 +5,7 @@ import cn.mysdp.biz.dto.request.*;
 import cn.mysdp.biz.dto.response.SdpWorkspaceGetTableListResponse;
 import cn.mysdp.biz.dto.response.SdpWorkspaceQueryResponse;
 import cn.mysdp.biz.repository.*;
+import cn.mysdp.utils.ConnectUtil;
 import cn.mysdp.utils.SplitUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -457,14 +458,7 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
         SdpWorkspaceQueryResponse workspace = new SdpWorkspaceQueryResponse();
         BeanUtils.copyProperties(sdpWorkspace, workspace);
 
-        String url;
-        if ("com.mysql.jdbc.Driver".equals(workspace.getDbClassname()) || "com.mysql.cj.jdbc.Driver".equals(workspace.getDbClassname())) {
-            url = "jdbc:mysql://"+workspace.getDbHost()+":"+workspace.getDbPort()+"/"+workspace.getDbDatabase()+"?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&tcpKeepAlive=true&autoReconnect=true&useSSL=false";
-        } else if ("org.h2.Driver".equals(workspace.getDbClassname())) {
-            url = "jdbc:h2:"+workspace.getDbDatabase()+";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
-        } else {
-            throw new Exception("invalid db classname："+workspace.getDbClassname()+","+JSON.toJSONString(workspace));
-        }
+        String url = ConnectUtil.getUrl(workspace.getDbClassname(), workspace.getDbHost(), workspace.getDbPort(), workspace.getDbDatabase());
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
         jdbcConnectionConfiguration.setDriverClass(workspace.getDbClassname());
         jdbcConnectionConfiguration.setConnectionURL(url);
@@ -570,14 +564,7 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
             workspace.setDbPort(null);
         }
 
-        String url;
-        if ("com.mysql.jdbc.Driver".equals(workspace.getDbClassname()) || "com.mysql.cj.jdbc.Driver".equals(workspace.getDbClassname())) {
-            url = "jdbc:mysql://"+workspace.getDbHost()+":"+workspace.getDbPort()+"/"+workspace.getDbDatabase()+"?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&tcpKeepAlive=true&autoReconnect=true&useSSL=false";
-        } else if ("org.h2.Driver".equals(workspace.getDbClassname())) {
-            url = "jdbc:h2:"+workspace.getDbDatabase()+";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
-        } else {
-            throw new Exception("不支持的数据库驱动类："+workspace.getDbClassname()+","+JSON.toJSONString(workspace));
-        }
+        String url = ConnectUtil.getUrl(workspace.getDbClassname(), workspace.getDbHost(), workspace.getDbPort(), workspace.getDbDatabase());
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
         jdbcConnectionConfiguration.setDriverClass(workspace.getDbClassname());
         jdbcConnectionConfiguration.setConnectionURL(url);
