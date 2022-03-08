@@ -702,7 +702,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         } catch (Exception ex) {
                             System.out.println("=== getMetaData error, sql ===");
                             System.out.println(sql);
-                            throw ex;
+                            throw new Exception(schema+"."+tableName+introspectedColumn.getParameterCatalog()+","+introspectedColumn.getParameterCatalogType()+","+introspectedColumn.getParameterName()+":"+ex.getMessage());
                         }
 
 
@@ -875,7 +875,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         }catch(Exception ex) {
                             System.out.println("=== getMetaData error, sql ===");
                             System.out.println(sql);
-                            throw ex;
+                            throw new Exception(schema+"."+tableName+column.getParameterCatalog()+","+column.getParameterCatalogType()+","+column.getParameterName()+":"+ex.getMessage());
                         }
 
                         Object[] jdbcFields = getMetaFields(resultSetMetaData);
@@ -992,7 +992,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                             } catch (Exception ex) {
                                 System.out.println("=== getMetaData error, sql ===");
                                 System.out.println(sql);
-                                throw ex;
+                                throw new Exception(schema+"."+tableName+column.getParameterCatalog()+","+column.getParameterCatalogType()+","+column.getParameterName()+":"+ex.getMessage());
                             }
 
                             jdbcFields = getMetaFields(resultSetMetaData);
@@ -1163,7 +1163,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                             } catch (Exception ex) {
                                 System.out.println("=== getMetaData error, sql ===");
                                 System.out.println(sql);
-                                throw ex;
+                                throw new Exception(schema+"."+tableName+column.getParameterCatalog()+","+column.getParameterCatalogType()+","+column.getParameterName()+":"+ex.getMessage());
                             }
 
                             mysqlStatement.close();
@@ -1188,7 +1188,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         } catch (Exception ex) {
                             System.out.println("=== getMetaData error, sql ===");
                             System.out.println(sql);
-                            throw ex;
+                            throw new Exception(schema+"."+tableName+column.getParameterCatalog()+","+column.getParameterCatalogType()+","+column.getParameterName()+":"+ex.getMessage());
                         }
 
                         jdbcFields = getMetaFields(resultSetMetaData);
@@ -1292,6 +1292,45 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 if (pos < 0) {
                                     extraErrorInfo = "sql.param." + column.getParameterCatalog() + "." + column.getParameterCatalogType() + "." + introspectedColumn.getParameterName() + " 未找到参数:" + introspectedColumn.getParameterSqlValue();
                                     throw new Exception(extraErrorInfo);
+                                }
+                                Integer intValue = null;
+                                try {
+                                    intValue = Integer.valueOf(introspectedColumn.getParameterSqlValue());
+                                    if (!introspectedColumn.getParameterSqlValue().equals(intValue+"")) {
+                                        intValue = null;
+                                    }
+                                }catch(Exception ex) {
+                                }
+                                if (introspectedColumn.getParameterSqlValue().equals(intValue+"")) {
+                                    if (pos == 0) {
+                                        extraErrorInfo = "sql.param." + column.getParameterCatalog() + "." + column.getParameterCatalogType() + "." + introspectedColumn.getParameterName() + " 数字不可以在语句起始处:" + introspectedColumn.getParameterSqlValue();
+                                        throw new Exception(extraErrorInfo);
+                                    }
+                                    while(pos > 0) {
+                                        String preChar = oldSql.substring(pos - 1, pos).toLowerCase();
+                                        if(preChar.getBytes("UTF-8").length > 1) {
+                                            extraErrorInfo = "sql.param." + column.getParameterCatalog() + "." + column.getParameterCatalogType() + "." + introspectedColumn.getParameterName() + " 数字不可以出现在中文标识符后:" + introspectedColumn.getParameterSqlValue();
+                                            throw new Exception(extraErrorInfo);
+                                        }
+                                        String validChars = "0123456789abcdefghijklmnopqrstuvwxyz_#";
+                                        if (validChars.indexOf(preChar) >= 0) {
+                                            extraErrorInfo = "sql.param." + column.getParameterCatalog() + "." + column.getParameterCatalogType() + "." + introspectedColumn.getParameterName() + " 数字不可以出现在其他数字或标识符后:" + introspectedColumn.getParameterSqlValue();
+                                            throw new Exception(extraErrorInfo);
+                                        }
+                                        pos += introspectedColumn.getParameterSqlValue().length();
+                                        if (pos < oldSql.length() - 1) {
+                                            String nextChar = oldSql.substring(pos, pos+1).toLowerCase();
+                                            if(nextChar.getBytes("UTF-8").length > 1) {
+                                                extraErrorInfo = "sql.param." + column.getParameterCatalog() + "." + column.getParameterCatalogType() + "." + introspectedColumn.getParameterName() + " 数字不可以出现在中文标识符前:" + introspectedColumn.getParameterSqlValue();
+                                                throw new Exception(extraErrorInfo);
+                                            }
+                                            if (validChars.indexOf(nextChar) >= 0) {
+                                                extraErrorInfo = "sql.param." + column.getParameterCatalog() + "." + column.getParameterCatalogType() + "." + introspectedColumn.getParameterName() + " 数字不可以出现在其他数字或标识符前:" + introspectedColumn.getParameterSqlValue();
+                                                throw new Exception(extraErrorInfo);
+                                            }
+                                        }
+                                        pos = oldSql.indexOf(introspectedColumn.getParameterSqlValue(), pos);
+                                    }
                                 }
                                 if (oldSql.indexOf("'" + introspectedColumn.getParameterSqlValue() + "'") >= 0) {
                                     extraErrorInfo = "sql.param." + introspectedColumn.getParameterName() + " 外加单引号后引起歧义";
@@ -1403,7 +1442,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         System.out.println("==== 附加错误 ======================");
                         System.out.println(extraErrorInfo);
                         System.out.println("==========================");
-                        throw new Exception("!!! === sql错误! "+tableName+","+column.getParameterCatalog()+"."+column.getParameterCatalogType()+", "+column.getParameterName());
+                        throw new Exception("!!! === sql错误! "+tableName+","+column.getParameterCatalog()+"."+column.getParameterCatalogType()+", "+column.getParameterName()+","+extraErrorInfo);
                     }
 
                 }
@@ -1575,6 +1614,21 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                             if (key.startsWith("api.request_for_sql.")) {
                                 String sqlMethodName = key.replace("api.request_for_sql.", "");
 
+                                if (!CollectionUtils.isEmpty(dynTemplate.getExtraInfoMap())) {
+                                    List<IntrospectedColumn> columns = introspectedTable.getParameterColumns().get("sql."+sqlMethodName);
+                                    if (CollectionUtils.isEmpty(columns)) {
+                                        System.err.println("miss sql."+key);
+                                        continue;
+                                    }
+                                    IntrospectedColumn column = columns.get(0);
+                                    if ("sql".equals(column.getParameterCatalog())) {
+                                        if ("0".equals(dynTemplate.getExtraInfoMap().get("is_interface")+"")) {
+                                            if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
                                 String fileName = getCompilationUnits(introspectedTable, dynTemplate.getName(), dynTemplate, "", sqlMethodName, _processInstance, _processBodyToken, _processToken);
                                 fileName = fileName.replaceAll(System.lineSeparator(), "");
 

@@ -34,9 +34,9 @@ public class BaseRequest {
     @JSONField(name = "page_no")
     protected Integer pageNo;
 
-    @JsonProperty("sessionid")
-    @JSONField(name = "sessionid")
-    private String sessionid;
+    @JsonProperty("session_id")
+    @JSONField(name = "session_id")
+    private String sessionId;
 
     @JsonProperty("client_timestamp")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
