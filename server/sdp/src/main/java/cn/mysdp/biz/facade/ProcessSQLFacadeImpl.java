@@ -1172,6 +1172,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         }catch(Exception ex) {
                             ex.printStackTrace();
                             System.out.println("!!! invalid sql");
+                            throw ex;
                         }
 
                         sql = column.getParameterSql();
@@ -1254,6 +1255,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 introspectedColumn.setParameterName(columnName);
                                 introspectedColumn.setParameterSql("");
                                 introspectedColumn.setParameterSqlValue("");
+                            }
+                            if ("java.sql.Timestamp".equals(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
+                                introspectedColumn.setFullyQualifiedJavaType(new FullyQualifiedJavaType("java.util.Date"));
                             }
                             if (!StringUtils.isEmpty(columnComment)) {
                                 introspectedColumn.setRemarks(columnComment);
@@ -1442,7 +1446,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         System.out.println("==== 附加错误 ======================");
                         System.out.println(extraErrorInfo);
                         System.out.println("==========================");
-                        throw new Exception("!!! === sql错误! "+tableName+","+column.getParameterCatalog()+"."+column.getParameterCatalogType()+", "+column.getParameterName()+","+extraErrorInfo);
+                        throw new Exception("!!! === sql错误! "+tableName+","+column.getParameterCatalog()+"."+column.getParameterCatalogType()+", "+column.getParameterName()+","+extraErrorInfo+",ex:"+ex.getMessage());
                     }
 
                 }
@@ -1564,7 +1568,14 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                     dynTemplate.setExtraInfoMap(new HashMap<>());
                     if (!StringUtils.isEmpty(item.getExtraInfo())) {
-                        JSONObject extraInfo = JSON.parseObject(item.getExtraInfo());
+                        JSONObject extraInfo;
+                        try {
+                            extraInfo = JSON.parseObject(item.getExtraInfo());
+                        }catch(Exception ex) {
+                            System.out.println(item.getExtraInfo());
+                            ex.printStackTrace();
+                            throw new Exception("template.extra_info非法："+item.getProjectName()+","+item.getName());
+                        }
                         for(String jsonKey: extraInfo.keySet()) {
                             dynTemplate.getExtraInfoMap().put(jsonKey, extraInfo.get(jsonKey));
                         }
