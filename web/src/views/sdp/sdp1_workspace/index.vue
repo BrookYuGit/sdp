@@ -134,6 +134,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
 
   import { fixBlankFileds } from '@/utils'
@@ -544,6 +545,52 @@
               id: null,
               workspace_name: null,
             }))
+            let root_path_common = ''
+            let root_path_common_char_index = 0
+            for ( let root_path_common_char_index = 0; root_path_common_char_index < 200; root_path_common_char_index++) {
+              let root_path_common_last_char = undefined
+              let isDiff = false
+              for(let project in datas['sdp_project']) {
+                let root_path = datas['sdp_project'][project].root_path
+                if (!root_path || root_path.indexOf('(root)') == 0) {
+                  isDiff = true;
+                  continue;
+                }
+                if (root_path_common_char_index >= root_path.length) {
+                  isDiff = true;
+                  break;
+                }
+                let current_char = root_path.substring(root_path_common_char_index, root_path_common_char_index + 1);
+                if (root_path_common_last_char === undefined) {
+                  root_path_common_last_char = current_char
+                } else {
+                  if (root_path_common_last_char != current_char) {
+                    isDiff = true;
+                    break;
+                  }
+                }
+              }
+              if (isDiff) {
+                break;
+              } else {
+                root_path_common += root_path_common_last_char
+              }
+            }
+            console.log('root_path_common', root_path_common)
+            if (root_path_common) {
+              let last_char = root_path_common.substring(root_path_common.length - 1)
+              let more_char = ''
+              if (last_char == '/' || last_char == '\\') {
+                more_char = last_char
+              }
+              datas['sdp_project'] = datas['sdp_project'].map( item => {
+                let root_path = item.root_path
+                if (root_path && root_path.indexOf(root_path_common) == 0) {
+                  item.root_path = '(root)' + more_char + root_path.substring(root_path_common.length)
+                }
+                return item;
+              })
+            }
             return this.getTemplateList({
               workspace_name: workspaceName,
               query_options: {
