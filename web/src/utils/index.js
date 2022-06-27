@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { storage } from '@/config'
+import { createRequest } from '@/api/request'
 
 /**
  * @author chuzhixin 1204505056@qq.com （不想保留author可删除）
@@ -593,4 +595,187 @@ export function saveAs() {
       null
 
   return saveAs
+}
+
+export function exportWorkspace(workspaceName, with_id) {
+  let datas = {}
+
+  let self = {
+    getProjectList: createRequest('sdp_project', 'list'),
+    getWorkspaceList: createRequest('sdp_workspace', 'list'),
+    getWorkspaceConfigList: createRequest('sdp_workspace_config', 'list'),
+    getTemplateList: createRequest('sdp_template', 'list'),
+    getSqlList: createRequest('sdp_sql', 'list'),
+  }
+
+  return self.getWorkspaceList({
+    name: workspaceName
+  })
+    .then((data) => {
+      datas['sdp_workspace'] = [ {...data.data[0], id: with_id ? data.data[0].id : null, name: null}]
+      return self.getWorkspaceConfigList({
+        workspace_name: workspaceName,
+        query_options: {
+          order_by: [{ workspace_name: 'asc' }, { name: 'asc' }],
+        },
+      })
+        .then((data) => {
+          datas['sdp_workspace_config'] = data.data.map((item) => ({
+            ...item,
+            id: with_id ? item.id : null,
+            workspace_name: null,
+          }))
+          return self.getProjectList({
+            workspace_name: workspaceName,
+            query_options: {
+              order_by: [{ workspace_name: 'asc' }, { name: 'asc' }],
+            },
+          })
+        })
+        .then((data) => {
+          datas['sdp_project'] = data.data.map((item) => ({
+            ...item,
+            id: with_id ? item.id : null,
+            workspace_name: null,
+          }))
+          let root_path_common = ''
+          let root_path_common_char_index = 0
+          for ( let root_path_common_char_index = 0; root_path_common_char_index < 200; root_path_common_char_index++) {
+            let root_path_common_last_char = undefined
+            let isDiff = false
+            for(let project in datas['sdp_project']) {
+              let root_path = datas['sdp_project'][project].root_path
+              if (!root_path || root_path.indexOf('(root)') == 0) {
+                isDiff = true;
+                continue;
+              }
+              if (root_path_common_char_index >= root_path.length) {
+                isDiff = true;
+                break;
+              }
+              let current_char = root_path.substring(root_path_common_char_index, root_path_common_char_index + 1);
+              if (root_path_common_last_char === undefined) {
+                root_path_common_last_char = current_char
+              } else {
+                if (root_path_common_last_char != current_char) {
+                  isDiff = true;
+                  break;
+                }
+              }
+            }
+            if (isDiff) {
+              break;
+            } else {
+              root_path_common += root_path_common_last_char
+            }
+          }
+          console.log('root_path_common', root_path_common)
+          if (root_path_common && !with_id) {
+            let last_char = root_path_common.substring(root_path_common.length - 1)
+            let more_char = ''
+            if (last_char == '/' || last_char == '\\') {
+              more_char = last_char
+            }
+            datas['sdp_project'] = datas['sdp_project'].map( item => {
+              let root_path = item.root_path
+              if (root_path && root_path.indexOf(root_path_common) == 0) {
+                item.root_path = '(root)' + more_char + root_path.substring(root_path_common.length)
+              }
+              return item;
+            })
+          }
+          return self.getTemplateList({
+            workspace_name: workspaceName,
+            query_options: {
+              order_by: [
+                { workspace_name: 'asc' },
+                { project_name: 'asc' },
+                { name: 'asc' },
+                { file_type: 'asc' },
+                { project: 'asc' },
+                { package_name: 'asc' },
+              ],
+            },
+          })
+        })
+        .then((data) => {
+          datas['sdp_template'] = data.data.map((item) => {
+            item = {
+              ...item,
+              id: with_id ? item.id : null,
+              workspace_name: null,
+            }
+            let itemNames = ['file_template', 'remark']
+            itemNames.forEach((itemName) => {
+              let lines = item[itemName]
+              let destLines = []
+              if (lines) {
+                lines = lines.split('\n')
+                for (let line in lines) {
+                  line = lines[line]
+                  destLines.push(line)
+                }
+                item[itemName] = destLines
+              }
+            })
+            itemNames = ['extra_info']
+            itemNames.forEach((itemName) => {
+              let lines = item[itemName]
+              if (lines) {
+                try {
+                  item[itemName] = JSON.parse(lines)
+                } catch (ex) {}
+              }
+            })
+            return item
+          })
+          return self.getSqlList({
+            workspace_name: workspaceName,
+            query_options: {
+              order_by: [
+                { workspace_name: 'asc' },
+                { table_name: 'asc' },
+                { parameter_catalog: 'asc' },
+                { parameter_catalog_type: 'asc' },
+                { name: 'asc' },
+              ],
+            },
+          })
+        })
+        .then((data) => {
+          datas['sdp_sql'] = data.data.map((item) => {
+            item = {
+              ...item,
+              id: with_id ? item.id : null,
+              workspace_name: null,
+            }
+            let itemNames = ['parameter_sql', 'java_imports', 'remarks']
+            itemNames.forEach((itemName) => {
+              let lines = item[itemName]
+              let destLines = []
+              if (lines) {
+                lines = lines.split('\n')
+                for (let line in lines) {
+                  line = lines[line]
+                  destLines.push(line)
+                }
+                item[itemName] = destLines
+              }
+            })
+            itemNames = ['extra_info']
+            itemNames.forEach((itemName) => {
+              let lines = item[itemName]
+              if (lines) {
+                try {
+                  item[itemName] = JSON.parse(lines)
+                } catch (ex) {}
+              }
+            })
+            return item
+          })
+        })
+        .then((data) => {
+          return datas
+        })
+    })
 }

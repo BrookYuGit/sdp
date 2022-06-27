@@ -54,6 +54,9 @@
           <el-button type="primary" @click="handleBatchEdit">
             批量修改
           </el-button>
+          <el-button type="primary" @click="handleUpdateRootPath">
+            设置(root)目录
+          </el-button>
           <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
             删除
           </el-button>
@@ -143,6 +146,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
 
   import { fixBlankFileds } from '@/utils'
@@ -183,6 +187,7 @@
         doExecute: createRequest('sdp_project', 'execute'),
         getProjectList: createRequest('sdp_project', 'list'),
         getWorkspaceList: createRequest('sdp_workspace', 'list'),
+        updateProject: createRequest('sdp_project', 'update'),
         without_history: true,
         window: window,
         useRsa: window.use_rsa,
@@ -368,6 +373,9 @@
           fields,
           doExportExcel
         )
+      },
+      handleUpdateRootPath() {
+        this.initBase('handleUpdateRootPath')
       },
       fetchAllData() {
         this.listLoading = true

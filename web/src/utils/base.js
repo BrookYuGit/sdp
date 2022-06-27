@@ -217,6 +217,52 @@ export default {
     }
     self.$refs['batchEdit'].showEdit(self.selectRows)
   },
+  handleUpdateRootPath(self, doExecute) {
+    let count = 0
+    let split = '/'
+    let found_split = false
+    for(let item in self.selectRows) {
+      item = self.selectRows[item]
+      if (item.root_path) {
+        if (item.root_path.indexOf('(root)') == 0) {
+          count++;
+        }
+        if (item.root_path.indexOf(split) >= 0) {
+          found_split = true
+        }
+      }
+    }
+    if (!found_split) {
+      split = '\\'
+    }
+    if (count == 0) {
+      self.$baseMessage('必须选择需要修改的数据，或所选数据无需更新目录', 'error')
+      return
+    }
+    self.$prompt('请输入目录', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+    })
+      .then(({ value }) => {
+        value = value.trim()
+        if (value) {
+          for(let item in self.selectRows) {
+            item = self.selectRows[item]
+            if (item.root_path && item.root_path.indexOf('(root)') == 0) {
+              let path = item.root_path.substring('(root)'.length)
+              if (path.indexOf(split) == 0 && value.substring(value.length - 1) == split) {
+                item.root_path = value + path.substring(1)
+              } else if (path.indexOf(split) != 0 && value.substring(value.length - 1) != split) {
+                item.root_path = value + split + path
+              } else {
+                item.root_path = value + path
+              }
+            }
+            self.updateProject(item)
+          }
+        }
+      })
+  },
   handleExecute(self, doExecute) {
     let workspaceName = self.queryForm.workspace_name
     if (!workspaceName) {

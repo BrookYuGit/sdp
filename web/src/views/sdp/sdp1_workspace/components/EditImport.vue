@@ -66,7 +66,9 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
+  import { exportWorkspace } from '@/utils'
 
   export default {
     name: 'SdpWorkspaceImport',
@@ -80,6 +82,11 @@
         addProject: createRequest('sdp_project', 'add'),
         addTemplate: createRequest('sdp_template', 'add'),
         addSql: createRequest('sdp_sql', 'add'),
+        updateWorkspace: createRequest('sdp_workspace', 'update'),
+        updateWorkspaceConfig: createRequest('sdp_workspace_config', 'update'),
+        updateProject: createRequest('sdp_project', 'update'),
+        updateTemplate: createRequest('sdp_template', 'update'),
+        updateSql: createRequest('sdp_sql', 'update'),
         show: false,
         loading: false,
         dialogVisible: false,
@@ -121,6 +128,30 @@
       handleRemove(file, fileList) {
         this.fileList = fileList
       },
+      getKey(item, workspaceName, tableName, keys) {
+        let key_ori = ''
+        for(let key in keys) {
+          key = keys[key]
+          if (!item[key]) {
+            if (tableName == 'sdp_workspace' && key == 'name') {
+              key_ori+=workspaceName+';'
+              continue;
+            } else if (tableName != 'sdp_workspace' && key == 'workspace_name') {
+              key_ori+=workspaceName+';'
+              continue;
+            } else if (tableName == 'sdp_sql' && key == 'name' && item.parameter_catalog == 'sql') {
+              key_ori+=';'
+              continue;
+            } else {
+              console.error('miss key:'+key+','+tableName,item)
+              key_ori = ''
+              break;
+            }
+          }
+          key_ori+=item[key]+';'
+        }
+        return key_ori
+      },
       submitSync() {
         let self = this
         if (this.fileList.length < 1) {
@@ -132,98 +163,132 @@
           return
         }
 
-        for (let file in this.fileList) {
-          file = self.fileList[file]
-          var reader = new FileReader()
-          reader.readAsText(file.raw)
-          reader.onload = function () {
-            self.progress = '正在分析:' + file.name
-            self.loading = true
-            self.count = 0
 
-            self.last_error_data = undefined
+        let workspaceName_dest = this.form.workspace_name
+        exportWorkspace(workspaceName_dest, 'with_id')
+          .then((datas_ori) => {
+            for (let file in this.fileList) {
+              file = self.fileList[file]
+              var reader = new FileReader()
+              reader.readAsText(file.raw)
+              reader.onload = function () {
+                self.progress = '正在分析:' + file.name
+                self.loading = true
+                self.count = 0
 
-            let datas = JSON.parse(this.result)
-            self.list = []
-            for (let workspaceName in datas) {
-              let data = [
-                { addWorkspace: 'sdp_workspace' },
-                {
-                  addWorkspaceConfig: 'sdp_workspace_config',
-                },
-                { addProject: 'sdp_project' },
-                { addTemplate: 'sdp_template' },
-                { addSql: 'sdp_sql' },
-              ]
-              for (let dataItem in data) {
-                dataItem = data[dataItem]
-                for (let method in dataItem) {
-                  let tableName = dataItem[method]
-                  let dataList = datas[workspaceName][tableName]
-                  for (let item in dataList) {
-                    item = {
-                      _method: method,
-                      _table_name: tableName,
-                      _count: dataList.length,
-                      ...dataList[item],
-                    }
-                    delete item.id
-                    if ('addSql' == method) {
-                      item = { ...item, disable_auto_param: 1 }
-                    }
-                    if ('addWorkspace' == method) {
-                      item = { ...item, name: self.form.workspace_name }
-                    } else {
-                      item = {
-                        ...item,
-                        workspace_name: self.form.workspace_name,
+                self.last_error_data = undefined
+
+                let datas = JSON.parse(this.result)
+                self.list = []
+                for (let workspaceName in datas) {
+                  let data = [
+                    { addWorkspace: { table: 'sdp_workspace', keys: 'name' }},
+                    { addWorkspaceConfig: { table: 'sdp_workspace_config', keys: 'workspace_name,name'}},
+                    { addProject: { table: 'sdp_project', keys: 'workspace_name,name' }},
+                    { addTemplate: { table: 'sdp_template', keys: 'workspace_name, project_name,name,file_type,project,package_name' }},
+                    { addSql: { table: 'sdp_sql', keys: 'workspace_name,table_name, parameter_catalog,parameter_catalog_type,name' }},
+                  ]
+                  for (let dataItem in data) {
+                    dataItem = data[dataItem]
+                    for (let method in dataItem) {
+                      let tableName = dataItem[method].table
+                      let keys = dataItem[method].keys.split(',').map( item => item.trim())
+                      let dataList = datas[workspaceName][tableName]
+                      let dataList_ori_map = {}
+                      if (datas_ori && datas_ori[tableName]) {
+                        let dataList_ori = datas_ori[tableName]
+                        for (let item in dataList_ori) {
+                          item = {
+                            _method: method,
+                            _table_name: tableName,
+                            _count: dataList.length,
+                            ...dataList_ori[item],
+                          }
+                          let key_ori = self.getKey(item, workspaceName_dest, tableName, keys)
+                          if (key_ori) {
+                            dataList_ori_map[key_ori] = item
+                          }
+                        }
+                      }
+                      for (let item in dataList) {
+                        item = {
+                          _method: method,
+                          _table_name: tableName,
+                          _count: dataList.length,
+                          ...dataList[item],
+                        }
+                        let key = self.getKey(item, workspaceName_dest, tableName, keys)
+                        let item_ori = ''
+                        if (key) {
+                          item_ori = dataList_ori_map[key]
+                        }
+                        delete item.id
+                        if (item_ori) {
+                          item.id = item_ori.id
+                          item._method = method.replace('add', 'update')
+                          if (tableName == 'sdp_project' && item.root_path && item_ori.root_path && item_ori.root_path.indexOf('(root)') != 0) {
+                            item.root_path = item_ori.root_path
+                          }
+                        }
+                        if ('addSql' == method) {
+                          item = { ...item, disable_auto_param: 1 }
+                        }
+                        if ('addWorkspace' == method) {
+                          item = { ...item, name: self.form.workspace_name }
+                        } else {
+                          item = {
+                            ...item,
+                            workspace_name: self.form.workspace_name,
+                          }
+                        }
+                        let itemNamesObject = {
+                          addTemplate: ['file_template', 'remark'],
+                          addSql: ['parameter_sql', 'java_imports', 'remarks'],
+                        }
+                        if (method in itemNamesObject) {
+                          let itemNames = itemNamesObject[method]
+                          itemNames.forEach((itemName) => {
+                            try {
+                              let lines = item[itemName]
+                              if (lines) {
+                                let destLines = ''
+                                lines.forEach((line) => {
+                                  destLines += line + '\n'
+                                })
+                                item[itemName] = destLines
+                              }
+                            } catch (ex) {}
+                          })
+                        }
+                        itemNamesObject = {
+                          addTemplate: ['extra_info'],
+                          addSql: ['extra_info'],
+                        }
+                        if (method in itemNamesObject) {
+                          let itemNames = itemNamesObject[method]
+                          itemNames.forEach((itemName) => {
+                            try {
+                              let lines = item[itemName]
+                              if (lines) {
+                                item[itemName] = JSON.stringify(lines, null, 2)
+                              }
+                            } catch (ex) {}
+                          })
+                        }
+                        self.list.push(item)
                       }
                     }
-                    let itemNamesObject = {
-                      addTemplate: ['file_template', 'remark'],
-                      addSql: ['parameter_sql', 'java_imports', 'remarks'],
-                    }
-                    if (method in itemNamesObject) {
-                      let itemNames = itemNamesObject[method]
-                      itemNames.forEach((itemName) => {
-                        try {
-                          let lines = item[itemName]
-                          if (lines) {
-                            let destLines = ''
-                            lines.forEach((line) => {
-                              destLines += line + '\n'
-                            })
-                            item[itemName] = destLines
-                          }
-                        } catch (ex) {}
-                      })
-                    }
-                    itemNamesObject = {
-                      addTemplate: ['extra_info'],
-                      addSql: ['extra_info'],
-                    }
-                    if (method in itemNamesObject) {
-                      let itemNames = itemNamesObject[method]
-                      itemNames.forEach((itemName) => {
-                        try {
-                          let lines = item[itemName]
-                          if (lines) {
-                            item[itemName] = JSON.stringify(lines, null, 2)
-                          }
-                        } catch (ex) {}
-                      })
-                    }
-                    self.list.push(item)
                   }
+                  break
                 }
+                self.list_index = 0
+                self.fire()
               }
               break
             }
-            self.list_index = 0
-            self.fire()
-          }
-          break
-        }
+
+          })
+
       },
       fire() {
         let self = this
