@@ -612,7 +612,11 @@ export function exportWorkspace(workspaceName, with_id) {
     name: workspaceName
   })
     .then((data) => {
-      datas['sdp_workspace'] = [ {...data.data[0], id: with_id ? data.data[0].id : null, name: null}]
+      datas['sdp_workspace'] = data.data.map((item) => ({
+        ...item,
+        id: with_id ? item.id : null,
+        name: null,
+      }))
       return self.getWorkspaceConfigList({
         workspace_name: workspaceName,
         query_options: {
