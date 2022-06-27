@@ -15,6 +15,7 @@
               filterable
               style="width: 100%"
               :clearable="true"
+              @change="onWorkspaceChange"
             >
               <el-option
                 v-for="item in workspaceList"
@@ -340,6 +341,9 @@
             console.error('not found cb:', cb, this.base, this.$refs, this)
           }
         })
+      },
+      onWorkspaceChange(a) {
+        this.initBase('onWorkspaceChange', a)
       },
       fixColumns(a) {
         this.initBase('fixColumns', a)

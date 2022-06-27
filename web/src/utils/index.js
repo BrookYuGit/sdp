@@ -670,10 +670,11 @@ export function exportWorkspace(workspaceName, with_id) {
             if (isDiff) {
               break;
             } else {
-              root_path_common += root_path_common_last_char
+              if(root_path_common_last_char) {
+                root_path_common += root_path_common_last_char
+              }
             }
           }
-          console.log('root_path_common', root_path_common)
           if (root_path_common && !with_id) {
             let last_char = root_path_common.substring(root_path_common.length - 1)
             let more_char = ''

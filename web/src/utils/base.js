@@ -333,6 +333,11 @@ export default {
       }
     )
   },
+  onWorkspaceChange(self, v) {
+    console.log('onWorkspaceChange', self, v)
+    setStorageValue('workspace_name', v)
+    //self.queryForm.workspace_name = v
+  },
   onRowClick(self, a) {
     if (self.selectRows.length > 1) {
       let found = false
@@ -459,6 +464,8 @@ export default {
   },
   handleQuery(self) {
     let queryForm = { ...self.queryForm }
+    setStorageValue('workspace_name', queryForm.workspace_name)
+    delete queryForm.workspace_name
     setStorageValue(
       'query_form_' + self.module,
       JSON.stringify(fixBlankFileds(queryForm))
@@ -487,6 +494,7 @@ export default {
     let queryForm =
       JSON.parse(getStorageValue('query_form_' + self.module)) || ''
     if (queryForm) {
+      queryForm.workspace_name = getStorageValue('workspace_name')
       let notFound = false
       for (let p in self.queryForm) {
         if (p == 'query_options') {
@@ -504,6 +512,8 @@ export default {
           self.queryForm[p] = queryForm[p]
         }
       }
+    } else {
+      self.queryForm.workspace_name = getStorageValue('workspace_name')
     }
     window.gridConfig_pageSize = parseInt(
       getStorageValue('gridConfig_pageSize') || '10'
