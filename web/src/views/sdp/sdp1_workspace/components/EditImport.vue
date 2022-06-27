@@ -134,21 +134,24 @@
           key = keys[key]
           if (!item[key]) {
             if (tableName == 'sdp_workspace' && key == 'name') {
-              key_ori+=workspaceName+';'
+              key_ori+=key+'='+workspaceName+';'
               continue;
             } else if (tableName != 'sdp_workspace' && key == 'workspace_name') {
-              key_ori+=workspaceName+';'
+              key_ori+=key+'='+workspaceName+';'
               continue;
             } else if (tableName == 'sdp_sql' && key == 'name' && item.parameter_catalog == 'sql') {
-              key_ori+=';'
+              key_ori+=key+'='+';'
+              continue;
+            } else if (tableName == 'sdp_template' && key == 'name' && item.name === '') {
+              key_ori+=key+'='+';'
               continue;
             } else {
               console.error('miss key:'+key+','+tableName,item)
-              key_ori = ''
-              break;
+              key_ori+=key+'='+';'
+              continue;
             }
           }
-          key_ori+=item[key]+';'
+          key_ori+=key+'='+item[key]+';'
         }
         return key_ori
       },
@@ -221,13 +224,16 @@
                         let item_ori = ''
                         if (key) {
                           item_ori = dataList_ori_map[key]
+                          item.sdp_key = key
                         }
                         delete item.id
                         if (item_ori) {
                           item.id = item_ori.id
                           item._method = method.replace('add', 'update')
-                          if (tableName == 'sdp_project' && item.root_path && item_ori.root_path && item_ori.root_path.indexOf('(root)') != 0) {
-                            item.root_path = item_ori.root_path
+                          if (tableName == 'sdp_project' && item_ori.root_path && item_ori.root_path.indexOf('(root)') != 0) {
+                            delete item.root_path
+                          } else if (tableName == 'sdp_workspace') {
+                            delete item.db_password
                           }
                         }
                         if ('addSql' == method) {
@@ -316,8 +322,11 @@
           })
           .catch((err) => {
             console.log('err', err)
+            console.log('item', item)
             self.loading = false
             self.progress += '\n错误：' + JSON.stringify(err)
+            self.progress += '\n方法：' + method
+            self.progress += '\n数据：' + JSON.stringify(item)
             self.$emit('fetch-data')
           })
       },

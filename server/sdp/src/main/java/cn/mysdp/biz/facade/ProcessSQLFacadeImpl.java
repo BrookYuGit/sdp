@@ -157,10 +157,10 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
         String dbPassword = request.getDbPassword();
 
-        dbPassword = dbPassword.trim();
-
         if (StringUtils.isEmpty(dbPassword)) {
             dbPassword = decryptDbPassword(record);
+        } else {
+            dbPassword = dbPassword.trim();
         }
 
         String dbHost = request.getDbHost();
