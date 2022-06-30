@@ -80,4 +80,8 @@ public class SdpWorkspaceWebBaseController extends BaseController {
         return facade.testConnect(request);
     }
 
+    public String fixJsonObject(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BaseNameRequest request) throws Exception {
+        return facade.fixJsonObject(request);
+    }
+
 }

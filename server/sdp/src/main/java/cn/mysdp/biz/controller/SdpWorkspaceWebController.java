@@ -108,4 +108,11 @@ public class SdpWorkspaceWebController extends SdpWorkspaceWebCustomController {
         return super.testConnect(httpServletRequest, httpServletResponse, request);
     }
 
+    @ResponseBody
+    @PostMapping("/fix_json_object")
+    public String fixJsonObject(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody BaseNameRequest request) throws Exception {
+        fixRequest(request);
+        return super.fixJsonObject(httpServletRequest, httpServletResponse, request);
+    }
+
 }

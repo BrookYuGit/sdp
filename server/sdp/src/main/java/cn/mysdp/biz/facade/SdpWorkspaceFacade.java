@@ -57,4 +57,6 @@ public interface SdpWorkspaceFacade {
 
     String testConnect(SdpWorkspaceUpdateRequest request) throws Exception;
 
+    String fixJsonObject(BaseNameRequest request) throws Exception;
+
 }

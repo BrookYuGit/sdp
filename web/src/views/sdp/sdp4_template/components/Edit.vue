@@ -126,7 +126,11 @@
           inactive-color="#e4e7ed"
         ></el-switch>
       </el-form-item>
-      <el-form-item :label="getLabel('extra_info')" prop="extra_info">
+      <el-form-item
+        :label="getLabel('extra_info')"
+        prop="extra_info"
+        :rules="rules.extra_info"
+      >
         <el-input
           v-model="form.extra_info"
           type="textarea"
@@ -154,6 +158,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
   import { getForm } from '@/utils'
 
@@ -184,7 +189,22 @@
         getWorkspaceConfigList: createRequest('sdp_workspace_config', 'list'),
         form: {},
         form_ori: {},
-        rules: {},
+        rules: {
+          extra_info: {
+            message: '非JSON对象',
+            validator: (rule, value, callback) => {
+              if (value) {
+                try {
+                  let a = JSON.parse(value)
+                }catch(ex) {
+                  callback('非JSON对象')
+                }
+              }
+              return callback();
+            },
+            trigger: 'blur'
+          },
+        },
         projectList: [],
         packageNameList: [],
         title: '',
@@ -254,10 +274,10 @@
         return item.label + '(' + item.prop + ')'
       },
       showEdit(row) {
-        console.log('row', row)
+        // console.log('row', row)
         if (!row || !row.id) {
           this.title = '添加'
-          console.log('row', row)
+          // console.log('row', row)
           this.form_ori = Object.assign({}, {})
           this.form = Object.assign(
             {},

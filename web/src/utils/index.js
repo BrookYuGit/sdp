@@ -606,6 +606,7 @@ export function exportWorkspace(workspaceName, with_id) {
     getWorkspaceConfigList: createRequest('sdp_workspace_config', 'list'),
     getTemplateList: createRequest('sdp_template', 'list'),
     getSqlList: createRequest('sdp_sql', 'list'),
+    fixJsonObject: createRequest('sdp_workspace', 'fix_json_object'),
   }
 
   return self.getWorkspaceList({
@@ -725,11 +726,14 @@ export function exportWorkspace(workspaceName, with_id) {
             })
             itemNames = ['extra_info']
             itemNames.forEach((itemName) => {
-              let lines = item[itemName]
-              if (lines) {
+              if (item[itemName]) {
                 try {
-                  item[itemName] = JSON.parse(lines)
-                } catch (ex) {}
+                  item[itemName] = JSON.parse(item[itemName])
+                } catch (ex) {
+                  console.error('ex', ex)
+                  console.error('extra_info非法', item)
+                  throw new Error(ex+','+itemName+'非JSON：'+item[itemName]+',详细记录：'+JSON.stringify(item))                  
+                }
               }
             })
             return item
@@ -769,11 +773,14 @@ export function exportWorkspace(workspaceName, with_id) {
             })
             itemNames = ['extra_info']
             itemNames.forEach((itemName) => {
-              let lines = item[itemName]
-              if (lines) {
+              if (item[itemName]) {
                 try {
-                  item[itemName] = JSON.parse(lines)
-                } catch (ex) {}
+                  item[itemName] = JSON.parse(item[itemName])
+                } catch (ex) {
+                  console.error('ex', ex)
+                  console.error('extra_info非法', item)
+                  throw new Error(ex+','+itemName+'非JSON：'+item[itemName]+',详细记录：'+JSON.stringify(item))                  
+                }
               }
             })
             return item

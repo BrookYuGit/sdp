@@ -334,7 +334,7 @@ export default {
     )
   },
   onWorkspaceChange(self, v) {
-    console.log('onWorkspaceChange', self, v)
+    // console.log('onWorkspaceChange', self, v)
     setStorageValue('workspace_name', v)
     //self.queryForm.workspace_name = v
   },

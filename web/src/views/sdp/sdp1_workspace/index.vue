@@ -520,7 +520,6 @@
         self.listLoading = true
         exportWorkspace(workspaceName)
           .then((datas) => {
-            console.log('exportWorkspace', datas)
             self.listLoading = false
             let result = {}
             result[workspaceName] = datas
@@ -530,6 +529,10 @@
               type: 'text/plain;charset=utf-8',
             })
             saveAs()(file)
+          })
+          .catch(ex => {
+            self.listLoading = false
+            self.$baseMessage('无法导出,错误：'+ex)
           })
 
       },

@@ -274,9 +274,9 @@
                           let itemNames = itemNamesObject[method]
                           itemNames.forEach((itemName) => {
                             try {
-                              let lines = item[itemName]
-                              if (lines) {
-                                item[itemName] = JSON.stringify(lines, null, 2)
+                              if (item[itemName]) {
+                                item[itemName] = JSON.stringify(item[itemName], null, 2)
+                                // console.log('extra_info', item[itemName], itemName, item)
                               }
                             } catch (ex) {}
                           })

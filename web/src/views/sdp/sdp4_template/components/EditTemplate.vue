@@ -444,7 +444,7 @@
           }
           ret += c
         }
-        console.log('ret', ret)
+        // console.log('ret', ret)
         return ret
       },
       translate() {
@@ -488,7 +488,7 @@
         tokens = tokens.sort(function compareFunction(p1, p2) {
           return p2.name.length - p1.name.length
         })
-        console.log('tokens', tokens)
+        // console.log('tokens', tokens)
         for (let token in tokens) {
           token = tokens[token]
           let loop = 0
@@ -629,7 +629,7 @@
         tokens = tokens.sort(function compareFunction(p1, p2) {
           return p2.name.length - p1.name.length
         })
-        console.log('tokens', tokens)
+        // console.log('tokens', tokens)
         for (let token in tokens) {
           token = tokens[token]
           let loop = 0
@@ -895,20 +895,20 @@
             this.form.file_template = this.$refs.cm.cminstance.getValue()
             let form = getForm(this.form, this.form_ori)
             if (!form) {
-              if (this.form.file_template) {
-                console.log(
-                  'this.form.file_template',
-                  this.form.file_template.length,
-                  this.form.file_template.substring(0, 100)
-                )
-              }
-              if (this.form_ori.file_template) {
-                console.log(
-                  'this.form_ori.file_template',
-                  this.form_ori.file_template.length,
-                  this.form_ori.file_template.substring(0, 100)
-                )
-              }
+              // if (this.form.file_template) {
+              //   console.log(
+              //     'this.form.file_template',
+              //     this.form.file_template.length,
+              //     this.form.file_template.substring(0, 100)
+              //   )
+              // }
+              // if (this.form_ori.file_template) {
+              //   console.log(
+              //     'this.form_ori.file_template',
+              //     this.form_ori.file_template.length,
+              //     this.form_ori.file_template.substring(0, 100)
+              //   )
+              // }
               this.$baseMessage('无改动', 'error')
               return
             }

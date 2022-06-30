@@ -8,6 +8,8 @@ import cn.mysdp.biz.repository.*;
 import cn.mysdp.utils.ConnectUtil;
 import cn.mysdp.utils.SplitUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.generator.api.ConnectionFactory;
 import org.mybatis.generator.api.IntrospectedColumn;
@@ -615,5 +617,11 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
             throw new Exception("无法连接到数据库：数据库："+workspace.getDbHost()+":"+workspace.getDbPort()+"@"+workspace.getDbUsername()+":"+workspace.getDbPassword()+"("+ex.getMessage()+")");
         }
         return "";
+    }
+
+    @Override
+    public String fixJsonObject(BaseNameRequest request) throws Exception {
+        JSONObject obj = JSONObject.parseObject(request.getName(), Feature.AllowUnQuotedFieldNames, Feature.AllowSingleQuotes);
+        return JSONObject.toJSONString(obj);
     }
 }

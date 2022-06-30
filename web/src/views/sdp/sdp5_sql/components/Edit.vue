@@ -544,7 +544,7 @@
               extra_info.is_frontend_list = form.is_frontend_list
             }
             form.extra_info = JSON.stringify(extra_info)
-            console.log('form', form)
+            // console.log('form', form)
             let func = this.doEdit
             if (this.title == '添加') {
               func = this.doAdd

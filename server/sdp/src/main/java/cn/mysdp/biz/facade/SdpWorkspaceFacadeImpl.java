@@ -118,4 +118,9 @@ public class SdpWorkspaceFacadeImpl extends SdpWorkspaceFacadeCustomImpl impleme
         return super.testConnect(request);
     }
 
+    @Override
+    public String fixJsonObject(BaseNameRequest request) throws Exception {
+        return super.fixJsonObject(request);
+    }
+
 }

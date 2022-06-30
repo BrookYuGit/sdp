@@ -374,4 +374,9 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
         throw createFailException("not implement");
     }
 
+    @Override
+    public String fixJsonObject(BaseNameRequest request) throws Exception {
+        throw createFailException("not implement");
+    }
+
 }
