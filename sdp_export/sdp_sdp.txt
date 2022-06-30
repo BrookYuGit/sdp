@@ -102,7 +102,7 @@
         "id": null,
         "name": "api",
         "remark": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
-        "root_path": "D:\\git\\sdp\\server\\sdp",
+        "root_path": "(root)\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": null
       },
@@ -110,7 +110,7 @@
         "id": null,
         "name": "biz",
         "remark": "",
-        "root_path": "D:\\git\\sdp\\server\\sdp",
+        "root_path": "(root)\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": null
       },
@@ -118,15 +118,23 @@
         "id": null,
         "name": "dao",
         "remark": "",
-        "root_path": "D:\\git\\sdp\\server\\sdp",
+        "root_path": "(root)\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
+        "workspace_name": null
+      },
+      {
+        "id": null,
+        "name": "vue",
+        "remark": "",
+        "root_path": "(root)\\web",
+        "tables": "",
         "workspace_name": null
       },
       {
         "id": null,
         "name": "web",
         "remark": "",
-        "root_path": "D:\\git\\sdp\\server\\sdp",
+        "root_path": "(root)\\server\\sdp",
         "tables": "sdp_workspace,sdp_workspace_config, sdp_project,sdp_template,sdp_sql,sdp_history",
         "workspace_name": null
       }
@@ -3490,6 +3498,27 @@
         "name": "request",
         "parameter_catalog": "api.facade",
         "parameter_catalog_type": "clone_workspace",
+        "parameter_is_export_excel": 0,
+        "parameter_is_import_excel": 0,
+        "parameter_mode": "append",
+        "parameter_sql_issimple": 0,
+        "parameter_sql_return_nolist": 0,
+        "parameter_sql_value": "",
+        "remarks": "",
+        "sort_no": 0,
+        "table_name": "sdp_workspace",
+        "workspace_name": null
+      },
+      {
+        "extra_info": {},
+        "id": null,
+        "is_disable": 0,
+        "java_imports": "",
+        "java_return_type": "String",
+        "java_type": "BaseNameRequest",
+        "name": "request",
+        "parameter_catalog": "api.facade",
+        "parameter_catalog_type": "fix_json_object",
         "parameter_is_export_excel": 0,
         "parameter_is_import_excel": 0,
         "parameter_mode": "append",
