@@ -18,7 +18,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ExtendedServletRequ
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @ClassName:
@@ -80,6 +83,43 @@ public class GlobalAop {
         Object[] arguments = joinPoint.getArgs();
 
         for (int i = 0; i < arguments.length; i++) {
+            if (arguments[i] instanceof HttpServletRequest) {
+                HttpServletRequest httpServletRequest = (HttpServletRequest) arguments[i];
+                Set<String> ipRet = new TreeSet<>();
+                {
+                    String ip = httpServletRequest.getHeader("x-forwarded-for");
+                    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                    } else {
+                        ipRet.add(ip);
+                    }
+                    ip = httpServletRequest.getHeader("Proxy-Client-IP");
+                    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                    } else {
+                        ipRet.add(ip);
+                    }
+                    ip = httpServletRequest.getHeader("WL-Proxy-Client-IP");
+                    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                    }else {
+                        ipRet.add(ip);
+                    }
+                    ip = httpServletRequest.getRemoteAddr();
+                    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+                    }else{
+                        ipRet.add(ip);
+                    }
+                }
+                for(String ip: ipRet) {
+                    if ("0:0:0:0:0:0:0:1".equals(ip)) {
+                        continue;
+                    }
+                    if ("127.0.0.1".equals(ip)) {
+                        continue;
+                    }
+                    throw new Exception("仅可从本机访问");
+                }
+
+            }
             if (arguments[i] instanceof ServletRequest || arguments[i] instanceof ServletResponse
                     || arguments[i] instanceof MultipartFile || arguments[i] instanceof ExtendedServletRequestDataBinder) {
                 continue;
