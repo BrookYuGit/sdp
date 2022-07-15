@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <el-dialog
     v-dialogDrag
@@ -278,6 +279,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
   import { getForm } from '@/utils'
 
@@ -390,6 +392,20 @@
               'parameter_sql_value_ignore',
               'parameter_without_test',
               'java_imports',
+              'request_json_name',
+            ].indexOf(p) >= 0
+          ) {
+            return true
+          }
+          return false
+        }
+        if (form.parameter_catalog == 'sql.response') {
+          if (
+            [
+              'name',
+              'java_type',
+              'java_imports',
+              'response_json_name',
             ].indexOf(p) >= 0
           ) {
             return true

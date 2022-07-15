@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <el-dialog
     v-dialogDrag
@@ -203,6 +204,19 @@
         ></el-switch>
       </el-form-item>
       <el-form-item
+        v-if="dataChangeCount > 0 && testDisabled(form, 'is_nolist')"
+        :label="getLabel('is_nolist')"
+        prop="is_nolist"
+      >
+        <el-switch
+          v-model="form.is_nolist"
+          :active-value="1"
+          :inactive-value="0"
+          active-color="#13ce66"
+          inactive-color="#e4e7ed"
+        ></el-switch>
+      </el-form-item>
+      <el-form-item
         v-if="dataChangeCount > 0 && testDisabled(form, 'is_frontend_list')"
         :label="getLabel('is_frontend_list')"
         prop="is_frontend_list"
@@ -214,6 +228,36 @@
           active-color="#13ce66"
           inactive-color="#e4e7ed"
         ></el-switch>
+      </el-form-item>
+      <el-form-item
+        v-if="dataChangeCount > 0 && testDisabled(form, 'url')"
+        :label="getLabel('url')"
+        prop="url"
+      >
+        <el-input
+          v-model.trim="form.url"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        v-if="dataChangeCount > 0 && testDisabled(form, 'request_json_name')"
+        :label="getLabel('request_json_name')"
+        prop="request_json_name"
+      >
+        <el-input
+          v-model.trim="form.request_json_name"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        v-if="dataChangeCount > 0 && testDisabled(form, 'response_json_name')"
+        :label="getLabel('response_json_name')"
+        prop="response_json_name"
+      >
+        <el-input
+          v-model.trim="form.response_json_name"
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
       <el-form-item
         v-if="dataChangeCount > 0 && testDisabled(form, 'parameter_nullable')"
@@ -316,6 +360,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
   import { getForm } from '@/utils'
 
@@ -427,7 +472,9 @@
             [
               'parameter_sql',
               'is_interface',
+              'is_nolist',
               'is_frontend_list',
+              'url',
               // 'parameter_sql_issimple',
             ].indexOf(p) >= 0
           ) {
@@ -446,6 +493,20 @@
               'parameter_sql_value_ignore',
               'parameter_without_test',
               'java_imports',
+              'request_json_name',
+            ].indexOf(p) >= 0
+          ) {
+            return true
+          }
+          return false
+        }
+        if (form.parameter_catalog == 'sql.response') {
+          if (
+            [
+              'name',
+              'java_type',
+              'java_imports',
+              'response_json_name',
             ].indexOf(p) >= 0
           ) {
             return true
@@ -461,6 +522,7 @@
               'parameter_is_import_excel',
               'parameter_is_export_excel',
               'java_return_type',
+              'url',
             ].indexOf(p) >= 0
           ) {
             return true
@@ -542,6 +604,18 @@
             }
             if ('is_frontend_list' in form) {
               extra_info.is_frontend_list = form.is_frontend_list
+            }
+            if ('is_nolist' in form) {
+              extra_info.is_nolist = form.is_nolist
+            }
+            if ('url' in form) {
+              extra_info.url = form.url
+            }
+            if ('request_json_name' in form) {
+              extra_info.request_json_name = form.request_json_name
+            }
+            if ('response_json_name' in form) {
+              extra_info.response_json_name = form.response_json_name
             }
             form.extra_info = JSON.stringify(extra_info)
             // console.log('form', form)

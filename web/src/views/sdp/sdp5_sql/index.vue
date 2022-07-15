@@ -189,6 +189,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
 
   import { fixBlankFileds } from '@/utils'
@@ -365,8 +366,28 @@
           label: '是否为接口',
         },
         {
+          prop: 'extra_info',
+          label: '扩展属性',
+        },
+        {
+          prop: 'is_nolist',
+          label: '扩展属性-是否不返回列表类型',
+        },
+        {
           prop: 'is_frontend_list',
-          label: '是否为前端列表页',
+          label: '扩展属性-是否为前端列表页',
+        },
+        {
+          prop: 'url',
+          label: '扩展属性-url',
+        },
+        {
+          prop: 'request_json_name',
+          label: '扩展属性-request_json_name',
+        },
+        {
+          prop: 'response_json_name',
+          label: '扩展属性-response_json_name',
         },
         {
           prop: 'sort_no',

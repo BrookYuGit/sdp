@@ -26,6 +26,10 @@ public class ByteWithPos {
         appendDestBytes(destBytes, srcBytes, 0, srcBytes.length);
     }
 
+    public static void appendLineSeperator(ByteWithPos destBytes) throws Exception {
+        appendDestBytes(destBytes, System.lineSeparator());
+    }
+
     public static void appendDestBytes(ByteWithPos destBytes, byte[] srcBytes, int srcPos, int srcEndPos) throws Exception {
         if (srcEndPos >= srcBytes.length) {
             srcEndPos = srcBytes.length;

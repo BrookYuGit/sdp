@@ -1756,13 +1756,37 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             v = name;
         } else if ("1".equals(properties.get("is_first_lower"))) {
             v = JavaBeansUtil.getCamelCaseString(name, false);
+        } else if ("1".equals(properties.get("is_java_name"))) {
+            v = JavaBeansUtil.getCamelCaseString(name, false);
         } else {
             v = JavaBeansUtil.getCamelCaseString(name, true);
+        }
+        if (properties.containsKey("is_rename")) {
+            if ("member_code".equals(column.getActualColumnName())) {
+                System.out.println("debug");
+            }
+            if (!StringUtils.isEmpty(column.getParameterExtraInfo())) {
+                try {
+                    JSONObject extraInfo = JSON.parseObject(column.getParameterExtraInfo());
+                    String name2 = extraInfo.getString(properties.get("is_rename"));
+                    if (StringUtils.hasText(name2)) {
+                        v = name2;
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
         if ("1".equals(properties.get("is_lower"))) {
             v = v.toLowerCase();
         } else if ("1".equals(properties.get("is_upper"))) {
             v = v.toUpperCase();
+        }
+
+        if ("1".equals(properties.get("is_java_name"))) {
+            if(KeywordUtil.isKeyword(v, "java")) {
+                v = "_" + v;
+            }
         }
         if ("1".equals(properties.get("with_delimited")) && column != null
                 && column.getContext() != null
@@ -2181,7 +2205,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             prefixBytes = new ByteWithPos(1024);
         }
         if (lineBytes.pos == 0) {
-            ByteWithPos.appendDestBytes(destBytes, System.lineSeparator());
+            ByteWithPos.appendLineSeperator(destBytes);
         } else {
             String v = new String(lineBytes.bytes, 0, lineBytes.pos, "UTF-8");
             if (!"".equals(v.trim())) {
@@ -2287,6 +2311,12 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
 
         for(IntrospectedColumn column: introspectedColumns) {
+            Set<String> localHasIsSet = new HashSet<>();
+
+            if ("1".equals(properties.get("is_dup"))) {
+                localHasIsSet.add("is_dup");
+            }
+
             if (doneSet.contains(column.getActualColumnName())) {
                 continue;
             }
@@ -2306,6 +2336,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_simple"))) {
                 if (Integer.valueOf(1).equals(column.getParameterSqlIsSimple())) {
                     hasIsSet.add("is_simple");
+                    localHasIsSet.add("is_simple");
                 } else {
                     continue;
                 }
@@ -2318,6 +2349,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_interface"))) {
                 if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
                     hasIsSet.add("is_interface");
+                    localHasIsSet.add("is_interface");
                 } else {
                     continue;
                 }
@@ -2331,6 +2363,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("sql_is_interface"))) {
                 if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
                     hasIsSet.add("is_sql_interface");
+                    localHasIsSet.add("is_sql_interface");
                 } else {
                     continue;
                 }
@@ -2346,6 +2379,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         || column.isStringColumn()
                 ) {
                     hasIsSet.add("is_string");
+                    localHasIsSet.add("is_string");
                 } else {
                     continue;
                 }
@@ -2355,6 +2389,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         || column.isJDBCDateColumn()
                 ) {
                     hasIsSet.add("is_date");
+                    localHasIsSet.add("is_date");
                 } else {
                     continue;
                 }
@@ -2366,6 +2401,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     for(String p : extraInfo.keySet()) {
                         if ("1".equals(extraInfo.get(p) + "") && p.startsWith("is_")) {
                             hasIsSet.add(p);
+                            localHasIsSet.add(p);
                         }
                         if (StringUtils.isEmpty(properties.get(p))) {
                             continue;
@@ -2386,6 +2422,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_blob"))) {
                 if (column.isBLOBColumn()) {
                     hasIsSet.add("is_blob");
+                    localHasIsSet.add("is_blob");
                 } else {
                     continue;
                 }
@@ -2396,6 +2433,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_primary_key"))) {
                 if(introspectedTable.isPrimaryKey(column.getActualColumnName())) {
                     hasIsSet.add("is_primary_key");
+                    localHasIsSet.add("is_primary_key");
                 } else {
                     continue;
                 }
@@ -2406,6 +2444,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_primary_key_multiple"))) {
                 if (!CollectionUtils.isEmpty(introspectedTable.getPrimaryKeyColumns()) && introspectedTable.getPrimaryKeyColumns().size() > 1) {
                     hasIsSet.add("is_primary_key_multiple");
+                    localHasIsSet.add("is_primary_key_multiple");
                 } else {
                     continue;
                 }
@@ -2418,6 +2457,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_auto_increment"))) {
                 if(column.isAutoIncrement()){
                     hasIsSet.add("is_auto_increment");
+                    localHasIsSet.add("is_auto_increment");
                 } else{
                     continue;
                 }
@@ -2428,6 +2468,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if ("1".equals(properties.get("is_import_excel"))) {
                 if (Integer.valueOf(1).equals(column.getParameterIsImportExcel())) {
                     hasIsSet.add("is_import_excel");
+                    localHasIsSet.add("is_import_excel");
                 } else {
                     continue;
                 }
@@ -2462,6 +2503,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     continue;
                 }
                 hasIsSet.add("is_nullable_param");
+                localHasIsSet.add("is_nullable_param");
             }
             if ("1".equals(properties.get("param_is_like"))) {
                 if (!sqlParamNameMap.containsKey(column.getActualColumnName())) {
@@ -2472,17 +2514,18 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     continue;
                 }
                 hasIsSet.add("is_like_param");
+                localHasIsSet.add("is_like_param");
             }
 
             boolean needIgnore = false;
             for(String p : properties.keySet()) {
                 if (p.startsWith("is_")) {
                     if ("1".equals(properties.get(p))) {
-                        if (!hasIsSet.contains(p)) {
+                        if (!localHasIsSet.contains(p)) {
                             needIgnore = true;
                         }
                     } else {
-                        if (hasIsSet.contains(p)) {
+                        if (localHasIsSet.contains(p)) {
                             needIgnore = true;
                         }
                     }
@@ -2632,6 +2675,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             columnIndex++;
             ByteWithPos bodyBytes = new ByteWithPos(1024);
 
+            boolean hasContent = false;
             for(int i = 0; i < deepList.size(); i++) {
                 if (deepList.get(i) < deep) {
                     continue;
@@ -2641,13 +2685,23 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         continue;
                     }
                     if (lineBytesList.get(i).pos == 0) {
-                        ByteWithPos.appendDestBytes(bodyBytes, System.lineSeparator());
+                        ByteWithPos.appendLineSeperator(bodyBytes);
                         continue;
                     }
                     ByteWithPos tempBytes = new ByteWithPos(1024);
+                    if ("".equals(lineTrimStringList.get(i))) {
+                        if (hasContent) {
+                            ByteWithPos.appendDestBytes(bodyBytes, lineStringList.get(i));
+                            ByteWithPos.appendLineSeperator(bodyBytes);
+                        }
+                        continue;
+                    }
                     processLine(introspectedTable, dynTemplate, fileName, sqlMethodName, lineBytesList.get(i), tempBytes, introspectedColumns, columnIndex, _processInstance, _processBodyToken, _processToken);
                     if (tempBytes.pos > 0) {
+                        hasContent = true;
                         ByteWithPos.appendDestBytes(bodyBytes, tempBytes.bytes, 0, tempBytes.pos);
+                    } else {
+                        hasContent = false;
                     }
                 }
                 if (deepList.get(i) > deep) {
@@ -2817,6 +2871,22 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         if (!"0".equals(properties.get("include_response_columns"))) {
                             List<IntrospectedColumn> extraColumns2 = introspectedTable.getParameterColumns().get("sql.response." + sqlMethodName);
                             if (extraColumns2 != null) {
+                                for(IntrospectedColumn column1: extraColumns2) {
+                                    IntrospectedColumn oriColumn = oriColumnMap.get(column1.getActualColumnName());
+                                    if (oriColumn != null) {
+                                        if (StringUtils.hasText(column1.getParameterExtraInfo())) {
+                                            oriColumn.setParameterExtraInfo(column1.getParameterExtraInfo());
+                                        }
+                                        oriColumn.setTypeId(column1.getTypeId());
+                                        oriColumn.setJdbcType(column1.getJdbcType());
+                                        oriColumn.setJdbcTypeName(column1.getJdbcTypeName());
+                                        oriColumn.setParameterJavaType(column1.getParameterJavaType());
+                                        oriColumn.setFullyQualifiedJavaType(column1.getFullyQualifiedJavaType());
+                                        oriColumn.setParameterJavaReturnType(column1.getParameterJavaReturnType());
+                                        oriColumn.setTypeHandler(column1.getTypeHandler());
+                                        oriColumn.setParameterCatalogType(column1.getParameterCatalogType());
+                                    }
+                                }
                                 introspectedColumns.addAll(extraColumns2);
                                 extraColumns.addAll(extraColumns2);
                             }
@@ -2824,9 +2894,11 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     }
                     if (!CollectionUtils.isEmpty(extraColumns)) {
                         for(IntrospectedColumn column1: extraColumns) {
-                            if (StringUtils.isEmpty(column1.getRemarks())) {
-                                IntrospectedColumn oriColumn = oriColumnMap.get(column1.getActualColumnName());
-                                if(oriColumn != null && !StringUtils.isEmpty(oriColumn.getRemarks())) {
+                            IntrospectedColumn oriColumn = oriColumnMap.get(column1.getActualColumnName());
+                            if (oriColumn != null) {
+                                if (StringUtils.isEmpty(column1.getRemarks())
+                                        && !StringUtils.isEmpty(oriColumn.getRemarks())
+                                ) {
                                     column1.setRemarks(oriColumn.getRemarks());
                                 }
                             }
@@ -2908,14 +2980,14 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 pos++;
             }
             if (srcPos == pos) {
-                ByteWithPos.appendDestBytes(destBytes, System.lineSeparator());
+                ByteWithPos.appendLineSeperator(destBytes);
                 continue;
             }
             ByteWithPos.appendDestBytes(lineBytes, srcBytes, srcPos, pos);
             String v = new String(lineBytes.bytes, 0, lineBytes.pos, "UTF-8");
             String vTrim = v.trim();
             if ("".equals(vTrim)) {
-                ByteWithPos.appendDestBytes(destBytes, System.lineSeparator());
+                ByteWithPos.appendLineSeperator(destBytes);
                 continue;
             }
             if (!vTrim.startsWith("{*")) {

@@ -93,6 +93,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   import { createRequest } from '@/api/request'
   import { getForm } from '@/utils'
 
@@ -113,6 +114,7 @@
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
+        'is_java_name ' +
         'with_delimited ' +
         '',
     },
@@ -122,6 +124,7 @@
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
+        'is_java_name ' +
         'with_delimited ' +
         '',
     },
@@ -134,6 +137,7 @@
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
+        'is_java_name ' +
         'with_delimited ' +
         '',
     },
@@ -143,6 +147,7 @@
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
+        'is_java_name ' +
         'with_delimited ' +
         '',
     },
@@ -164,6 +169,7 @@
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
+        'is_java_name ' +
         'with_delimited ' +
         '',
     },
@@ -173,19 +179,23 @@
     {
       column_name: [
         'is_ajax ' +
-          'is_lower ' +
-          'is_upper ' +
-          'is_first_lower ' +
-          'with_delimited ' +
-          '',
+        'is_rename ' +
+        'is_lower ' +
+        'is_upper ' +
+        'is_first_lower ' +
+        'is_java_name ' +
+        'with_delimited ' +
+        '',
       ],
     },
     {
       column_method_name:
         'is_ajax ' +
+        'is_rename ' +
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
+        'is_java_name ' +
         'with_delimited ' +
         '',
     },
@@ -328,6 +338,7 @@
     'is_dup ' +
     'is_interface ' +
     'is_frontend_list ' +
+    'is_nolist ' +
     'sql_is_interface ' +
     'is_string ' +
     'is_blob ' +
