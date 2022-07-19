@@ -180,6 +180,7 @@
       column_name: [
         'is_ajax ' +
         'is_rename ' +
+        'is_replace ' +
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +
@@ -192,6 +193,7 @@
       column_method_name:
         'is_ajax ' +
         'is_rename ' +
+        'is_replace ' +
         'is_lower ' +
         'is_upper ' +
         'is_first_lower ' +

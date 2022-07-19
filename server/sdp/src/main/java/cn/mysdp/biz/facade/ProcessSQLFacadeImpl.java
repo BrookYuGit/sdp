@@ -1777,6 +1777,23 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
             }
         }
+        if (properties.containsKey("is_replace")) {
+            if (!StringUtils.isEmpty(column.getParameterExtraInfo())) {
+                try {
+                    JSONObject extraInfo = JSON.parseObject(column.getParameterExtraInfo());
+                    String name2 = extraInfo.getString(properties.get("is_replace"));
+                    if (StringUtils.hasText(name2)) {
+                        v = name2;
+                    } else {
+                        v = "";
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                v = "";
+            }
+        }
         if ("1".equals(properties.get("is_lower"))) {
             v = v.toLowerCase();
         } else if ("1".equals(properties.get("is_upper"))) {
@@ -2868,28 +2885,58 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 extraColumns.addAll(extraColumns2);
                             }
                         }
-                        if (!"0".equals(properties.get("include_response_columns"))) {
-                            List<IntrospectedColumn> extraColumns2 = introspectedTable.getParameterColumns().get("sql.response." + sqlMethodName);
-                            if (extraColumns2 != null) {
-                                for(IntrospectedColumn column1: extraColumns2) {
-                                    IntrospectedColumn oriColumn = oriColumnMap.get(column1.getActualColumnName());
-                                    if (oriColumn != null) {
-                                        if (StringUtils.hasText(column1.getParameterExtraInfo())) {
-                                            oriColumn.setParameterExtraInfo(column1.getParameterExtraInfo());
-                                        }
-                                        oriColumn.setTypeId(column1.getTypeId());
-                                        oriColumn.setJdbcType(column1.getJdbcType());
-                                        oriColumn.setJdbcTypeName(column1.getJdbcTypeName());
-                                        oriColumn.setParameterJavaType(column1.getParameterJavaType());
-                                        oriColumn.setFullyQualifiedJavaType(column1.getFullyQualifiedJavaType());
-                                        oriColumn.setParameterJavaReturnType(column1.getParameterJavaReturnType());
-                                        oriColumn.setTypeHandler(column1.getTypeHandler());
-                                        oriColumn.setParameterCatalogType(column1.getParameterCatalogType());
+
+                    }
+                    if ("1".equals(properties.get("include_response_columns"))
+                            || "1".equals(properties.get("is_only_response_columns"))
+                    ) {
+                        List<IntrospectedColumn> extraColumns2 = introspectedTable.getParameterColumns().get("sql.response." + sqlMethodName);
+                        if (extraColumns2 != null) {
+                            for(IntrospectedColumn column1: extraColumns2) {
+                                IntrospectedColumn oriColumn = oriColumnMap.get(column1.getActualColumnName());
+                                if (oriColumn != null) {
+                                    if (StringUtils.hasText(column1.getParameterExtraInfo())) {
+                                        oriColumn.setParameterExtraInfo(column1.getParameterExtraInfo());
                                     }
+                                    oriColumn.setTypeId(column1.getTypeId());
+                                    oriColumn.setJdbcType(column1.getJdbcType());
+                                    oriColumn.setJdbcTypeName(column1.getJdbcTypeName());
+                                    oriColumn.setParameterJavaType(column1.getParameterJavaType());
+                                    oriColumn.setFullyQualifiedJavaType(column1.getFullyQualifiedJavaType());
+                                    oriColumn.setParameterJavaReturnType(column1.getParameterJavaReturnType());
+                                    oriColumn.setTypeHandler(column1.getTypeHandler());
+                                    oriColumn.setParameterCatalogType(column1.getParameterCatalogType());
+                                    oriColumn.setParameterImports(column1.getParameterImports());
                                 }
-                                introspectedColumns.addAll(extraColumns2);
-                                extraColumns.addAll(extraColumns2);
                             }
+                            introspectedColumns.addAll(extraColumns2);
+                            extraColumns.addAll(extraColumns2);
+                        }
+                    }
+                    if ("1".equals(properties.get("include_param_columns"))
+                            || "1".equals(properties.get("is_only_param_columns"))
+                    ) {
+                        List<IntrospectedColumn> extraColumns2 = introspectedTable.getParameterColumns().get("sql.param." + sqlMethodName);
+                        if (extraColumns2 != null) {
+                            for(IntrospectedColumn column1: extraColumns2) {
+                                IntrospectedColumn oriColumn = oriColumnMap.get(column1.getActualColumnName());
+                                if (oriColumn != null) {
+                                    if (StringUtils.hasText(column1.getParameterExtraInfo())) {
+                                        oriColumn.setParameterExtraInfo(column1.getParameterExtraInfo());
+                                    }
+                                    oriColumn.setTypeId(column1.getTypeId());
+                                    oriColumn.setJdbcType(column1.getJdbcType());
+                                    oriColumn.setJdbcTypeName(column1.getJdbcTypeName());
+                                    oriColumn.setParameterJavaType(column1.getParameterJavaType());
+                                    oriColumn.setFullyQualifiedJavaType(column1.getFullyQualifiedJavaType());
+                                    oriColumn.setParameterJavaReturnType(column1.getParameterJavaReturnType());
+                                    oriColumn.setTypeHandler(column1.getTypeHandler());
+                                    oriColumn.setParameterCatalogType(column1.getParameterCatalogType());
+                                    oriColumn.setParameterImports(column1.getParameterImports());
+                                }
+                            }
+                            introspectedColumns.addAll(extraColumns2);
+                            extraColumns.addAll(extraColumns2);
                         }
                     }
                     if (!CollectionUtils.isEmpty(extraColumns)) {

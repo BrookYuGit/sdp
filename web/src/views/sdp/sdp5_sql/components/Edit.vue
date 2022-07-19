@@ -240,6 +240,16 @@
         ></el-input>
       </el-form-item>
       <el-form-item
+        v-if="dataChangeCount > 0 && testDisabled(form, 'response_default_value')"
+        :label="getLabel('response_default_value')"
+        prop="response_default_value"
+      >
+        <el-input
+          v-model="form.response_default_value"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item
         v-if="dataChangeCount > 0 && testDisabled(form, 'request_json_name')"
         :label="getLabel('request_json_name')"
         prop="request_json_name"
@@ -507,6 +517,7 @@
               'java_type',
               'java_imports',
               'response_json_name',
+              'response_default_value',
             ].indexOf(p) >= 0
           ) {
             return true
@@ -610,6 +621,9 @@
             }
             if ('url' in form) {
               extra_info.url = form.url
+            }
+            if ('response_default_value' in form) {
+              extra_info.response_default_value = form.response_default_value
             }
             if ('request_json_name' in form) {
               extra_info.request_json_name = form.request_json_name

@@ -382,6 +382,10 @@
           label: '扩展属性-url',
         },
         {
+          prop: 'response_default_value',
+          label: '扩展属性-response_default_value',
+        },
+        {
           prop: 'request_json_name',
           label: '扩展属性-request_json_name',
         },
