@@ -621,6 +621,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 }
 
                 IntrospectedColumn introspectedColumn = new IntrospectedColumn();
+                introspectedColumn.setContext(context);
                 introspectedColumn.setJdbcTypeName(jdbcTypeName);
                 if ("Date".equals(parameterJavaTypeName)) {
                     introspectedColumn.setFullyQualifiedJavaType(new FullyQualifiedJavaType("java.util.Date"));
@@ -934,6 +935,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                 fieldMysqlTypeId = ((MysqlType)fieldMysqlTypeIdObject).getJdbcType();
                             }
                             IntrospectedColumn oriColumn = new IntrospectedColumn();
+                            oriColumn.setContext(context);
                             oriColumn.setActualColumnName(columnName);
                             oriColumn.setOriginalTableName(fieldOriginalTableName);
                             oriColumn.setTableName(fieldTableName);
@@ -1231,6 +1233,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                             } else {
                                 introspectedColumn = new IntrospectedColumn();
+                                introspectedColumn.setContext(context);
                                 introspectedColumn.setJdbcType(fieldMysqlTypeId);
                                 String jdbcTypeName = javaTypeResolver
                                         .calculateJdbcTypeName(introspectedColumn);
@@ -1804,6 +1807,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             if(KeywordUtil.isKeyword(v, "java")) {
                 v = "_" + v;
             }
+        }
+        if ("from".equals(v)) {
+            System.out.println("");
         }
         if ("1".equals(properties.get("with_delimited")) && column != null
                 && column.getContext() != null
@@ -2594,6 +2600,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     }
                     if (CollectionUtils.isEmpty(introspectedColumns1)) {
                         IntrospectedColumn newColumn = new IntrospectedColumn();
+                        newColumn.setContext(introspectedTable.getContext());
                         introspectedColumns.add(newColumn);
                         newColumn.setActualColumnName(introspectedTable.getTableConfiguration().getTableName());
                         newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
@@ -2803,6 +2810,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }else if (isBlockToken(vTrim,"table")) {
             introspectedColumns = new ArrayList<>();
             IntrospectedColumn newColumn = new IntrospectedColumn();
+            newColumn.setContext(introspectedTable.getContext());
             introspectedColumns.add(newColumn);
             newColumn.setActualColumnName(introspectedTable.getTableConfiguration().getTableName());
             newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
@@ -2824,6 +2832,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         alias = names[1].trim();
                     }
                     IntrospectedColumn newColumn = new IntrospectedColumn();
+                    newColumn.setContext(introspectedTable.getContext());
                     introspectedColumns.add(newColumn);
                     newColumn.setActualColumnName(alias);
                     newColumn.setFullyQualifiedJavaType(FullyQualifiedJavaType.getStringInstance());
@@ -2835,6 +2844,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             introspectedColumns = new ArrayList<>();
             if (!StringUtils.isEmpty(sqlMethodName)) {
                 IntrospectedColumn newColumn = new IntrospectedColumn();
+                newColumn.setContext(introspectedTable.getContext());
                 introspectedColumns.add(newColumn);
                 newColumn.setActualColumnName(sqlMethodName);
             }
