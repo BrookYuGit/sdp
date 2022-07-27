@@ -331,6 +331,7 @@
     'only_primary_key ' +
     'has_primary_key ' +
     'has_auto_increment ' +
+    'has_java_return_type ' +
     'has_columns_1 ' +
     'has_columns_0 ' +
     'discard ' +

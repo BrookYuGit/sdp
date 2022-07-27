@@ -15,10 +15,7 @@ import com.mysql.cj.MysqlType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.mybatis.generator.api.ConnectionFactory;
-import org.mybatis.generator.api.IntrospectedColumn;
-import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.JavaTypeResolver;
+import org.mybatis.generator.api.*;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.JavaReservedWords;
 import org.mybatis.generator.config.Context;
@@ -326,11 +323,11 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                 newItem.setPropertyMap(sdpConfigMap.get(workspaceName));
 
-                sdpProjectMap.put(workspaceName+";" + item.getName(), newItem);
-
                 if (StringUtils.isEmpty(item.getTables())) {
                     continue;
                 }
+
+                sdpProjectMap.put(workspaceName+";" + item.getName(), newItem);
 
                 if (!tableMap.containsKey(workspaceName)) {
                     tableMap.put(workspaceName, new HashSet<>());
@@ -1461,6 +1458,8 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
 
         for(String workspaceName: sdpWorkspaceMap.keySet()) {
+            SdpWorkspaceQueryResponse workspace = sdpWorkspaceMap.get(workspaceName);
+
             if (!tableMap.containsKey(workspaceName)) {
 //                pringNotFoundInfo(fountFoundInfoSet, "not found table workspace:"+workspaceName);
                 continue;
@@ -1478,9 +1477,47 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 tableName = names[2];
                 IntrospectedTable introspectedTable = introspectedTableMap.get(workspaceName + "." + schema + "." + tableName);
                 if (introspectedTable == null) {
-                    System.out.println("==== 未找到表："+tableName);
-                    continue;
+                    for (String table : tableList) {
+                        if (!introspectedTableMap.containsKey(table)) {
+                            continue;
+                        }
+                        FullyQualifiedTable oriT = introspectedTableMap.get(table).getFullyQualifiedTable();
+
+                        TableConfiguration tc = new TableConfiguration(introspectedTableMap.get(table).getContext());
+                        if ("org.h2.Driver".equals(workspace.getDbClassname())) {
+                            tc.setSchema("public");
+                            tc.setCatalog("public");
+                        } else {
+                            tc.setCatalog(schema);
+                        }
+                        tc.setTableName(tableName);
+
+                        FullyQualifiedTable t = new FullyQualifiedTable(
+                                oriT.getIntrospectedCatalog(),
+                                oriT.getIntrospectedSchema(),
+                                tableName,
+                                tableName,
+                                tableName,
+                                true,
+                                null,
+                                null,
+                                null,
+                                true,
+                                null,
+                                introspectedTableMap.get(table).getContext());
+                        introspectedTable = ObjectFactory
+                                .createIntrospectedTable(tc,
+                                        t,
+                                        introspectedTableMap.get(table).getContext());
+                        introspectedTableMap.put(workspaceName + "." + schema + "." + tableName, introspectedTable);
+                        break;
+                    }
+                    if (introspectedTable == null) {
+                        System.out.println("==== 未找到表：" + tableName);
+                        continue;
+                    }
                 }
+
                 try {
                     if (parameterColumnsMap.containsKey(workspaceName + "." + introspectedTable.getTableConfiguration().getCatalog() + "." + introspectedTable.getTableConfiguration().getTableName())) {
                         introspectedTable.setParameterColumns(parameterColumnsMap.get(workspaceName + "." + introspectedTable.getTableConfiguration().getCatalog() + "." + introspectedTable.getTableConfiguration().getTableName()));
@@ -1548,8 +1585,10 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                 IntrospectedTable introspectedTable = introspectedTableMap.get(workspaceName + "." + schema + "." + tableName);
                 if (introspectedTable == null) {
-                    pringNotFoundInfo(fountFoundInfoSet, "no introspectedTable for table:"+workspaceName+"."+schema+"."+tableName);
-                    continue;
+                    if (CollectionUtils.isEmpty(introspectedTableMap)) {
+                        pringNotFoundInfo(fountFoundInfoSet, "no introspectedTable for table:"+workspaceName+"."+schema+"."+tableName);
+                        continue;
+                    }
                 }
 
                 for(SdpTemplateWithBLOBs item: sdpTemplate1) {
@@ -1753,6 +1792,16 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         }
         if (StringUtils.isEmpty(name)) {
             throw new Exception("name is null");
+        }
+        if ("1".equals(properties.get("has_java_return_type"))) {
+            if (!StringUtils.hasText(column.getParameterJavaReturnType())) {
+                return "";
+            }
+        }
+        if ("0".equals(properties.get("has_java_return_type"))) {
+            if (StringUtils.hasText(column.getParameterJavaReturnType())) {
+                return "";
+            }
         }
         String v;
         if ("1".equals(properties.get("is_ajax"))) {
@@ -2560,6 +2609,16 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
             if ("1".equals(properties.get("has_column_java_imports"))) {
                 if (!StringUtility.stringHasValue(column.getParameterImports())) {
+                    continue;
+                }
+            }
+            if ("1".equals(properties.get("has_java_return_type"))) {
+                if (!StringUtility.stringHasValue(column.getParameterJavaReturnType())) {
+                    continue;
+                }
+            }
+            if ("0".equals(properties.get("has_java_return_type"))) {
+                if (StringUtility.stringHasValue(column.getParameterJavaReturnType())) {
                     continue;
                 }
             }

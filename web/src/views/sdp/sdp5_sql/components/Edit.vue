@@ -485,6 +485,8 @@
               'is_nolist',
               'is_frontend_list',
               'url',
+              'java_return_type',
+              'java_imports',
               // 'parameter_sql_issimple',
             ].indexOf(p) >= 0
           ) {
@@ -540,15 +542,28 @@
           }
           return false
         }
-        if (
-          form.parameter_catalog == 'api.request' ||
-          form.parameter_catalog == 'api.response' ||
-          form.parameter_catalog == 'sql.response'
-        ) {
+        if (form.parameter_catalog == 'api.response') {
           if (
-            ['name', 'java_type', 'java_imports', 'parameter_nullable'].indexOf(
-              p
-            ) >= 0
+            [
+              'name',
+              'java_type',
+              'java_imports',
+              'response_json_name',
+            ].indexOf(p) >= 0
+          ) {
+            return true
+          }
+          return false
+        }
+        if (form.parameter_catalog == 'api.request') {
+          if (
+            [
+              'name',
+              'java_type',
+              'java_imports',
+              'parameter_nullable',
+              'request_json_name',
+            ].indexOf(p) >= 0
           ) {
             return true
           }

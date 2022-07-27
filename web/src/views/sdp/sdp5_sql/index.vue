@@ -47,7 +47,7 @@
           <el-form-item>
             <el-input
               v-model="queryForm.parameter_catalog_type_like"
-              placeholder="分类详细类型"
+              placeholder="方法名"
               autocomplete="off"
               :clearable="true"
             ></el-input>
@@ -55,7 +55,7 @@
           <el-form-item>
             <el-input
               v-model="queryForm.name_like"
-              placeholder="名称"
+              placeholder="字段名称"
               autocomplete="off"
               :clearable="true"
             ></el-input>

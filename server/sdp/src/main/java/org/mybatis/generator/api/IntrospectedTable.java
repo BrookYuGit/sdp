@@ -770,6 +770,8 @@ public abstract class IntrospectedTable {
         if (StringUtility.stringHasValue(remarks)) {
             remarks = SplitUtil.split(remarks, System.getProperty("line.separator"))[0];  //$NON-NLS-1$
             remarks = SplitUtil.split(remarks, "\\n")[0];
+        } else {
+            return "";
         }
         return remarks.trim();
     }
