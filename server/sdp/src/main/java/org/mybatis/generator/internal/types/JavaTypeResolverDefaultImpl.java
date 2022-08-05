@@ -64,6 +64,12 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.BIT, new JdbcTypeInformation("BIT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Boolean.class.getName())));
+
+        //TINYINT(1)会被误认为是Types.BIT
+        //在jdbc url中加入tinyInt1isBit=false即可
+//        typeMap.put(Types.BIT, new JdbcTypeInformation("BIT", //$NON-NLS-1$
+//                new FullyQualifiedJavaType(Integer.class.getName())));
+
         typeMap.put(Types.BLOB, new JdbcTypeInformation("BLOB", //$NON-NLS-1$
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.BOOLEAN, new JdbcTypeInformation("BOOLEAN", //$NON-NLS-1$
@@ -121,6 +127,11 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                 new FullyQualifiedJavaType(Date.class.getName())));
         typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", //$NON-NLS-1$
                 new FullyQualifiedJavaType(Byte.class.getName())));
+
+        //为了方便，不适用Byte类型
+//        typeMap.put(Types.TINYINT, new JdbcTypeInformation("TINYINT", //$NON-NLS-1$
+//                new FullyQualifiedJavaType(Integer.class.getName())));
+
         typeMap.put(Types.VARBINARY, new JdbcTypeInformation("VARBINARY", //$NON-NLS-1$
                 new FullyQualifiedJavaType("byte[]"))); //$NON-NLS-1$
         typeMap.put(Types.VARCHAR, new JdbcTypeInformation("VARCHAR", //$NON-NLS-1$

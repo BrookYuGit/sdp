@@ -18,7 +18,7 @@ public class ConnectUtil {
     public static String getUrl(String type, String host, Integer port, String database) throws Exception {
         String url = "";
         if ("com.mysql.jdbc.Driver".equals(type) || "com.mysql.cj.jdbc.Driver".equals(type)) {
-            url = "jdbc:mysql://"+host+":"+port+"/"+database+"?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&tcpKeepAlive=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true";
+            url = "jdbc:mysql://"+host+":"+port+"/"+database+"?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&tcpKeepAlive=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&tinyInt1isBit=false";
         } else if ("org.h2.Driver".equals(type)) {
             url = "jdbc:h2:"+database+";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
         } else {

@@ -1471,14 +1471,14 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                 continue;
             }
 
-            for(String tableName : tableList) {
-                String[] names = tableName.split("\\.");
+            for(String tableNameOri : tableList) {
+                String[] names = tableNameOri.split("\\.");
                 String schema = names[1];
-                tableName = names[2];
+                String tableName = names[2];
                 IntrospectedTable introspectedTable = introspectedTableMap.get(workspaceName + "." + schema + "." + tableName);
                 if (introspectedTable == null) {
-                    for (String table : tableList) {
-                        if (!introspectedTableMap.containsKey(table)) {
+                    for (String table : introspectedTableMap.keySet()) {
+                        if (introspectedTableMap.containsKey(tableNameOri)) {
                             continue;
                         }
                         FullyQualifiedTable oriT = introspectedTableMap.get(table).getFullyQualifiedTable();
