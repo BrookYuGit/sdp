@@ -25,6 +25,7 @@ public class SdpProjectUpdateRequestConvert {
         daoRequest.setRootPath(daoRequest.getRootPath() == null ? null : daoRequest.getRootPath().trim());
         daoRequest.setTables(daoRequest.getTables() == null ? null : daoRequest.getTables().trim());
         daoRequest.setRemark(daoRequest.getRemark() == null ? null : daoRequest.getRemark().trim());
+        daoRequest.setExtraInfo(daoRequest.getExtraInfo() == null ? null : daoRequest.getExtraInfo().trim());
 
         return daoRequest;
     }

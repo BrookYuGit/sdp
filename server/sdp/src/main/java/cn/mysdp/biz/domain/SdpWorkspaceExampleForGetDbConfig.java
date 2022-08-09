@@ -231,10 +231,10 @@ public class SdpWorkspaceExampleForGetDbConfig {
         for(CriteriaString criteriaOrderBy: request) {
             int subCount = 0;
 
-            subCount += appendCriteriaOrderByItem(sb, "host", criteriaOrderBy.getHost());
+            subCount += appendCriteriaOrderByItem(sb, "`host`", criteriaOrderBy.getHost());
             subCount += appendCriteriaOrderByItem(sb, "port", criteriaOrderBy.getPort());
             subCount += appendCriteriaOrderByItem(sb, "db", criteriaOrderBy.getDb());
-            subCount += appendCriteriaOrderByItem(sb, "user", criteriaOrderBy.getUser());
+            subCount += appendCriteriaOrderByItem(sb, "`user`", criteriaOrderBy.getUser());
             if (subCount > 1) {
                 throw new Exception("order by数组元素对象属性多于1个");
             }
@@ -559,77 +559,77 @@ public class SdpWorkspaceExampleForGetDbConfig {
         }
 
         public Criteria andHostIsNull() {
-            addCriterion("host is null");
+            addCriterion("`host` is null");
             return (Criteria) this;
         }
 
         public Criteria andHostIsNotNull() {
-            addCriterion("host is not null");
+            addCriterion("`host` is not null");
             return (Criteria) this;
         }
 
         public Criteria andHostEqualTo(String value) {
-            addCriterion("host =", value, "host");
+            addCriterion("`host` =", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostNotEqualTo(String value) {
-            addCriterion("host <>", value, "host");
+            addCriterion("`host` <>", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostGreaterThan(String value) {
-            addCriterion("host >", value, "host");
+            addCriterion("`host` >", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostGreaterThanOrEqualTo(String value) {
-            addCriterion("host >=", value, "host");
+            addCriterion("`host` >=", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostLessThan(String value) {
-            addCriterion("host <", value, "host");
+            addCriterion("`host` <", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostLessThanOrEqualTo(String value) {
-            addCriterion("host <=", value, "host");
+            addCriterion("`host` <=", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostRegexp(String value) {
-            addCriterion("host regexp", value, "host");
+            addCriterion("`host` regexp", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostLike(String value) {
-            addCriterion("host like", value, "host");
+            addCriterion("`host` like", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostNotLike(String value) {
-            addCriterion("host not like", value, "host");
+            addCriterion("`host` not like", value, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostIn(List<String> values) {
-            addCriterion("host in", values, "host");
+            addCriterion("`host` in", values, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostNotIn(List<String> values) {
-            addCriterion("host not in", values, "host");
+            addCriterion("`host` not in", values, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostBetween(String value1, String value2) {
-            addCriterion("host between", value1, value2, "host");
+            addCriterion("`host` between", value1, value2, "host");
             return (Criteria) this;
         }
 
         public Criteria andHostNotBetween(String value1, String value2) {
-            addCriterion("host not between", value1, value2, "host");
+            addCriterion("`host` not between", value1, value2, "host");
             return (Criteria) this;
         }
 
@@ -769,77 +769,77 @@ public class SdpWorkspaceExampleForGetDbConfig {
         }
 
         public Criteria andUserIsNull() {
-            addCriterion("user is null");
+            addCriterion("`user` is null");
             return (Criteria) this;
         }
 
         public Criteria andUserIsNotNull() {
-            addCriterion("user is not null");
+            addCriterion("`user` is not null");
             return (Criteria) this;
         }
 
         public Criteria andUserEqualTo(String value) {
-            addCriterion("user =", value, "user");
+            addCriterion("`user` =", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotEqualTo(String value) {
-            addCriterion("user <>", value, "user");
+            addCriterion("`user` <>", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserGreaterThan(String value) {
-            addCriterion("user >", value, "user");
+            addCriterion("`user` >", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserGreaterThanOrEqualTo(String value) {
-            addCriterion("user >=", value, "user");
+            addCriterion("`user` >=", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserLessThan(String value) {
-            addCriterion("user <", value, "user");
+            addCriterion("`user` <", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserLessThanOrEqualTo(String value) {
-            addCriterion("user <=", value, "user");
+            addCriterion("`user` <=", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserRegexp(String value) {
-            addCriterion("user regexp", value, "user");
+            addCriterion("`user` regexp", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserLike(String value) {
-            addCriterion("user like", value, "user");
+            addCriterion("`user` like", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotLike(String value) {
-            addCriterion("user not like", value, "user");
+            addCriterion("`user` not like", value, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserIn(List<String> values) {
-            addCriterion("user in", values, "user");
+            addCriterion("`user` in", values, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotIn(List<String> values) {
-            addCriterion("user not in", values, "user");
+            addCriterion("`user` not in", values, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserBetween(String value1, String value2) {
-            addCriterion("user between", value1, value2, "user");
+            addCriterion("`user` between", value1, value2, "user");
             return (Criteria) this;
         }
 
         public Criteria andUserNotBetween(String value1, String value2) {
-            addCriterion("user not between", value1, value2, "user");
+            addCriterion("`user` not between", value1, value2, "user");
             return (Criteria) this;
         }
 

@@ -28,6 +28,7 @@ public class SdpWorkspaceAddRequestConvert {
         daoRequest.setDbPassword(daoRequest.getDbPassword() == null ? null : daoRequest.getDbPassword().trim());
         daoRequest.setDbClassname(daoRequest.getDbClassname() == null ? null : daoRequest.getDbClassname().trim());
         daoRequest.setRemark(daoRequest.getRemark() == null ? null : daoRequest.getRemark().trim());
+        daoRequest.setExtraInfo(daoRequest.getExtraInfo() == null ? null : daoRequest.getExtraInfo().trim());
 
         return daoRequest;
     }

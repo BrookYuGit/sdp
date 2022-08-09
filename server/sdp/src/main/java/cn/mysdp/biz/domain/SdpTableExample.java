@@ -9,16 +9,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * InterfaceName: SdpWorkspaceConfigExample
+ * InterfaceName: SdpTableExample
  * @Description: Example
  * @Author: SDP
- * @Date: 2021-10-30
+ * @Date: 2022-08-09
  * @Version: 1.0
- * Table: sdp_workspace_config
+ * Table: sdp_table
  * Comment:
  * 
  */
-public class SdpWorkspaceConfigExample {
+public class SdpTableExample {
     protected Integer limitClause;
 
     protected Integer countClause;
@@ -31,7 +31,7 @@ public class SdpWorkspaceConfigExample {
 
     protected List<Criteria> oredCriteria;
 
-    public SdpWorkspaceConfigExample() {
+    public SdpTableExample() {
         oredCriteria = new ArrayList<>();
     }
 
@@ -108,13 +108,13 @@ public class SdpWorkspaceConfigExample {
         distinct = false;
     }
 
-    public static SdpWorkspaceConfigExample createExample(SdpWorkspaceConfigWithBLOBs request) throws Exception {
+    public static SdpTableExample createExample(SdpTableWithBLOBs request) throws Exception {
         return createExample(request, null);
     }
 
-    public static SdpWorkspaceConfigExample createExample(SdpWorkspaceConfigWithBLOBs request, JSONObject options) throws Exception {
-        SdpWorkspaceConfigExample example = new SdpWorkspaceConfigExample();
-        SdpWorkspaceConfigExample.Criteria criteria = example.createCriteria();
+    public static SdpTableExample createExample(SdpTableWithBLOBs request, JSONObject options) throws Exception {
+        SdpTableExample example = new SdpTableExample();
+        SdpTableExample.Criteria criteria = example.createCriteria();
         int count = 0;
 
         count += setCriteriaEqualTo(request, criteria);
@@ -139,47 +139,47 @@ public class SdpWorkspaceConfigExample {
             }
 
             if(options.containsKey("=")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("="), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("="), SdpTableWithBLOBs.class);
                 count += setCriteriaEqualTo(obj, criteria);
             }
             if(options.containsKey(">")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject(">"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject(">"), SdpTableWithBLOBs.class);
                 count += setCriteriaGreaterThan(obj, criteria);
             }
             if(options.containsKey(">=")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject(">="), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject(">="), SdpTableWithBLOBs.class);
                 count += setCriteriaGreaterThanOrEqualTo(obj, criteria);
             }
             if(options.containsKey("!null")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("!null"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("!null"), SdpTableWithBLOBs.class);
                 count += setCriteriaIsNotNull(obj, criteria);
             }
             if(options.containsKey("null")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("null"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("null"), SdpTableWithBLOBs.class);
                 count += setCriteriaIsNull(obj, criteria);
             }
             if(options.containsKey("<")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("<"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("<"), SdpTableWithBLOBs.class);
                 count += setCriteriaLessThan(obj, criteria);
             }
             if(options.containsKey("<=")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("<="), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("<="), SdpTableWithBLOBs.class);
                 count += setCriteriaLessThanOrEqualTo(obj, criteria);
             }
             if(options.containsKey("like")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("like"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("like"), SdpTableWithBLOBs.class);
                 count += setCriteriaLike(obj, criteria);
             }
             if(options.containsKey("!=")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("!="), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("!="), SdpTableWithBLOBs.class);
                 count += setCriteriaNotEqualTo(obj, criteria);
             }
             if(options.containsKey("!like")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("!like"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("!like"), SdpTableWithBLOBs.class);
                 count += setCriteriaNotLike(obj, criteria);
             }
             if(options.containsKey("regexp")) {
-                SdpWorkspaceConfigWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("regexp"), SdpWorkspaceConfigWithBLOBs.class);
+                SdpTableWithBLOBs obj = JSONObject.toJavaObject(options.getJSONObject("regexp"), SdpTableWithBLOBs.class);
                 count += setCriteriaRegexp(obj, criteria);
             }
 
@@ -216,7 +216,7 @@ public class SdpWorkspaceConfigExample {
         return 1;
     }
 
-    private static String setCriteriaOrderBy(List<CriteriaString> request, SdpWorkspaceConfigExample example) throws Exception {
+    private static String setCriteriaOrderBy(List<CriteriaString> request, SdpTableExample example) throws Exception {
         StringBuilder sb = new StringBuilder();
         for(CriteriaString criteriaOrderBy: request) {
             int subCount = 0;
@@ -224,7 +224,7 @@ public class SdpWorkspaceConfigExample {
             subCount += appendCriteriaOrderByItem(sb, "id", criteriaOrderBy.getId());
             subCount += appendCriteriaOrderByItem(sb, "workspace_name", criteriaOrderBy.getWorkspaceName());
             subCount += appendCriteriaOrderByItem(sb, "`name`", criteriaOrderBy.getName());
-            subCount += appendCriteriaOrderByItem(sb, "`value`", criteriaOrderBy.getValue());
+            subCount += appendCriteriaOrderByItem(sb, "alias_name", criteriaOrderBy.getAliasName());
             subCount += appendCriteriaOrderByItem(sb, "remark", criteriaOrderBy.getRemark());
             subCount += appendCriteriaOrderByItem(sb, "extra_info", criteriaOrderBy.getExtraInfo());
             if (subCount > 1) {
@@ -238,7 +238,7 @@ public class SdpWorkspaceConfigExample {
         return sb.toString();
     }
 
-    private static int setCriteriaEqualTo(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaEqualTo(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -256,9 +256,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameEqualTo(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueEqualTo(request.getValue());
+            criteria.andAliasNameEqualTo(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -274,7 +274,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaGreaterThan(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaGreaterThan(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -292,9 +292,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameGreaterThan(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueGreaterThan(request.getValue());
+            criteria.andAliasNameGreaterThan(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -310,7 +310,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaGreaterThanOrEqualTo(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaGreaterThanOrEqualTo(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -328,9 +328,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameGreaterThanOrEqualTo(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueGreaterThanOrEqualTo(request.getValue());
+            criteria.andAliasNameGreaterThanOrEqualTo(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -346,7 +346,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaIsNotNull(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaIsNotNull(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -364,9 +364,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameIsNotNull();
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueIsNotNull();
+            criteria.andAliasNameIsNotNull();
         }
 
         if (request.getRemark() != null) {
@@ -382,7 +382,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaIsNull(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaIsNull(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -400,9 +400,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameIsNull();
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueIsNull();
+            criteria.andAliasNameIsNull();
         }
 
         if (request.getRemark() != null) {
@@ -418,7 +418,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaLessThan(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaLessThan(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -436,9 +436,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameLessThan(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueLessThan(request.getValue());
+            criteria.andAliasNameLessThan(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -454,7 +454,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaLessThanOrEqualTo(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaLessThanOrEqualTo(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -472,9 +472,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameLessThanOrEqualTo(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueLessThanOrEqualTo(request.getValue());
+            criteria.andAliasNameLessThanOrEqualTo(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -490,7 +490,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaLike(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaLike(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getWorkspaceName() != null) {
@@ -503,9 +503,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameLike(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueLike(request.getValue());
+            criteria.andAliasNameLike(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -521,7 +521,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaNotEqualTo(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaNotEqualTo(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getId() != null) {
@@ -539,9 +539,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameNotEqualTo(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueNotEqualTo(request.getValue());
+            criteria.andAliasNameNotEqualTo(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -557,7 +557,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaNotLike(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaNotLike(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getWorkspaceName() != null) {
@@ -570,9 +570,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameNotLike(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueNotLike(request.getValue());
+            criteria.andAliasNameNotLike(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -588,7 +588,7 @@ public class SdpWorkspaceConfigExample {
         return count;
     }
 
-    private static int setCriteriaRegexp(SdpWorkspaceConfigWithBLOBs request, Criteria criteria) {
+    private static int setCriteriaRegexp(SdpTableWithBLOBs request, Criteria criteria) {
         int count = 0;
 
         if (request.getWorkspaceName() != null) {
@@ -601,9 +601,9 @@ public class SdpWorkspaceConfigExample {
             criteria.andNameRegexp(request.getName());
         }
 
-        if (request.getValue() != null) {
+        if (request.getAliasName() != null) {
             count++;
-            criteria.andValueRegexp(request.getValue());
+            criteria.andAliasNameRegexp(request.getAliasName());
         }
 
         if (request.getRemark() != null) {
@@ -870,78 +870,78 @@ public class SdpWorkspaceConfigExample {
             return (Criteria) this;
         }
 
-        public Criteria andValueIsNull() {
-            addCriterion("`value` is null");
+        public Criteria andAliasNameIsNull() {
+            addCriterion("alias_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andValueIsNotNull() {
-            addCriterion("`value` is not null");
+        public Criteria andAliasNameIsNotNull() {
+            addCriterion("alias_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andValueEqualTo(String value) {
-            addCriterion("`value` =", value, "value");
+        public Criteria andAliasNameEqualTo(String value) {
+            addCriterion("alias_name =", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueNotEqualTo(String value) {
-            addCriterion("`value` <>", value, "value");
+        public Criteria andAliasNameNotEqualTo(String value) {
+            addCriterion("alias_name <>", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueGreaterThan(String value) {
-            addCriterion("`value` >", value, "value");
+        public Criteria andAliasNameGreaterThan(String value) {
+            addCriterion("alias_name >", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueGreaterThanOrEqualTo(String value) {
-            addCriterion("`value` >=", value, "value");
+        public Criteria andAliasNameGreaterThanOrEqualTo(String value) {
+            addCriterion("alias_name >=", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueLessThan(String value) {
-            addCriterion("`value` <", value, "value");
+        public Criteria andAliasNameLessThan(String value) {
+            addCriterion("alias_name <", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueLessThanOrEqualTo(String value) {
-            addCriterion("`value` <=", value, "value");
+        public Criteria andAliasNameLessThanOrEqualTo(String value) {
+            addCriterion("alias_name <=", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueRegexp(String value) {
-            addCriterion("`value` regexp", value, "value");
+        public Criteria andAliasNameRegexp(String value) {
+            addCriterion("alias_name regexp", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueLike(String value) {
-            addCriterion("`value` like", value, "value");
+        public Criteria andAliasNameLike(String value) {
+            addCriterion("alias_name like", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueNotLike(String value) {
-            addCriterion("`value` not like", value, "value");
+        public Criteria andAliasNameNotLike(String value) {
+            addCriterion("alias_name not like", value, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueIn(List<String> values) {
-            addCriterion("`value` in", values, "value");
+        public Criteria andAliasNameIn(List<String> values) {
+            addCriterion("alias_name in", values, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueNotIn(List<String> values) {
-            addCriterion("`value` not in", values, "value");
+        public Criteria andAliasNameNotIn(List<String> values) {
+            addCriterion("alias_name not in", values, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueBetween(String value1, String value2) {
-            addCriterion("`value` between", value1, value2, "value");
+        public Criteria andAliasNameBetween(String value1, String value2) {
+            addCriterion("alias_name between", value1, value2, "aliasName");
             return (Criteria) this;
         }
 
-        public Criteria andValueNotBetween(String value1, String value2) {
-            addCriterion("`value` not between", value1, value2, "value");
+        public Criteria andAliasNameNotBetween(String value1, String value2) {
+            addCriterion("alias_name not between", value1, value2, "aliasName");
             return (Criteria) this;
         }
 
@@ -1106,7 +1106,7 @@ public class SdpWorkspaceConfigExample {
 
         private String name;
 
-        private String value;
+        private String aliasName;
 
         private String remark;
 

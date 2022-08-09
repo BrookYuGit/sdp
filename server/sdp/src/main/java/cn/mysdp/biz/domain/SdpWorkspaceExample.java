@@ -231,6 +231,7 @@ public class SdpWorkspaceExample {
             subCount += appendCriteriaOrderByItem(sb, "db_password", criteriaOrderBy.getDbPassword());
             subCount += appendCriteriaOrderByItem(sb, "db_classname", criteriaOrderBy.getDbClassname());
             subCount += appendCriteriaOrderByItem(sb, "remark", criteriaOrderBy.getRemark());
+            subCount += appendCriteriaOrderByItem(sb, "extra_info", criteriaOrderBy.getExtraInfo());
             if (subCount > 1) {
                 throw new Exception("order by数组元素对象属性多于1个");
             }
@@ -295,6 +296,11 @@ public class SdpWorkspaceExample {
             criteria.andRemarkEqualTo(request.getRemark());
         }
 
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoEqualTo(request.getExtraInfo());
+        }
+
         return count;
     }
 
@@ -349,6 +355,11 @@ public class SdpWorkspaceExample {
         if (request.getRemark() != null) {
             count++;
             criteria.andRemarkGreaterThan(request.getRemark());
+        }
+
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoGreaterThan(request.getExtraInfo());
         }
 
         return count;
@@ -407,6 +418,11 @@ public class SdpWorkspaceExample {
             criteria.andRemarkGreaterThanOrEqualTo(request.getRemark());
         }
 
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoGreaterThanOrEqualTo(request.getExtraInfo());
+        }
+
         return count;
     }
 
@@ -461,6 +477,11 @@ public class SdpWorkspaceExample {
         if (request.getRemark() != null) {
             count++;
             criteria.andRemarkIsNotNull();
+        }
+
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoIsNotNull();
         }
 
         return count;
@@ -519,6 +540,11 @@ public class SdpWorkspaceExample {
             criteria.andRemarkIsNull();
         }
 
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoIsNull();
+        }
+
         return count;
     }
 
@@ -573,6 +599,11 @@ public class SdpWorkspaceExample {
         if (request.getRemark() != null) {
             count++;
             criteria.andRemarkLessThan(request.getRemark());
+        }
+
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoLessThan(request.getExtraInfo());
         }
 
         return count;
@@ -631,6 +662,11 @@ public class SdpWorkspaceExample {
             criteria.andRemarkLessThanOrEqualTo(request.getRemark());
         }
 
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoLessThanOrEqualTo(request.getExtraInfo());
+        }
+
         return count;
     }
 
@@ -675,6 +711,11 @@ public class SdpWorkspaceExample {
         if (request.getRemark() != null) {
             count++;
             criteria.andRemarkLike(request.getRemark());
+        }
+
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoLike(request.getExtraInfo());
         }
 
         return count;
@@ -733,6 +774,11 @@ public class SdpWorkspaceExample {
             criteria.andRemarkNotEqualTo(request.getRemark());
         }
 
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoNotEqualTo(request.getExtraInfo());
+        }
+
         return count;
     }
 
@@ -779,6 +825,11 @@ public class SdpWorkspaceExample {
             criteria.andRemarkNotLike(request.getRemark());
         }
 
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoNotLike(request.getExtraInfo());
+        }
+
         return count;
     }
 
@@ -823,6 +874,11 @@ public class SdpWorkspaceExample {
         if (request.getRemark() != null) {
             count++;
             criteria.andRemarkRegexp(request.getRemark());
+        }
+
+        if (request.getExtraInfo() != null) {
+            count++;
+            criteria.andExtraInfoRegexp(request.getExtraInfo());
         }
 
         return count;
@@ -1589,6 +1645,81 @@ public class SdpWorkspaceExample {
             return (Criteria) this;
         }
 
+        public Criteria andExtraInfoIsNull() {
+            addCriterion("extra_info is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoIsNotNull() {
+            addCriterion("extra_info is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoEqualTo(String value) {
+            addCriterion("extra_info =", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoNotEqualTo(String value) {
+            addCriterion("extra_info <>", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoGreaterThan(String value) {
+            addCriterion("extra_info >", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoGreaterThanOrEqualTo(String value) {
+            addCriterion("extra_info >=", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoLessThan(String value) {
+            addCriterion("extra_info <", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoLessThanOrEqualTo(String value) {
+            addCriterion("extra_info <=", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoRegexp(String value) {
+            addCriterion("extra_info regexp", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoLike(String value) {
+            addCriterion("extra_info like", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoNotLike(String value) {
+            addCriterion("extra_info not like", value, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoIn(List<String> values) {
+            addCriterion("extra_info in", values, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoNotIn(List<String> values) {
+            addCriterion("extra_info not in", values, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoBetween(String value1, String value2) {
+            addCriterion("extra_info between", value1, value2, "extraInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andExtraInfoNotBetween(String value1, String value2) {
+            addCriterion("extra_info not between", value1, value2, "extraInfo");
+            return (Criteria) this;
+        }
+
     }
 
     @Getter
@@ -1613,6 +1744,8 @@ public class SdpWorkspaceExample {
         private String dbClassname;
 
         private String remark;
+
+        private String extraInfo;
 
     }
 

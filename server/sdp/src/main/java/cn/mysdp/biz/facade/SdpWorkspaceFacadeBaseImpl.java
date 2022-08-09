@@ -34,7 +34,7 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
 
     public static Map initUniqueFieldMap() {
         HashMap map = new HashMap<>();
-        map.put("unique_workspace_index_3", "name");
+        map.put("unique_workspace_index_5", "name");
         return map;
     }
 
@@ -231,18 +231,22 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public List<SdpWorkspaceGetDbConfigResponse> getDbConfig(SdpWorkspaceGetDbConfigRequest request) throws Exception {
         SdpWorkspaceForGetDbConfig daoRequest = new SdpWorkspaceForGetDbConfig();
         BeanUtils.copyProperties(request, daoRequest);
+        
         List<SdpWorkspaceForGetDbConfig> list;
+        
         try {
             list = sdpWorkspaceMapper.getDbConfig(daoRequest);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         List<SdpWorkspaceGetDbConfigResponse> responseList = new ArrayList<>();
         for(SdpWorkspaceForGetDbConfig item : list) {
             SdpWorkspaceGetDbConfigResponse newItem = new SdpWorkspaceGetDbConfigResponse();
             BeanUtils.copyProperties(item, newItem);
             responseList.add(newItem);
         }
+        
         return responseList;
     }
 
@@ -250,12 +254,16 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public int countGetDbConfig(SdpWorkspaceGetDbConfigRequest request) throws Exception {
         SdpWorkspaceForGetDbConfig daoRequest = new SdpWorkspaceForGetDbConfig();
         BeanUtils.copyProperties(request, daoRequest);
+        
         Integer count;
+        
+       
         try {
             count = sdpWorkspaceMapper.countGetDbConfig(daoRequest);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         return count;
     }
 
@@ -263,19 +271,24 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public List<SdpWorkspaceGetDbConfigResponse> getDbConfigByExample(SdpWorkspaceGetDbConfigRequest request) throws Exception {
         SdpWorkspaceForGetDbConfig daoRequest = new SdpWorkspaceForGetDbConfig();
         BeanUtils.copyProperties(request, daoRequest);
+        
         List<SdpWorkspaceForGetDbConfig> list;
+        
         SdpWorkspaceExampleForGetDbConfig example = SdpWorkspaceExampleForGetDbConfig.createExample(daoRequest, request.getQueryOptions());
+        
         try {
             list = sdpWorkspaceMapper.getDbConfigByExample(example);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         List<SdpWorkspaceGetDbConfigResponse> responseList = new ArrayList<>();
         for(SdpWorkspaceForGetDbConfig item : list) {
             SdpWorkspaceGetDbConfigResponse newItem = new SdpWorkspaceGetDbConfigResponse();
             BeanUtils.copyProperties(item, newItem);
             responseList.add(newItem);
         }
+        
         return responseList;
     }
 
@@ -283,13 +296,17 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public int countGetDbConfigByExample(SdpWorkspaceGetDbConfigRequest request) throws Exception {
         SdpWorkspaceForGetDbConfig daoRequest = new SdpWorkspaceForGetDbConfig();
         BeanUtils.copyProperties(request, daoRequest);
+        
         Integer count;
+        
         SdpWorkspaceExampleForGetDbConfig example = SdpWorkspaceExampleForGetDbConfig.createExample(daoRequest, request.getQueryOptions());
+        
         try {
             count = sdpWorkspaceMapper.countGetDbConfigByExample(example);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         return count;
     }
 
@@ -297,18 +314,22 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public List<SdpWorkspaceGetTableListResponse> getTableList(SdpWorkspaceGetTableListRequest request) throws Exception {
         SdpWorkspaceForGetTableList daoRequest = new SdpWorkspaceForGetTableList();
         BeanUtils.copyProperties(request, daoRequest);
+        
         List<SdpWorkspaceForGetTableList> list;
+        
         try {
             list = sdpWorkspaceMapper.getTableList(daoRequest);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         List<SdpWorkspaceGetTableListResponse> responseList = new ArrayList<>();
         for(SdpWorkspaceForGetTableList item : list) {
             SdpWorkspaceGetTableListResponse newItem = new SdpWorkspaceGetTableListResponse();
             BeanUtils.copyProperties(item, newItem);
             responseList.add(newItem);
         }
+        
         return responseList;
     }
 
@@ -316,12 +337,16 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public int countGetTableList(SdpWorkspaceGetTableListRequest request) throws Exception {
         SdpWorkspaceForGetTableList daoRequest = new SdpWorkspaceForGetTableList();
         BeanUtils.copyProperties(request, daoRequest);
+        
         Integer count;
+        
+       
         try {
             count = sdpWorkspaceMapper.countGetTableList(daoRequest);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         return count;
     }
 
@@ -329,19 +354,24 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public List<SdpWorkspaceGetTableListResponse> getTableListByExample(SdpWorkspaceGetTableListRequest request) throws Exception {
         SdpWorkspaceForGetTableList daoRequest = new SdpWorkspaceForGetTableList();
         BeanUtils.copyProperties(request, daoRequest);
+        
         List<SdpWorkspaceForGetTableList> list;
+        
         SdpWorkspaceExampleForGetTableList example = SdpWorkspaceExampleForGetTableList.createExample(daoRequest, request.getQueryOptions());
+        
         try {
             list = sdpWorkspaceMapper.getTableListByExample(example);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         List<SdpWorkspaceGetTableListResponse> responseList = new ArrayList<>();
         for(SdpWorkspaceForGetTableList item : list) {
             SdpWorkspaceGetTableListResponse newItem = new SdpWorkspaceGetTableListResponse();
             BeanUtils.copyProperties(item, newItem);
             responseList.add(newItem);
         }
+        
         return responseList;
     }
 
@@ -349,13 +379,17 @@ public class SdpWorkspaceFacadeBaseImpl extends BaseFacadeImpl implements SdpWor
     public int countGetTableListByExample(SdpWorkspaceGetTableListRequest request) throws Exception {
         SdpWorkspaceForGetTableList daoRequest = new SdpWorkspaceForGetTableList();
         BeanUtils.copyProperties(request, daoRequest);
+        
         Integer count;
+        
         SdpWorkspaceExampleForGetTableList example = SdpWorkspaceExampleForGetTableList.createExample(daoRequest, request.getQueryOptions());
+        
         try {
             count = sdpWorkspaceMapper.countGetTableListByExample(example);
         } catch (Exception ex) {
             throw createDatabaseFailException(ex);
         }
+        
         return count;
     }
 

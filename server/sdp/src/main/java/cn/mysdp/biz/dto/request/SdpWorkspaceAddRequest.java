@@ -62,6 +62,10 @@ public class SdpWorkspaceAddRequest extends BaseRequest {
     @JSONField(name = "remark")
     private String remark;
 
+    @JsonProperty("extra_info")
+    @JSONField(name = "extra_info")
+    private String extraInfo;
+
     @Override
     public void checkRequest() throws Exception {
     }

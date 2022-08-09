@@ -24,6 +24,7 @@ public class SdpWorkspaceConfigAddRequestConvert {
         daoRequest.setName(daoRequest.getName() == null ? null : daoRequest.getName().trim());
         daoRequest.setValue(daoRequest.getValue() == null ? null : daoRequest.getValue().trim());
         daoRequest.setRemark(daoRequest.getRemark() == null ? null : daoRequest.getRemark().trim());
+        daoRequest.setExtraInfo(daoRequest.getExtraInfo() == null ? null : daoRequest.getExtraInfo().trim());
 
         return daoRequest;
     }

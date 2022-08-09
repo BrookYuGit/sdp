@@ -51,6 +51,10 @@ public class SdpProjectQueryResponse implements Serializable {
     @JSONField(name = "remark")
     private String remark;
 
+    @JsonProperty("extra_info")
+    @JSONField(name = "extra_info")
+    private String extraInfo;
+
     @JsonProperty("property_map")
     @JSONField(name = "property_map")
     private Map<String, String> propertyMap;

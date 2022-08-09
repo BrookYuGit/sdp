@@ -6,23 +6,23 @@ import java.util.Date;
 import org.springframework.beans.BeanUtils;
 
 /**
- * @ClassName: SdpWorkspaceConfigUpdateRequestConvert
+ * @ClassName: SdpTableUpdateRequestConvert
  * @Description: UpdateRequestConvert
  * @Author: SDP
- * @Date: 2021-10-30
+ * @Date: 2022-08-09
  * @Version: 1.0
- * Table: sdp_workspace_config
+ * Table: sdp_table
  * Comment:
  * 
  */
-public class SdpWorkspaceConfigUpdateRequestConvert {
-    public static SdpWorkspaceConfigWithBLOBs convert(SdpWorkspaceConfigUpdateRequest request) {
-        SdpWorkspaceConfigWithBLOBs daoRequest = new SdpWorkspaceConfigWithBLOBs();
+public class SdpTableUpdateRequestConvert {
+    public static SdpTableWithBLOBs convert(SdpTableUpdateRequest request) {
+        SdpTableWithBLOBs daoRequest = new SdpTableWithBLOBs();
         BeanUtils.copyProperties(request, daoRequest);
 
         daoRequest.setWorkspaceName(daoRequest.getWorkspaceName() == null ? null : daoRequest.getWorkspaceName().trim());
         daoRequest.setName(daoRequest.getName() == null ? null : daoRequest.getName().trim());
-        daoRequest.setValue(daoRequest.getValue() == null ? null : daoRequest.getValue().trim());
+        daoRequest.setAliasName(daoRequest.getAliasName() == null ? null : daoRequest.getAliasName().trim());
         daoRequest.setRemark(daoRequest.getRemark() == null ? null : daoRequest.getRemark().trim());
         daoRequest.setExtraInfo(daoRequest.getExtraInfo() == null ? null : daoRequest.getExtraInfo().trim());
 

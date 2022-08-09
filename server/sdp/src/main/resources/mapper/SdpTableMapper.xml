@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.mysdp.biz.repository.SdpWorkspaceConfigMapper">
+<mapper namespace="cn.mysdp.biz.repository.SdpTableMapper">
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -63,13 +63,13 @@
     id,
     workspace_name,
     `name`,
-    `value`,
-    remark
+    alias_name
   </sql>
   <sql id="Blob_Column_List">
+    remark,
     extra_info
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigExample" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpTableExample" resultType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
     select
     <if test="topClause != null">
       top ${topClause}
@@ -79,7 +79,7 @@
     </if>
     'false' as QUERYID,
     t.*
-    from sdp_workspace_config t
+    from sdp_table t
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,7 +93,7 @@
       , ${countClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigExample" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfig">
+  <select id="selectByExample" parameterType="cn.mysdp.biz.domain.SdpTableExample" resultType="cn.mysdp.biz.domain.SdpTable">
     select
     <if test="topClause != null">
       top ${topClause}
@@ -103,7 +103,7 @@
     </if>
     'false' as QUERYID,
     <include refid="Base_Column_List" />
-    from sdp_workspace_config
+    from sdp_table
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -117,18 +117,18 @@
       , ${countClause}
     </if>
   </select>
-  <select id="countByExample" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigExample" resultType="Integer">
+  <select id="countByExample" parameterType="cn.mysdp.biz.domain.SdpTableExample" resultType="Integer">
     select
     count(*)
-    from sdp_workspace_config
+    from sdp_table
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <select id="listWithoutBLOBs" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfig" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfig">
+  <select id="listWithoutBLOBs" parameterType="cn.mysdp.biz.domain.SdpTable" resultType="cn.mysdp.biz.domain.SdpTable">
     select
     <include refid="Base_Column_List" />
-    from sdp_workspace_config
+    from sdp_table
     where 88=88
     <if test="id != null">
     and id = #{id}
@@ -139,88 +139,86 @@
     <if test="name != null">
     and name = #{name}
     </if>
-    <if test="value != null">
-    and value = #{value}
+    <if test="aliasName != null">
+    and alias_name = #{aliasName}
     </if>
+  </select>
+  <select id="listWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpTableWithBLOBs" resultType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
+    select
+    t.*
+    from sdp_table t
+    where 88=88
     <if test="remark != null">
     and remark = #{remark}
     </if>
-  </select>
-  <select id="listWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
-    select
-    t.*
-    from sdp_workspace_config t
-    where 88=88
     <if test="extraInfo != null">
     and extra_info = #{extraInfo}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfig">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpTable">
     select
     <include refid="Base_Column_List" />
-    from sdp_workspace_config
+    from sdp_table
     where id = #{id}
   </select>
-  <select id="selectByPrimaryKeyWithBLOBs" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
+  <select id="selectByPrimaryKeyWithBLOBs" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
     select
     *
-    from sdp_workspace_config
+    from sdp_table
     where id = #{id}
   </select>
-  <select id="selectByWorkspaceNameName" parameterType="map" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfig">
+  <select id="selectByWorkspaceNameName" parameterType="map" resultType="cn.mysdp.biz.domain.SdpTable">
     select
     <include refid="Base_Column_List" />
-    from sdp_workspace_config
+    from sdp_table
     where workspace_name = #{workspaceName}
     and `name` = #{name}
   </select>
-  <select id="selectByWorkspaceNameNameWithBLOBs" parameterType="map" resultType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
+  <select id="selectByWorkspaceNameNameWithBLOBs" parameterType="map" resultType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
     select
     *
-    from sdp_workspace_config
+    from sdp_table
     where workspace_name = #{workspaceName}
     and `name` = #{name}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from sdp_workspace_config
+    delete from sdp_table
     where id = #{id}
   </delete>
   <delete id="deleteByWorkspaceNameName" parameterType="map">
-    delete from sdp_workspace_config
+    delete from sdp_table
     where workspace_name = #{workspaceName}
     and `name` = #{name}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigExample">
-    delete from sdp_workspace_config
+  <delete id="deleteByExample" parameterType="cn.mysdp.biz.domain.SdpTableExample">
+    delete from sdp_table
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfig">
-    insert into sdp_workspace_config
+  <insert id="insert" parameterType="cn.mysdp.biz.domain.SdpTable">
+    insert into sdp_table
     <trim prefix="(" suffix=")" suffixOverrides=",">
     id,
     workspace_name,
     `name`,
-    `value`,
-    remark,
+    alias_name,
     </trim>
     values
     <trim prefix="(" suffix=")" suffixOverrides=",">
     #{id},
     #{workspaceName},
     #{name},
-    #{value},
-    #{remark},
+    #{aliasName},
     </trim>
   </insert>
-  <insert id="insertWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
-    insert into sdp_workspace_config
+  <insert id="insertWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
+    insert into sdp_table
     <trim prefix="(" suffix=")" suffixOverrides=",">
     id,
     workspace_name,
     `name`,
-    `value`,
+    alias_name,
     remark,
     extra_info,
     </trim>
@@ -229,13 +227,13 @@
     #{id},
     #{workspaceName},
     #{name},
-    #{value},
+    #{aliasName},
     #{remark},
     #{extraInfo},
     </trim>
   </insert>
-  <insert id="insertSelective" keyProperty="id" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs" useGeneratedKeys="true">
-    insert into sdp_workspace_config
+  <insert id="insertSelective" keyProperty="id" parameterType="cn.mysdp.biz.domain.SdpTableWithBLOBs" useGeneratedKeys="true">
+    insert into sdp_table
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -246,8 +244,8 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="value != null">
-        `value`,
+      <if test="aliasName != null">
+        alias_name,
       </if>
       <if test="remark != null">
         remark,
@@ -266,8 +264,8 @@
       <if test="name != null">
         #{name},
       </if>
-      <if test="value != null">
-        #{value},
+      <if test="aliasName != null">
+        #{aliasName},
       </if>
       <if test="remark != null">
         #{remark},
@@ -278,7 +276,7 @@
     </trim>
   </insert>
   <update id="updateByExampleSelective" parameterType="map">
-    update sdp_workspace_config
+    update sdp_table
     <set>
       <if test="record.id != null">
         id = #{record.id},
@@ -289,11 +287,8 @@
       <if test="record.name != null">
         `name` = #{record.name},
       </if>
-      <if test="record.value != null">
-        `value` = #{record.value},
-      </if>
-      <if test="record.remark != null">
-        remark = #{record.remark},
+      <if test="record.aliasName != null">
+        alias_name = #{record.aliasName},
       </if>
     </set>
     <if test="_parameter != null">
@@ -301,12 +296,12 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update sdp_workspace_config
+    update sdp_table
     <set>
       id = #{record.id},
       workspace_name = #{record.workspaceName},
       `name` = #{record.name},
-      `value` = #{record.value},
+      alias_name = #{record.aliasName},
       remark = #{record.remark},
       extra_info = #{record.extraInfo},
     </set>
@@ -315,20 +310,19 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update sdp_workspace_config
+    update sdp_table
     <set>
       id = #{record.id},
       workspace_name = #{record.workspaceName},
       `name` = #{record.name},
-      `value` = #{record.value},
-      remark = #{record.remark},
+      alias_name = #{record.aliasName},
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
-    update sdp_workspace_config
+  <update id="updateByPrimaryKeySelective" parameterType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
+    update sdp_table
     <set>
         <if test="workspaceName != null">
           workspace_name = #{workspaceName},
@@ -336,8 +330,8 @@
         <if test="name != null">
           `name` = #{name},
         </if>
-        <if test="value != null">
-          `value` = #{value},
+        <if test="aliasName != null">
+          alias_name = #{aliasName},
         </if>
         <if test="remark != null">
           remark = #{remark},
@@ -348,8 +342,8 @@
     </set>
     where id = #{id}
   </update>
-  <update id="updateByWorkspaceNameNameSelective" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
-    update sdp_workspace_config
+  <update id="updateByWorkspaceNameNameSelective" parameterType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
+    update sdp_table
     <set>
         <if test="id != null">
           id = #{id},
@@ -360,8 +354,8 @@
         <if test="name != null">
           `name` = #{name},
         </if>
-        <if test="value != null">
-          `value` = #{value},
+        <if test="aliasName != null">
+          alias_name = #{aliasName},
         </if>
         <if test="remark != null">
           remark = #{remark},
@@ -373,24 +367,23 @@
     where workspace_name = #{workspaceName}
     and `name` = #{name}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfigWithBLOBs">
-    update sdp_workspace_config
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpTableWithBLOBs">
+    update sdp_table
     <set>
 	    workspace_name = #{workspaceName},
 	    `name` = #{name},
-	    `value` = #{value},
+	    alias_name = #{aliasName},
 	    remark = #{remark},
 	    extra_info = #{extraInfo},
     </set>
     where id = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.mysdp.biz.domain.SdpWorkspaceConfig">
-    update sdp_workspace_config
+  <update id="updateByPrimaryKey" parameterType="cn.mysdp.biz.domain.SdpTable">
+    update sdp_table
     <set>
 		workspace_name = #{workspaceName},
 		`name` = #{name},
-		`value` = #{value},
-		remark = #{remark},
+		alias_name = #{aliasName},
     </set>
     where id = #{id}
   </update>

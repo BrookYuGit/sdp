@@ -13,19 +13,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName: SdpWorkspaceConfigBatchUpdateRequest
+ * @ClassName: SdpTableBatchUpdateRequest
  * @Description: UpdateRequest
  * @Author: SDP
- * @Date: 2021-10-30
+ * @Date: 2022-08-09
  * @Version: 1.0
- * Table: sdp_workspace_config
+ * Table: sdp_table
  * Comment:
  * 
  */
 @Getter
 @Setter
-public class SdpWorkspaceConfigBatchUpdateRequest extends BaseRequest {
-    private static final long serialVersionUID = 214742701163068580L;
+public class SdpTableBatchUpdateRequest extends BaseRequest {
+    private static final long serialVersionUID = 214742701966393925L;
 
     @JsonProperty("id")
     @JSONField(name = "id")
@@ -39,9 +39,9 @@ public class SdpWorkspaceConfigBatchUpdateRequest extends BaseRequest {
     @JSONField(name = "name")
     private String name;
 
-    @JsonProperty("value")
-    @JSONField(name = "value")
-    private String value;
+    @JsonProperty("alias_name")
+    @JSONField(name = "alias_name")
+    private String aliasName;
 
     @JsonProperty("remark")
     @JSONField(name = "remark")

@@ -67,6 +67,10 @@ public class SdpWorkspaceBatchUpdateRequest extends BaseRequest {
     @JSONField(name = "remark")
     private String remark;
 
+    @JsonProperty("extra_info")
+    @JSONField(name = "extra_info")
+    private String extraInfo;
+
     @JsonProperty("ids")
     @JSONField(name = "ids")
     private List<Integer> ids;

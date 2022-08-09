@@ -71,6 +71,9 @@
     db_classname,
     remark
   </sql>
+  <sql id="Blob_Column_List">
+    extra_info
+  </sql>
   <select id="selectByExampleWithBLOBs" parameterType="cn.mysdp.biz.domain.SdpWorkspaceExample" resultType="cn.mysdp.biz.domain.SdpWorkspaceWithBLOBs">
     select
     <if test="topClause != null">
@@ -168,6 +171,9 @@
     t.*
     from sdp_workspace t
     where 88=88
+    <if test="extraInfo != null">
+    and extra_info = #{extraInfo}
+    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="cn.mysdp.biz.domain.SdpWorkspace">
     select
@@ -248,6 +254,7 @@
     db_password,
     db_classname,
     remark,
+    extra_info,
     </trim>
     values
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -261,6 +268,7 @@
     #{dbPassword},
     #{dbClassname},
     #{remark},
+    #{extraInfo},
     </trim>
   </insert>
   <insert id="insertSelective" keyProperty="id" parameterType="cn.mysdp.biz.domain.SdpWorkspaceWithBLOBs" useGeneratedKeys="true">
@@ -296,6 +304,9 @@
       <if test="remark != null">
         remark,
       </if>
+      <if test="extraInfo != null">
+        extra_info,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -327,6 +338,9 @@
       </if>
       <if test="remark != null">
         #{remark},
+      </if>
+      <if test="extraInfo != null">
+        #{extraInfo},
       </if>
     </trim>
   </insert>
@@ -381,6 +395,7 @@
       db_password = #{record.dbPassword},
       db_classname = #{record.dbClassname},
       remark = #{record.remark},
+      extra_info = #{record.extraInfo},
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -434,6 +449,9 @@
         <if test="remark != null">
           remark = #{remark},
         </if>
+        <if test="extraInfo != null">
+          extra_info = #{extraInfo},
+        </if>
     </set>
     where id = #{id}
   </update>
@@ -470,6 +488,9 @@
         <if test="remark != null">
           remark = #{remark},
         </if>
+        <if test="extraInfo != null">
+          extra_info = #{extraInfo},
+        </if>
     </set>
     where `name` = #{name}
   </update>
@@ -485,6 +506,7 @@
 	    db_password = #{dbPassword},
 	    db_classname = #{dbClassname},
 	    remark = #{remark},
+	    extra_info = #{extraInfo},
     </set>
     where id = #{id}
   </update>

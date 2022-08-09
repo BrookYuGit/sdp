@@ -5,21 +5,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName: SdpProjectWithBLOBs
+ * @ClassName: SdpTableWithBLOBs
  * @Description: DomainObjectWithBLOBs
  * @Author: SDP
- * @Date: 2021-10-30
+ * @Date: 2022-08-09
  * @Version: 1.0
- * Table: sdp_project
+ * Table: sdp_table
  * Comment:
  * 
  */
 @Getter
 @Setter
-public class SdpProjectWithBLOBs extends SdpProject implements Serializable {
-    private static final long serialVersionUID = 9000174281193834L;
-
-    private String tables;
+public class SdpTableWithBLOBs extends SdpTable implements Serializable {
+    private static final long serialVersionUID = 9000174535043775L;
 
     private String remark;
 

@@ -42,6 +42,10 @@ public class SdpWorkspaceConfigAddRequest extends BaseRequest {
     @JSONField(name = "remark")
     private String remark;
 
+    @JsonProperty("extra_info")
+    @JSONField(name = "extra_info")
+    private String extraInfo;
+
     @JsonProperty("new_value")
     @JSONField(name = "new_value")
     private String newValue;

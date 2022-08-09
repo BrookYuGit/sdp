@@ -67,4 +67,8 @@ public class SdpWorkspaceQueryResponse implements Serializable {
     @JSONField(name = "remark")
     private String remark;
 
+    @JsonProperty("extra_info")
+    @JSONField(name = "extra_info")
+    private String extraInfo;
+
 }
