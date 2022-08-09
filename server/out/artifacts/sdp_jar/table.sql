@@ -2,6 +2,7 @@ drop table sdp_history;
 drop table sdp_workspace;
 drop table sdp_workspace_config;
 drop table sdp_project;
+drop table sdp_table;
 drop table sdp_template;
 drop table sdp_sql;
 
@@ -23,8 +24,20 @@ CREATE TABLE sdp_project (
   root_path varchar(100) DEFAULT NULL,
   tables text,
   remark text,
+  extra_info text,
   PRIMARY KEY (id),
   UNIQUE KEY unique_project (workspace_name,name)
+);
+
+CREATE TABLE sdp_table (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  workspace_name varchar(45) DEFAULT NULL,
+  name varchar(200) NOT NULL,
+  alias_name varchar(100) DEFAULT NULL,
+  remark text,
+  extra_info text,
+  PRIMARY KEY (id),
+  UNIQUE KEY unique_table (workspace_name,name)
 );
 
 CREATE TABLE sdp_sql (
@@ -88,10 +101,10 @@ CREATE TABLE sdp_workspace (
   db_password varchar(200) DEFAULT NULL,
   db_classname varchar(200) DEFAULT NULL,
   remark varchar(200) DEFAULT NULL,
+  extra_info text,
   PRIMARY KEY (id),
   UNIQUE KEY unique_workspace (name)
 );
-comment on table sdp_workspace is 'workspace';
 
 CREATE TABLE sdp_workspace_config (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -99,6 +112,7 @@ CREATE TABLE sdp_workspace_config (
   name varchar(100) NOT NULL,
   value varchar(200) NOT NULL,
   remark varchar(200) DEFAULT NULL,
+  extra_info text,
   PRIMARY KEY (id),
   UNIQUE KEY unique_workspace_config (workspace_name, name)
 );
