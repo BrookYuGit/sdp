@@ -233,6 +233,7 @@ public class SdpWorkspaceExampleForGetTableList {
 
             subCount += appendCriteriaOrderByItem(sb, "workspace_name", criteriaOrderBy.getWorkspaceName());
             subCount += appendCriteriaOrderByItem(sb, "`name`", criteriaOrderBy.getName());
+            subCount += appendCriteriaOrderByItem(sb, "call_type", criteriaOrderBy.getCallType());
             if (subCount > 1) {
                 throw new Exception("order by数组元素对象属性多于1个");
             }
@@ -257,6 +258,11 @@ public class SdpWorkspaceExampleForGetTableList {
             criteria.andNameEqualTo(request.getName());
         }
 
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeEqualTo(request.getCallType());
+        }
+
         return count;
     }
 
@@ -271,6 +277,11 @@ public class SdpWorkspaceExampleForGetTableList {
         if (request.getName() != null) {
             count++;
             criteria.andNameGreaterThan(request.getName());
+        }
+
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeGreaterThan(request.getCallType());
         }
 
         return count;
@@ -289,6 +300,11 @@ public class SdpWorkspaceExampleForGetTableList {
             criteria.andNameGreaterThanOrEqualTo(request.getName());
         }
 
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeGreaterThanOrEqualTo(request.getCallType());
+        }
+
         return count;
     }
 
@@ -303,6 +319,11 @@ public class SdpWorkspaceExampleForGetTableList {
         if (request.getName() != null) {
             count++;
             criteria.andNameIsNotNull();
+        }
+
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeIsNotNull();
         }
 
         return count;
@@ -321,6 +342,11 @@ public class SdpWorkspaceExampleForGetTableList {
             criteria.andNameIsNull();
         }
 
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeIsNull();
+        }
+
         return count;
     }
 
@@ -335,6 +361,11 @@ public class SdpWorkspaceExampleForGetTableList {
         if (request.getName() != null) {
             count++;
             criteria.andNameLessThan(request.getName());
+        }
+
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeLessThan(request.getCallType());
         }
 
         return count;
@@ -353,6 +384,11 @@ public class SdpWorkspaceExampleForGetTableList {
             criteria.andNameLessThanOrEqualTo(request.getName());
         }
 
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeLessThanOrEqualTo(request.getCallType());
+        }
+
         return count;
     }
 
@@ -367,6 +403,11 @@ public class SdpWorkspaceExampleForGetTableList {
         if (request.getName() != null) {
             count++;
             criteria.andNameLike(request.getName());
+        }
+
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeLike(request.getCallType());
         }
 
         return count;
@@ -385,6 +426,11 @@ public class SdpWorkspaceExampleForGetTableList {
             criteria.andNameNotEqualTo(request.getName());
         }
 
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeNotEqualTo(request.getCallType());
+        }
+
         return count;
     }
 
@@ -401,6 +447,11 @@ public class SdpWorkspaceExampleForGetTableList {
             criteria.andNameNotLike(request.getName());
         }
 
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeNotLike(request.getCallType());
+        }
+
         return count;
     }
 
@@ -415,6 +466,11 @@ public class SdpWorkspaceExampleForGetTableList {
         if (request.getName() != null) {
             count++;
             criteria.andNameRegexp(request.getName());
+        }
+
+        if (request.getCallType() != null) {
+            count++;
+            criteria.andCallTypeRegexp(request.getCallType());
         }
 
         return count;
@@ -611,6 +667,81 @@ public class SdpWorkspaceExampleForGetTableList {
             return (Criteria) this;
         }
 
+        public Criteria andCallTypeIsNull() {
+            addCriterion("call_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeIsNotNull() {
+            addCriterion("call_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeEqualTo(String value) {
+            addCriterion("call_type =", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeNotEqualTo(String value) {
+            addCriterion("call_type <>", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeGreaterThan(String value) {
+            addCriterion("call_type >", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("call_type >=", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeLessThan(String value) {
+            addCriterion("call_type <", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeLessThanOrEqualTo(String value) {
+            addCriterion("call_type <=", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeRegexp(String value) {
+            addCriterion("call_type regexp", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeLike(String value) {
+            addCriterion("call_type like", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeNotLike(String value) {
+            addCriterion("call_type not like", value, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeIn(List<String> values) {
+            addCriterion("call_type in", values, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeNotIn(List<String> values) {
+            addCriterion("call_type not in", values, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeBetween(String value1, String value2) {
+            addCriterion("call_type between", value1, value2, "callType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallTypeNotBetween(String value1, String value2) {
+            addCriterion("call_type not between", value1, value2, "callType");
+            return (Criteria) this;
+        }
+
     }
 
     @Getter
@@ -619,6 +750,8 @@ public class SdpWorkspaceExampleForGetTableList {
         private String workspaceName;
 
         private String name;
+
+        private String callType;
 
     }
 

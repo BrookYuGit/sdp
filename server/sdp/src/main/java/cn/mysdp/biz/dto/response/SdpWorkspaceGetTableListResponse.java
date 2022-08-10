@@ -35,4 +35,8 @@ public class SdpWorkspaceGetTableListResponse implements Serializable {
     @JSONField(name = "name")
     private String name;
 
+    @JsonProperty("call_type")
+    @JSONField(name = "call_type")
+    private String callType;
+
 }

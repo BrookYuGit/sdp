@@ -38,6 +38,10 @@ public class SdpWorkspaceGetTableListRequest extends BaseRequest {
     @JSONField(name = "name")
     private String name;
 
+    @JsonProperty("call_type")
+    @JSONField(name = "call_type")
+    private String callType;
+
     @JsonProperty("id_list")
     @JSONField(name = "id_list")
     private List<Integer> idList;

@@ -55,23 +55,8 @@
           <el-button type="primary" @click="handleBatchEdit">
             批量修改
           </el-button>
-          <el-button type="primary" @click="handleUpdateRootPath">
-            设置(root)目录
-          </el-button>
           <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
             删除
-          </el-button>
-          <!-- <el-button type="primary" v-if="!showRight" @click="handleShowRight(true)">
-            显示历史
-          </el-button> -->
-          <!-- <el-button type="primary" v-if="showRight" @click="handleShowRight(false)">
-            隐藏历史
-          </el-button> -->
-          <el-button v-if="!useRsa" type="primary" @click="handleUseRsa(true)">
-            加密传输
-          </el-button>
-          <el-button v-if="useRsa" type="primary" @click="handleUseRsa(false)">
-            非加密传输
           </el-button>
         </el-form>
 
@@ -120,7 +105,7 @@
           :current-page="queryForm.pageNo"
           :layout="layout"
           :page-size="queryForm.pageSize"
-          :page-sizes="[5, 10, 50, 100, 10000]"
+          :page-sizes="[5, 10, 50, 100, 200, 500, 1000, 2000, 5000, 10000]"
           :total="total"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
@@ -174,10 +159,10 @@
       },
     },
     data() {
-      let module = 'sdp_project'
+      let module = 'sdp_table'
       return {
         base: undefined,
-        title: '项目',
+        title: '表',
         module,
         getList: createRequest(module, 'list'),
         countList: createRequest(module, 'count'),
@@ -240,36 +225,19 @@
           width: 150,
         },
         {
-          prop: 'tables',
-          label: '表',
-          width: 300,
+          prop: 'alias_name',
+          label: '别名',
+          width: 150,
         },
-        {
-          prop: 'root_path',
-          label: '路径',
-          width: 400,
-        },
-        // {
-        //   prop: 'db_port',
-        //   label: '数据库端口',
-        // },
-        // {
-        //   prop: 'db_database',
-        //   label: '数据库',
-        //   width: 150,
-        // },
-        // {
-        //   prop: 'db_username',
-        //   label: '数据库用户名',
-        // },
-        // {
-        //   prop: 'db_password',
-        //   label: '数据库密码',
-        // },
         {
           prop: 'remark',
           label: '备注',
           width: 400,
+        },
+        {
+          prop: 'extra_info',
+          label: '附加信息',
+          width: 300,
         },
       ]
 
@@ -377,9 +345,6 @@
           fields,
           doExportExcel
         )
-      },
-      handleUpdateRootPath() {
-        this.initBase('handleUpdateRootPath')
       },
       fetchAllData() {
         this.listLoading = true

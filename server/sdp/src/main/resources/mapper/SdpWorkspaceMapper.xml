@@ -600,12 +600,12 @@
     </if>
   </select>
   <!--
-  select '' as workspace_name, '' as name
+  select '' as workspace_name, '' as name, '' as call_type
   -->
 
   <select id="getTableListBySimple" parameterType="cn.mysdp.biz.domain.SdpWorkspaceForGetTableList" resultType="cn.mysdp.biz.domain.SdpWorkspaceForGetTableList">
 <![CDATA[
-    select '' as workspace_name, '' as name
+    select '' as workspace_name, '' as name, '' as call_type
 ]]>
   </select>
   <select id="countGetTableListBySimple" parameterType="cn.mysdp.biz.domain.SdpWorkspaceForGetTableList" resultType="Integer">
@@ -613,14 +613,14 @@
     count(*)
     from (
 <![CDATA[
-    select '' as workspace_name, '' as name
+    select '' as workspace_name, '' as name, '' as call_type
 ]]>
     ) t
   </select>
 
   <select id="getTableList" parameterType="cn.mysdp.biz.domain.SdpWorkspaceForGetTableList" resultType="cn.mysdp.biz.domain.SdpWorkspaceForGetTableList">
 <![CDATA[
-    select '' as workspace_name, '' as name
+    select '' as workspace_name, '' as name, '' as call_type
 ]]>
   </select>
   <select id="countGetTableList" parameterType="cn.mysdp.biz.domain.SdpWorkspaceForGetTableList" resultType="Integer">
@@ -628,7 +628,7 @@
     count(*)
     from (
 <![CDATA[
-    select '' as workspace_name, '' as name
+    select '' as workspace_name, '' as name, '' as call_type
 ]]>
     ) t
   </select>
@@ -644,7 +644,7 @@
 	  *
     from (
 <![CDATA[
-    select '' as workspace_name, '' as name
+    select '' as workspace_name, '' as name, '' as call_type
 ]]>
     ) t
     <if test="_parameter != null">
@@ -666,7 +666,7 @@
     count(*)
     from (
 <![CDATA[
-    select '' as workspace_name, '' as name
+    select '' as workspace_name, '' as name, '' as call_type
 ]]>
     ) t
     <if test="_parameter != null">

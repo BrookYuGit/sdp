@@ -22,6 +22,7 @@ public class SdpWorkspaceGetTableListRequestConvert {
 
         daoRequest.setWorkspaceName(daoRequest.getWorkspaceName() == null ? null : daoRequest.getWorkspaceName().trim());
         daoRequest.setName(daoRequest.getName() == null ? null : daoRequest.getName().trim());
+        daoRequest.setCallType(daoRequest.getCallType() == null ? null : daoRequest.getCallType().trim());
 
         return daoRequest;
     }

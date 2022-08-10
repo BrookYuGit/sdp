@@ -23,4 +23,6 @@ public class SdpWorkspaceForGetTableList implements Serializable {
 
     private String name;
 
+    private String callType;
+
 }

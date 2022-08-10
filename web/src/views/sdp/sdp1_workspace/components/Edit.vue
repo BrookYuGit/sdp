@@ -74,7 +74,7 @@
   import { getForm } from '@/utils'
 
   export default {
-    name: 'DailyReportStaffEdit',
+    name: 'SdpWorkspaceEdit',
     props: {
       module,
       columns: {

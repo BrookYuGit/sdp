@@ -61,18 +61,6 @@
           <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
             删除
           </el-button>
-          <!-- <el-button type="primary" v-if="!showRight" @click="handleShowRight(true)">
-            显示历史
-          </el-button> -->
-          <!-- <el-button type="primary" v-if="showRight" @click="handleShowRight(false)">
-            隐藏历史
-          </el-button> -->
-          <el-button v-if="!useRsa" type="primary" @click="handleUseRsa(true)">
-            加密传输
-          </el-button>
-          <el-button v-if="useRsa" type="primary" @click="handleUseRsa(false)">
-            非加密传输
-          </el-button>
         </el-form>
 
         <vab-query-form-left-panel></vab-query-form-left-panel>
@@ -120,7 +108,7 @@
           :current-page="queryForm.pageNo"
           :layout="layout"
           :page-size="queryForm.pageSize"
-          :page-sizes="[5, 10, 50, 100, 10000]"
+          :page-sizes="[5, 10, 50, 100, 200, 500, 1000, 2000, 5000, 10000]"
           :total="total"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
@@ -270,6 +258,11 @@
           prop: 'remark',
           label: '备注',
           width: 400,
+        },
+        {
+          prop: 'extra_info',
+          label: '附加信息',
+          width: 300,
         },
       ]
 

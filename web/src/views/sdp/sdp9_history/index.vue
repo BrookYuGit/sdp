@@ -64,12 +64,6 @@
             删除
           </el-button>
           <el-button type="danger" @click="handleClear">清空</el-button>
-          <el-button v-if="!useRsa" type="primary" @click="handleUseRsa(true)">
-            加密传输
-          </el-button>
-          <el-button v-if="useRsa" type="primary" @click="handleUseRsa(false)">
-            非加密传输
-          </el-button>
         </el-form>
 
         <vab-query-form-left-panel></vab-query-form-left-panel>
@@ -117,7 +111,7 @@
           :current-page="queryForm.pageNo"
           :layout="layout"
           :page-size="queryForm.pageSize"
-          :page-sizes="[5, 10, 50, 100, 10000]"
+          :page-sizes="[5, 10, 50, 100, 200, 500, 1000, 2000, 5000, 10000]"
           :total="total"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"

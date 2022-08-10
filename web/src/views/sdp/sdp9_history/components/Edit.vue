@@ -49,7 +49,7 @@
   import { getForm } from '@/utils'
 
   export default {
-    name: 'DailyReportStaffEdit',
+    name: 'SdpHistoryEdit',
     props: {
       module,
       columns: {

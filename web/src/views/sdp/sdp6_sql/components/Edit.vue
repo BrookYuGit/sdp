@@ -375,7 +375,7 @@
   import { getForm } from '@/utils'
 
   export default {
-    name: 'DailyReportStaffEdit',
+    name: 'SdpSqlEdit',
     props: {
       module,
       columns: {

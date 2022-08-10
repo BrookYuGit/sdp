@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <el-dialog
     v-dialogDrag
@@ -30,33 +31,17 @@
       <el-form-item :label="getLabel('name')" prop="name" :required="true">
         <el-input v-model.trim="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item :label="getLabel('tables')" prop="tables">
+      <el-form-item :label="getLabel('alias_name')" prop="alias_name" :required="false">
+        <el-input v-model.trim="form.alias_name" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item :label="getLabel('extra_info')" prop="extra_info">
         <el-input
-          v-model="form.tables"
+          v-model="form.extra_info"
           type="textarea"
           :rows="3"
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      <el-form-item :label="getLabel('root_path')" prop="root_path">
-        <el-input v-model.trim="form.root_path" autocomplete="off"></el-input>
-      </el-form-item>
-
-      <!-- <el-form-item :label="getLabel('db_host')" prop="db_host" :required="true">
-        <el-input v-model.trim="form.db_host" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item :label="getLabel('db_port')" prop="db_port" :required="true">
-        <el-input v-model.trim="form.db_port" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item :label="getLabel('db_database')" prop="db_database" :required="true">
-        <el-input v-model.trim="form.db_database" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item :label="getLabel('db_username')" prop="db_username" :required="true">
-        <el-input v-model.trim="form.db_username" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item :label="getLabel('db_password')" prop="db_password">
-        <el-input v-model.trim="form.db_password" autocomplete="off"></el-input>
-      </el-form-item> -->
       <el-form-item :label="getLabel('remark')" prop="remark">
         <el-input
           v-model="form.remark"
@@ -81,7 +66,7 @@
   import { getForm } from '@/utils'
 
   export default {
-    name: 'DailyReportStaffEdit',
+    name: 'SdpTableEdit',
     props: {
       module,
       columns: {

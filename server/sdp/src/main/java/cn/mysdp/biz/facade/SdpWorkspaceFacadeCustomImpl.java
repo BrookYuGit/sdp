@@ -438,20 +438,23 @@ public class SdpWorkspaceFacadeCustomImpl extends SdpWorkspaceFacadeBaseImpl {
 
         List<SdpWorkspaceGetTableListResponse> responseList = new ArrayList<>();
 
-        SdpProjectExample sdpProjectExample = new SdpProjectExample();
-        sdpProjectExample.createCriteria().andWorkspaceNameEqualTo(request.getWorkspaceName());
-        List<SdpProjectWithBLOBs> sdpProjectWithBLOBs = sdpProjectMapper.selectByExampleWithBLOBs(sdpProjectExample);
         Set<String> doneNameSet = new HashSet<>();
-        for(SdpProjectWithBLOBs project: sdpProjectWithBLOBs) {
-            if (!StringUtils.isEmpty(project.getTables())) {
-                String[] tables = SplitUtil.split(project.getTables(), ",");
-                for(String table: tables) {
-                    table = SplitUtil.split(table, " as ")[0].trim().toLowerCase();
-                    if (!doneNameSet.contains(table)) {
-                        SdpWorkspaceGetTableListResponse newItem = new SdpWorkspaceGetTableListResponse();
-                        newItem.setName(table);
-                        responseList.add(newItem);
-                        doneNameSet.add(table);
+
+        if (!"only_tables".equals(request.getCallType())) {
+            SdpProjectExample sdpProjectExample = new SdpProjectExample();
+            sdpProjectExample.createCriteria().andWorkspaceNameEqualTo(request.getWorkspaceName());
+            List<SdpProjectWithBLOBs> sdpProjectWithBLOBs = sdpProjectMapper.selectByExampleWithBLOBs(sdpProjectExample);
+            for(SdpProjectWithBLOBs project: sdpProjectWithBLOBs) {
+                if (!StringUtils.isEmpty(project.getTables())) {
+                    String[] tables = SplitUtil.split(project.getTables(), ",");
+                    for(String table: tables) {
+                        table = SplitUtil.split(table, " as ")[0].trim().toLowerCase();
+                        if (!doneNameSet.contains(table)) {
+                            SdpWorkspaceGetTableListResponse newItem = new SdpWorkspaceGetTableListResponse();
+                            newItem.setName(table);
+                            responseList.add(newItem);
+                            doneNameSet.add(table);
+                        }
                     }
                 }
             }
