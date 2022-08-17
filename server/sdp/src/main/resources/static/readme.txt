@@ -1,0 +1,1 @@
+copy dist/*.* to hear
