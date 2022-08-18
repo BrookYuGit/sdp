@@ -705,6 +705,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
 
                         Object[] jdbcFields = getMetaFields(resultSetMetaData);
+                        int oriColumnCount = jdbcFields.length;
 
                         Map<String, Method> methodMap = new HashMap<>();
                         methodMap.put("getName", null);
@@ -712,7 +713,10 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                         methodMap.put("getOriginalTableName", null);
                         methodMap.put("getMysqlType", null);
 
-                        Class clz = jdbcFields[0].getClass();
+                        Class clz = null;
+                        if (jdbcFields.length > 0) {
+                            clz = jdbcFields[0].getClass();
+                        }
                         while (clz != null) {
                             int count = 0;
                             Method[] methods = jdbcFields[0].getClass().getDeclaredMethods();
@@ -878,13 +882,18 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
                         Object[] jdbcFields = getMetaFields(resultSetMetaData);
 
+                        int oriColumnCount = jdbcFields.length;
+
                         Map<String, Method> methodMap = new HashMap<>();
                         methodMap.put("getName", null);
                         methodMap.put("getTableName", null);
                         methodMap.put("getOriginalTableName", null);
                         methodMap.put("getMysqlType", null);
 
-                        Class clz = jdbcFields[0].getClass();
+                        Class clz = null;
+                        if (jdbcFields.length > 0) {
+                            clz = jdbcFields[0].getClass();
+                        }
                         while(clz != null) {
                             int count = 0;
                             Method[] methods = jdbcFields[0].getClass().getDeclaredMethods();
@@ -1148,24 +1157,26 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                             }
 
                             //check if sql syntax valid
-                            sql = "select * from (" + column.getParameterSql() + ") t";
-                            try {
-                                mysqlStatement = connection.prepareStatement(sql);
-                            } catch (Exception ex) {
-                                System.out.println("=== prepareStatement error, sql ===");
-                                System.out.println(sql);
-                                throw ex;
-                            }
+                            if (oriColumnCount > 0) {
+                                sql = "select * from (" + column.getParameterSql() + ") t";
+                                try {
+                                    mysqlStatement = connection.prepareStatement(sql);
+                                } catch (Exception ex) {
+                                    System.out.println("=== prepareStatement error, sql ===");
+                                    System.out.println(sql);
+                                    throw ex;
+                                }
 
-                            try {
-                                resultSetMetaData = mysqlStatement.getMetaData();
-                            } catch (Exception ex) {
-                                System.out.println("=== getMetaData error, sql ===");
-                                System.out.println(sql);
-                                throw new Exception(schema+"."+tableName+column.getParameterCatalog()+","+column.getParameterCatalogType()+","+column.getParameterName()+":"+ex.getMessage());
-                            }
+                                try {
+                                    resultSetMetaData = mysqlStatement.getMetaData();
+                                } catch (Exception ex) {
+                                    System.out.println("=== getMetaData error, sql ===");
+                                    System.out.println(sql);
+                                    throw new Exception(schema+"."+tableName+column.getParameterCatalog()+","+column.getParameterCatalogType()+","+column.getParameterName()+":"+ex.getMessage());
+                                }
 
-                            mysqlStatement.close();
+                                mysqlStatement.close();
+                            }
                             sql = "";
 
                         }catch(Exception ex) {
@@ -1673,11 +1684,13 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                                         System.err.println("miss sql."+key);
                                         continue;
                                     }
-                                    IntrospectedColumn column = columns.get(0);
-                                    if ("sql".equals(column.getParameterCatalog())) {
-                                        if ("0".equals(dynTemplate.getExtraInfoMap().get("is_interface")+"")) {
-                                            if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
-                                                continue;
+                                    if (!CollectionUtils.isEmpty(columns)) {
+                                        IntrospectedColumn column = columns.get(0);
+                                        if ("sql".equals(column.getParameterCatalog())) {
+                                            if ("0".equals(dynTemplate.getExtraInfoMap().get("is_interface")+"")) {
+                                                if (Integer.valueOf(1).equals(column.getSqlIsInterface())) {
+                                                    continue;
+                                                }
                                             }
                                         }
                                     }
@@ -2355,7 +2368,9 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
                     return introspectedColumns1;
                 }
             }
-            introspectedColumns1.add(introspectedColumns.get(0));
+            if (!CollectionUtils.isEmpty(introspectedColumns)) {
+                introspectedColumns1.add(introspectedColumns.get(0));
+            }
             return introspectedColumns1;
         }
 
@@ -2672,11 +2687,13 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
         if (introspectedColumns1.size() > 1) {
             if (properties.containsKey("column_is_first")) {
                 List<IntrospectedColumn> introspectedColumns2 = new ArrayList<>();
-                if ("1".equals(properties.get("column_is_first"))) {
-                    introspectedColumns2.add(introspectedColumns1.get(0));
-                } else {
-                    for(int i = 1; i < introspectedColumns1.size(); i++) {
-                        introspectedColumns2.add(introspectedColumns1.get(i));
+                if (!CollectionUtils.isEmpty(introspectedColumns1)) {
+                    if ("1".equals(properties.get("column_is_first"))) {
+                        introspectedColumns2.add(introspectedColumns1.get(0));
+                    } else {
+                        for(int i = 1; i < introspectedColumns1.size(); i++) {
+                            introspectedColumns2.add(introspectedColumns1.get(i));
+                        }
                     }
                 }
                 introspectedColumns1 = introspectedColumns2;
@@ -3061,9 +3078,11 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
             introspectedColumns = new ArrayList<>();
             for (String key : introspectedTable.getParameterColumnKeys()) {
                 List<IntrospectedColumn> columns = introspectedTable.getParameterColumns().get(key);
-                IntrospectedColumn column = columns.get(0);
-                if ("api.facade".equals(column.getParameterCatalog())) {
-                    introspectedColumns.add(column);
+                if (!CollectionUtils.isEmpty(columns)) {
+                    IntrospectedColumn column = columns.get(0);
+                    if ("api.facade".equals(column.getParameterCatalog())) {
+                        introspectedColumns.add(column);
+                    }
                 }
             }
         } else {
@@ -3222,7 +3241,7 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
     };
 
     private Object[] getMetaFields(ResultSetMetaData resultSetMetaData) throws Exception {
-        Object[] jdbcFields;
+        Object[] jdbcFields = new Object[0];
         try {
             Field reflectField = resultSetMetaData.getClass().getDeclaredField("fields");
             reflectField.setAccessible(true);
@@ -3233,17 +3252,20 @@ public class ProcessSQLFacadeImpl extends BaseFacadeImpl implements ProcessSQLFa
 
         }
 
-        int fieldCount = resultSetMetaData.getColumnCount();
-        List<H2MetaField> fields = new ArrayList<>();
-        for(int i = 0; i < fieldCount; i++) {
-            H2MetaField field = new H2MetaField();
-            field.setName(resultSetMetaData.getColumnName(i+1));
-            field.setTableName(resultSetMetaData.getTableName(i+1));
-            field.setOriginalTableName(resultSetMetaData.getTableName(i+1));
-            field.setMysqlType(resultSetMetaData.getColumnType(i+1));
-            fields.add(field);
+        int fieldCount = 0;
+        if (resultSetMetaData != null) {
+            resultSetMetaData.getColumnCount();
+            List<H2MetaField> fields = new ArrayList<>();
+            for(int i = 0; i < fieldCount; i++) {
+                H2MetaField field = new H2MetaField();
+                field.setName(resultSetMetaData.getColumnName(i+1));
+                field.setTableName(resultSetMetaData.getTableName(i+1));
+                field.setOriginalTableName(resultSetMetaData.getTableName(i+1));
+                field.setMysqlType(resultSetMetaData.getColumnType(i+1));
+                fields.add(field);
+            }
+            jdbcFields = fields.toArray();
         }
-        jdbcFields = fields.toArray();
         return jdbcFields;
     }
 
