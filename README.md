@@ -1,3 +1,7 @@
+# Move to gitee
+https://gitee.com/brookyu2019/sdp
+The last version is 1.7.0 on github.
+
 # SDP
 SQL-driven programming
 
